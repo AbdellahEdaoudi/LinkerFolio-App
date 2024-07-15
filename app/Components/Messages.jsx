@@ -11,12 +11,14 @@ import { BsEmojiSmile } from "react-icons/bs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io from 'socket.io-client';
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, MessageCircle, User } from "lucide-react";
+import Linkify from 'linkify-react';
 
 function Messages({ selectedUser }) {
   const { toast } = useToast();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState([]);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -29,6 +31,17 @@ function Messages({ selectedUser }) {
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
   const SERVER_URL = 'http://localhost:9999';
+
+  //  get users
+  useEffect(() => {
+    axios.get(`${SERVER_URL}/users`)
+      .then((res) => {
+        setUserDetails(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching user details:', error);
+      });
+  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -156,11 +169,19 @@ function Messages({ selectedUser }) {
       setLoadingu(false);
     }
   };
-
+   if (!selectedUser) {
+    return <div></div>;
+   }
   return (
     <div>
+      <div className="flex md:hidden  gap-1 px-5 py-1 ">
+        <span className=" px-4 py-3 rounded-md w-1/2 flex justify-center">
+        <User className="  rounded-md" />
+        </span>
+        <span className="backdrop-blur-lg bg-white/40  text-white px-4 py-3 rounded-md  w-1/2 flex justify-center"><MessageCircle /></span>
+      </div>
       {/* Message window on the right */}
-      <div className={` flex flex-col justify-between`}>
+      <div className={` flex flex-col justify-between md:w-auto w-screen`}>
         <div className="flex-1 p-2 ">
           {/* selectedUser */}
           <h2 className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
@@ -240,6 +261,7 @@ function Messages({ selectedUser }) {
                 })
                 .map((msg, i) => {
                   const DateMsg = new Date(msg.createdAt);
+                  const filtUser = userDetails.find((fl) => fl.urlimage === msg.fromimg);
                   return (
                     <div>
                       <div
@@ -259,15 +281,14 @@ function Messages({ selectedUser }) {
                               : "flex items-center  gap-2"
                           }`}
                         >
-                          <Link
-                            href={`/${selectedUser.username}/${selectedUser._id}`}
+                          <Link href={`/${filtUser?.username}/${filtUser?._id}`}
                           >
                             <img
                               src={msg.fromimg}
                               width={40}
                               className="hover:scale-105 duration-300 rounded-full"
                             />
-                          </Link>
+                           </Link>
                           <p
                             className={`whitespace-pre-wrap break-all  ${
                               (msg.from || msg.to) ===
@@ -276,7 +297,9 @@ function Messages({ selectedUser }) {
                                 : "bg-green-500"
                             } p-2  rounded-md`}
                           >
+                            <Linkify  >
                             {msg.message}
+                            </Linkify>
                           </p>
                           <p
                             onClick={() => {
@@ -302,7 +325,7 @@ function Messages({ selectedUser }) {
                             (msg.from || msg.to) ===
                             user.emailAddresses[0].emailAddress
                               ? "text-right text-[10px] flex justify-end mr-14"
-                              : "text-left text-[10px] flex justify-start ml-14"
+                              : "text-left  text-[10px] flex justify-start ml-14"
                           }`}
                       >
                         {msg.updated}
@@ -338,7 +361,7 @@ function Messages({ selectedUser }) {
                 onChange={(e) => {
                   setMessageInput(e.target.value);
                 }}
-                className="flex-1 border-2  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
+                className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
               />
               <Button
                 onClick={() => {
@@ -346,7 +369,7 @@ function Messages({ selectedUser }) {
                   setEmoji(emoji);
                 }}
                 disabled={loading || messageInput === ""}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300"
+                className="bg-indigo-600  text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300"
               >
                 {loading ? <i className="fa fa-spinner fa-spin"></i> : "Send"}
               </Button>
@@ -381,7 +404,7 @@ function Messages({ selectedUser }) {
                 onChange={(e) => {
                   setUMessage(e.target.value);
                 }}
-                className="flex-1 border-2  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
+                className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
               />
               <button
                 onClick={updateMsg}

@@ -99,11 +99,11 @@ function NameUser({ params }) {
     }
   };
 
-  if (!id) {
-    return <p className="flex justify-center items-center py-32 text-8xl">
-    <i className="fa fa-spinner fa-spin "></i>
-    </p>;
-  }
+  // if (!id) {
+  //   return <p className="flex justify-center items-start h-screen py-32 text-8xl">
+  //   <i className="fa fa-spinner fa-spin "></i>
+  //   </p>;
+  // }
   
   return (
     <div className={`${bgcolorp} container mx-auto py-3 duration-300 `}>
@@ -129,7 +129,7 @@ function NameUser({ params }) {
                       name="username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="text-gray-600 rounded-lg border-2  mb-2 px-3 py-1"
+                      className="text-gray-600 bg-white rounded-lg border-2  mb-2 px-3 py-1"
                     />
                   </td>
                 </tr>
@@ -141,7 +141,7 @@ function NameUser({ params }) {
                       name="phoneNumber"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="text-gray-600 rounded-lg border-2  px-3 py-1"
+                      className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
                     />
                   </td>
                 </tr>
@@ -178,7 +178,7 @@ function NameUser({ params }) {
                         value={fb}
                         onChange={(e) => setFb(e.target.value)}
                         placeholder="Facebook Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -214,7 +214,7 @@ function NameUser({ params }) {
                         value={instagram}
                         onChange={(e) => setInstagram(e.target.value)}
                         placeholder="Instagram Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -250,7 +250,7 @@ function NameUser({ params }) {
                         value={Twitter}
                         onChange={(e) => setTwitter(e.target.value)}
                         placeholder="Twitter Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -286,7 +286,7 @@ function NameUser({ params }) {
                         value={Linkedin}
                         onChange={(e) => setLinkedin(e.target.value)}
                         placeholder="LinkedIn Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -322,7 +322,7 @@ function NameUser({ params }) {
                         value={github}
                         onChange={(e) => setGithub(e.target.value)}
                         placeholder="GitHub Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -358,7 +358,7 @@ function NameUser({ params }) {
                         value={Youtube}
                         onChange={(e) => setYoutube(e.target.value)}
                         placeholder="YouTube Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -394,7 +394,7 @@ function NameUser({ params }) {
                         value={Telegram}
                         onChange={(e) => setTelegram(e.target.value)}
                         placeholder="Telegram Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -430,7 +430,7 @@ function NameUser({ params }) {
                         value={snapchat}
                         onChange={(e) => setSnapchat(e.target.value)}
                         placeholder="Snapchat Link"
-                        className="rounded-lg px-3 py-2 mb-2 w-full border-2 border-black"
+                        className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
                       />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
@@ -456,7 +456,7 @@ function NameUser({ params }) {
                 }
               }}
               placeholder="Enter bio"
-              className="rounded-lg w-full px-3 h-32  py-2"
+              className="rounded-lg bg-white w-full px-3 h-32  py-2"
             />
           </div>
           <div>

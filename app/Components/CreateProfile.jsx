@@ -1,0 +1,110 @@
+import React, { useState } from "react";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
+
+const CreateProfile = () => {
+  const { user } = useUser();
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const SERVER_URL = "http://localhost:9999";
+
+  const postData = async () => {
+    try {
+      setIsLoading(true);
+      const data = {
+        fullname: user?.fullName || '',
+        email: user?.emailAddresses[0]?.emailAddress || '',
+        username: username,
+        phoneNumber: "+000000000000",
+        urlimage: user?.imageUrl || '',
+        bio: '',
+        fb: '',
+        isOnline: false,
+        instagram: '',
+        snapchat: '',
+        Linkedin: '',
+        github: '',
+        Twitter: '',
+        Youtube: '',
+        Telegram: '',
+        bgcolorp:''
+      };      
+      const response = await axios.post(`${SERVER_URL}/users`, data);
+      console.log("Response:", response.data);
+      setSuccessMessage("Your profile has been created !");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error posting user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  if (!user?.imageUrl) {
+    return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
+    <i className="fa fa-spinner fa-spin "></i>
+    </p> ;
+  }
+
+  return (
+    <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 p-6">
+      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
+      <div className="flex items-center justify-around mb-6">
+              {user?.imageUrl ? <img
+                src={user?.imageUrl}
+                className="rounded-full w-28 h-28 object-cover border-4 border-purple-500 shadow-lg"
+                alt="User profile"
+              /> :<div className="rounded-full bg-gray-500 animate-pulse w-28 h-28 object-cover border-4 border-purple-500 shadow-lg">
+                
+                </div>}
+            </div>
+        <div className="space-y-6">
+          {successMessage && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+              <strong className="font-bold">Success!</strong>
+              <span className="block sm:inline"> {successMessage}</span>
+              <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setSuccessMessage("")}>
+                <svg className="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <title>Close</title>
+                  <path fillRule="evenodd" d="M14.348 5.652a.5.5 0 0 1 0 .707l-8.485 8.485a.5.5 0 0 1-.707-.707l8.485-8.485a.5.5 0 0 1 .707 0z"/>
+                </svg>
+              </span>
+            </div>
+          )}
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Username
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder="Enter your username"
+            />
+          </div>
+          <button
+            onClick={postData}
+            type="submit"
+            className={`w-full py-3 px-4 bg-purple-500 text-white font-bold rounded-lg shadow-md transition duration-300 ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-600"
+            }`}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                Creating <i className="fa fa-spinner fa-spin"></i>
+              </>
+            ) : (
+              <>Create Profile</>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreateProfile;

@@ -6,8 +6,10 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { Skeleton } from "@/components/ui/skeleton"
 
+
 function UserList({selectedUser,setSelectedUser}) {
   const [userDetails, setUserDetails] = useState([]);
+  const [userByEmail, setuserByEmail] = useState("");
   const {user} = useUser();
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +17,9 @@ function UserList({selectedUser,setSelectedUser}) {
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
   const SERVER_URL = 'http://localhost:9999';
+  const filteredMessages = messages.filter(msg => msg.from === userEmail && msg.to === userEmail);
+
+  
   //  search input change
   const SearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -31,6 +36,7 @@ function UserList({selectedUser,setSelectedUser}) {
     },1);
     return () => clearTimeout(timeout);
   }, [messages]);
+
   //  get users
   useEffect(() => {
     axios.get(`${SERVER_URL}/users`)
@@ -42,9 +48,24 @@ function UserList({selectedUser,setSelectedUser}) {
       });
   }, []);
 
+  // Get users By Email
+  useEffect(() => {
+    const getUserByEmail = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL}/usersE/${userEmail}`);
+        setuserByEmail(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (userEmail) {
+      getUserByEmail();
+    }
+  }, [userEmail]);
+
   // Get Messages
   useEffect(() => {
-    const fetchData = async () => {
+    const GetMessages = async () => {
       try {
         const response = await axios.get(`${SERVER_URL}/messages`);
         setMessages(response.data);
@@ -52,9 +73,10 @@ function UserList({selectedUser,setSelectedUser}) {
         console.error('Error fetching messages:', error);
       }
     };
-    fetchData();
+    GetMessages();
   },[]);
-
+  
+  
   return (
     <div >
         <div className="bg-gray-800 rounded-lg text-white scrollbar-none  p-4 overflow-y-auto h-[516px]">
@@ -93,6 +115,7 @@ function UserList({selectedUser,setSelectedUser}) {
                       user.email.toLowerCase().includes(searchQuery.toLowerCase())
                     )
                     .map((User, i) => (
+                      
                       <div 
                         key={i}
                         onClick={() => {
@@ -113,12 +136,15 @@ function UserList({selectedUser,setSelectedUser}) {
                         }`}
                       >
                         <div className="relative w-12 h-12">
-                          <Image
-                            src={User.urlimage}
-                            alt="Profile"
-                            className="rounded-full"
-                            layout="fill"
-                          />
+                        <div className=''>
+                         <Image
+                           src={User.urlimage}
+                           alt="Profile"
+                           className="rounded-full "
+                           layout="fill"
+                         />
+                         {/* <div className={` ${User.isOnline === false ? "bg-gray-500": "bg-green-500"} absolute w-2 h-2 rounded-full left-2 top-0`}></div> */}
+                         </div>
                         </div>
                         <div className='flex flex-col'>
                       <p className="text-lg">{User.fullname}</p>
@@ -153,12 +179,12 @@ function UserList({selectedUser,setSelectedUser}) {
                        className={`${searchQuery === "" ? "" : "hidden"} flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
                          selectedUser && selectedUser.email === User.email ? 'bg-gray-700' : ''
                        }`}
-                     >
+                     >       
                        <div className="relative w-12 h-12">
                          <Image
                            src={User.urlimage}
                            alt="Profile"
-                           className="rounded-full"
+                           className="rounded-full "
                            layout="fill"
                          />
                        </div>

@@ -41,11 +41,11 @@ function ProfilePage() {
             });
     }, []);
 
-    if(!user){
-        return  <div className="flex justify-center py-20">
-        <SignIn />
-    </div>
-    }
+    // if(!user){
+    //     return  <div className="flex justify-center py-20">
+    //     <SignIn />
+    // </div>
+    // }
 
     
     const handleDownloadQRCode = () => {
@@ -84,7 +84,7 @@ function ProfilePage() {
       };
 
     if (isLoading) {
-        return <p className="flex justify-center items-center py-32 text-8xl">
+        return <p className="flex justify-center items-start h-screen py-32 text-8xl">
         <i className="fa fa-spinner fa-spin "></i>
         </p>;
     }

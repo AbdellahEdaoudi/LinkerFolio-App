@@ -70,7 +70,7 @@ function Navbar() {
                         }}
                         className="font-medium hidden md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                       >
-                        {user?.fullName}
+                        {userr.fullName}
                       </span>
                       <span
                         onClick={() => {
