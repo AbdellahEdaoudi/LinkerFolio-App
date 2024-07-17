@@ -10,9 +10,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { BsEmojiSmile } from "react-icons/bs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import { EllipsisVertical, MessageCircle, User } from "lucide-react";
-import Linkify from 'linkify-react';
+import Linkify from "linkify-react";
 
 function Messages({ selectedUser }) {
   const { toast } = useToast();
@@ -30,16 +30,24 @@ function Messages({ selectedUser }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
-  const SERVER_URL = 'http://localhost:9999';
+  const SERVER_URL = "http://localhost:9999";
+  const EmailUser = user.emailAddresses[0].emailAddress
+  const filtUser =userDetails.find((fl)=>fl.email === EmailUser)
 
+  useEffect(() => {
+    if (selectedUser) {
+      setputdelete(true)
+    }
+  }, [selectedUser]);
   //  get users
   useEffect(() => {
-    axios.get(`${SERVER_URL}/users`)
+    axios
+      .get(`${SERVER_URL}/users`)
       .then((res) => {
         setUserDetails(res.data);
       })
       .catch((error) => {
-        console.error('Error fetching user details:', error);
+        console.error("Error fetching user details:", error);
       });
   }, []);
 
@@ -53,11 +61,11 @@ function Messages({ selectedUser }) {
     getMessages();
     const socket = io(SERVER_URL);
     setSocket(socket);
-  
+
     socket.on("receiveMessage", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
-  
+
     socket.on("receiveUpdatedMessage", (updatedMessage) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
@@ -65,21 +73,21 @@ function Messages({ selectedUser }) {
         )
       );
     });
-  
+
     socket.on("receiveDeletedMessage", (deletedMessageId) => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg._id !== deletedMessageId)
       );
     });
-  
+
     return () => {
       socket.disconnect();
     };
-  }, []); 
+  }, []);
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
-    const codeArray = sym.map(el => "0x" + el);
+    const codeArray = sym.map((el) => "0x" + el);
     const emoji = String.fromCodePoint(...codeArray);
     if (putdelete) {
       setMessageInput(messageInput + emoji);
@@ -99,10 +107,11 @@ function Messages({ selectedUser }) {
 
   const sendMessage = async () => {
     setLoading(true);
+    
     try {
       const data = {
-        from: user.emailAddresses[0].emailAddress,
-        fromimg: user.imageUrl,
+        from: EmailUser,
+        fromimg: filtUser.urlimage,
         to: selectedUser.email,
         toimg: selectedUser.urlimage,
         message: messageInput,
@@ -169,16 +178,18 @@ function Messages({ selectedUser }) {
       setLoadingu(false);
     }
   };
-   if (!selectedUser) {
+  if (!selectedUser) {
     return <div></div>;
-   }
+  }
   return (
     <div>
       <div className="flex md:hidden  gap-1 px-5 py-1 ">
         <span className=" px-4 py-3 rounded-md w-1/2 flex justify-center">
-        <User className="  rounded-md" />
+          <User className="  rounded-md" />
         </span>
-        <span className="backdrop-blur-lg bg-white/40  text-white px-4 py-3 rounded-md  w-1/2 flex justify-center"><MessageCircle /></span>
+        <span className="backdrop-blur-lg bg-white/40  text-white px-4 py-3 rounded-md  w-1/2 flex justify-center">
+          <MessageCircle />
+        </span>
       </div>
       {/* Message window on the right */}
       <div className={` flex flex-col justify-between md:w-auto w-screen`}>
@@ -220,7 +231,7 @@ function Messages({ selectedUser }) {
           </h2>
           {/* Messages */}
           <div
-            className="bg-white p-4 rounded-lg shadow-lg h-[350px] scrollbar-none
+            className="bg-white p-4 rounded-lg shadow-lg h-[600px] duration-300  md:h-[350px] scrollbar-none
                overflow-y-auto"
             ref={messagesEndRef}
           >
@@ -261,7 +272,33 @@ function Messages({ selectedUser }) {
                 })
                 .map((msg, i) => {
                   const DateMsg = new Date(msg.createdAt);
-                  const filtUser = userDetails.find((fl) => fl.urlimage === msg.fromimg);
+                  const DateUpdMsg = new Date(msg.updatedAt);
+                  const DateToday = new Date();
+                  const filtUser = userDetails.find(
+                    (fl) => fl.email === msg.from
+                  );
+                  // Date Message
+                  const year = DateMsg.getFullYear();
+                  const month = String(DateMsg.getMonth() + 1).padStart(2, "0"); 
+                  const day = String(DateMsg.getDate()).padStart(2, "0");
+                  const DateAll = `${year}/${month}/${day}`;
+                  // Date Today
+                  const yeart = DateToday.getFullYear();
+                  const montht = String(DateToday.getMonth() + 1).padStart(2, "0"); 
+                  const dayt = String(DateToday.getDate()).padStart(2, "0");
+                  const TodayDate = `${yeart}/${montht}/${dayt}`;
+                  // Date Yesterday
+                  const yeary = DateToday.getFullYear();
+                  const monthy = String(DateToday.getMonth() + 1).padStart(2, "0"); 
+                  const dayy = String(DateToday.getDate() -1).padStart(2, "0");
+                  const YesterdayDate  = `${yeary}/${monthy}/${dayy}`;
+
+                  // UPDATED MESSAGE DATE
+                  const yearu = DateUpdMsg.getFullYear();
+                  const monthu = String(DateUpdMsg.getMonth() + 1).padStart(2, "0"); 
+                  const dayu = String(DateUpdMsg.getDate()).padStart(2, "0");
+                  const UpdateDate = `${yearu}/${monthu}/${dayu}`;
+
                   return (
                     <div>
                       <div
@@ -281,14 +318,15 @@ function Messages({ selectedUser }) {
                               : "flex items-center  gap-2"
                           }`}
                         >
-                          <Link href={`/${filtUser?.username}/${filtUser?._id}`}
+                          <Link
+                            href={`/${filtUser?.username}/${filtUser?._id}`}
                           >
                             <img
                               src={msg.fromimg}
                               width={40}
                               className="hover:scale-105 duration-300 rounded-full"
                             />
-                           </Link>
+                          </Link>
                           <p
                             className={`whitespace-pre-wrap break-all  ${
                               (msg.from || msg.to) ===
@@ -297,9 +335,7 @@ function Messages({ selectedUser }) {
                                 : "bg-green-500"
                             } p-2  rounded-md`}
                           >
-                            <Linkify  >
-                            {msg.message}
-                            </Linkify>
+                            <Linkify>{msg.message}</Linkify>
                           </p>
                           <p
                             onClick={() => {
@@ -329,6 +365,7 @@ function Messages({ selectedUser }) {
                           }`}
                       >
                         {msg.updated}
+                        {/* {msg.updated && `,${msg.updated && UpdateDate},${DateUpdMsg.toLocaleTimeString()}`} */}
                       </span>
                       <span
                         className={` flex gap-2 mb-1  ${
@@ -338,7 +375,7 @@ function Messages({ selectedUser }) {
                             : " ml-14"
                         }  text-sm`}
                       >
-                        <p className=" text-gray-700">{`${DateMsg.getFullYear()}/${DateMsg.getMonth()}/${DateMsg.getDay()}`}</p>
+                        <p className=" text-gray-700">{`${DateAll === TodayDate ? "Today," : DateAll === YesterdayDate  ? "Yesterday," : DateAll }`}</p>
                         <p className=" text-gray-900">
                           {DateMsg.toLocaleTimeString()}
                         </p>

@@ -1,11 +1,11 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Link, Link2, QrCode } from "lucide-react";
-import { toast } from "sonner"
-import {bgcolorOptions} from '@/app/data/data'
+import { Link, MessageCircleMore, QrCode } from "lucide-react";
+import { toast } from "sonner";
+import { bgcolorOptions } from "@/app/data/data";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,25 +16,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import QRCode from "qrcode.react";
 import download from "downloadjs";
 import { useUser } from "@clerk/nextjs";
 
-
 function UserDetailsPage() {
   const path = usePathname();
+  const router = useRouter();
   const [userDetails, setUserDetails] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const [Bgcolor, setbgcolor] = useState("");
-  const {user} = useUser()
+  const { user } = useUser();
 
   const CopyLinkProfil = () => {
     const urlToCopy = `http://localhost:3000/${userDetails.username}/${userDetails._id}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
       setCopied(true);
-      toast("Copied successfully")
+      toast("Copied successfully");
       setTimeout(() => setCopied(false), 2000);
     });
   };
@@ -61,72 +61,105 @@ function UserDetailsPage() {
     return (
       <div className="h-screen">
         <div className="max-w-lg mx-auto mt-20 bg-red-100 border border-red-400 rounded-lg p-4 shadow-lg">
-        <div className="flex items-center ">
-          <svg className="h-8 w-8 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          <p className="text-red-700 text-lg font-semibold">The link entered by the user does not work</p>
+          <div className="flex items-center ">
+            <svg
+              className="h-8 w-8 text-red-500 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+            <p className="text-red-700 text-lg font-semibold">
+              The link entered by the user does not work
+            </p>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
   const DownloadQRCode = () => {
     const qrCodeDataURL = document
-      .getElementById('qrcode')
-      .toDataURL('image/png');
-    download(qrCodeDataURL, `${user.fullName}.png`, 'image/png');
-};
+      .getElementById("qrcode")
+      .toDataURL("image/png");
+    download(qrCodeDataURL, `${user.fullName}.png`, "image/png");
+  };
 
-
-const ShareQRCode = () => {
+  const ShareQRCode = () => {
     const canvas = document.getElementById("qrcode");
-    const tempCanvas = document.createElement('canvas');
-    const context = tempCanvas.getContext('2d');
+    const tempCanvas = document.createElement("canvas");
+    const context = tempCanvas.getContext("2d");
 
     tempCanvas.width = canvas.width + 40;
     tempCanvas.height = canvas.height + 40;
-    
-    context.fillStyle = 'white';
+
+    context.fillStyle = "white";
     context.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
 
     context.drawImage(canvas, 20, 20);
 
-    tempCanvas.toBlob((blob) => {
-      const file = new File([blob], "qrcode.png", { type: "image/png" });
+    tempCanvas.toBlob(
+      (blob) => {
+        const file = new File([blob], "qrcode.png", { type: "image/png" });
 
-      if (navigator.share) {
-        navigator.share({
-          title: `${userDetails.fullname}'s QR Code`,
-          files: [file],
-        })
-        .then(() => console.log("Successful share"))
-        .catch((error) => console.log("Error sharing", error));
-      } else {
-        alert("Share not supported on this browser");
-      }
-    }, "image/png", 1.0);
+        if (navigator.share) {
+          navigator
+            .share({
+              title: `${userDetails.fullname}'s QR Code`,
+              files: [file],
+            })
+            .then(() => console.log("Successful share"))
+            .catch((error) => console.log("Error sharing", error));
+        } else {
+          alert("Share not supported on this browser");
+        }
+      },
+      "image/png",
+      1.0
+    );
   };
   const ShareLink = () => {
     const url = `http://localhost:3000/${userDetails.username}/${userDetails._id}`;
-  
+
     if (navigator.share) {
-      navigator.share({
-        url: url,
-      })
-      .then(() => console.log("Successful share"))
-      .catch((error) => console.log("Error sharing", error));
+      navigator
+        .share({
+          url: url,
+        })
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.log("Error sharing", error));
     } else {
       alert("Share not supported on this browser");
     }
   };
 
   if (!userDetails) {
-    return <p className="flex justify-center h-screen items-start py-32 text-8xl">
-      <i className="fa fa-spinner fa-spin "></i>
-      </p>;
+    return (
+      <p className="flex justify-center h-screen items-start py-32 text-8xl">
+        <i className="fa fa-spinner fa-spin "></i>
+      </p>
+    );
   }
-
+  const datasocial = [
+    { id: 1, icon: '/Icons/wts.svg', alt: 'WhatsApp', link: userDetails.whatsapp },
+    { id: 8, icon: '/Icons/link.svg', alt: 'LinkedIn', link: userDetails.Linkedin },
+    { id: 9, icon: '/Icons/github.svg', alt: 'GitHub', link: userDetails.github },
+    { id: 11, icon: '/Icons/tele.svg', alt: 'Telegram', link: userDetails.Telegram },
+    { id: 2, icon: '/Icons/messenger.svg', alt: 'Messenger', link: userDetails.messenger },
+    { id: 6, icon: '/Icons/ins.svg', alt: 'Instagram', link: userDetails.instagram },
+    { id: 7, icon: '/Icons/twit.svg', alt: 'Twitter', link: userDetails.Twitter },
+    { id: 10, icon: '/Icons/yt.svg', alt: 'YouTube', link: userDetails.Youtube },
+    { id: 3, icon: '/Icons/reddit.svg', alt: 'Reddit', link: userDetails.reddit },
+    { id: 4, icon: '/Icons/twitch.svg', alt: 'Twitch', link: userDetails.twitch },
+    { id: 5, icon: '/Icons/fb.svg', alt: 'Facebook', link: userDetails.fb },
+    { id: 12, icon: '/Icons/snap.svg', alt: 'Snapchat', link: userDetails.snapchat },
+  ];
+  
 
   return (
     <div className={`container mx-auto py-4 ${userDetails.bgcolorp} h-screen`}>
@@ -144,45 +177,62 @@ const ShareQRCode = () => {
               <h2 className=" font-bold">{userDetails.fullname}</h2>
               <p className="text-gray-600">@{userDetails.username}</p>
               <p className="text-gray-600">{userDetails.phoneNumber}</p>
+              <p
+                onClick={() => {
+                  router.push(`/message/to/${path}`);
+                }}
+                className="absolute hover:text-blue-500 right-8 -mt-2 cursor-pointer hover:scale-105 duration-300"
+              >
+                <MessageCircleMore />
+              </p>
             </div>
           </div>
         </div>
         <button
-            onClick={CopyLinkProfil}
-            title="Copy link" className="rounded-full absolute right-2 top-0 m-4 hover:scale-110 flex justify-center hover:bg-gray-200 border h-10 w-10 p-2  duration-300"
-          >
-            {copied ? <p className="text-[14px]">Copied!</p> : <Link />} <br />
-          </button>
-          {/* Modal Qr and Link */}
-          <span className='flex gap-2 cursor-pointer hover:text-sky-700 hover:scale-110 duration-200 absolute right-8 top-[70px] '>
+          onClick={CopyLinkProfil}
+          title="Copy link"
+          className="rounded-full absolute right-2 top-0 m-4 hover:scale-110 flex justify-center hover:bg-gray-200 border h-10 w-10 p-2  duration-300"
+        >
+          {copied ? <p className="text-[14px]">Copied!</p> : <Link />} <br />
+        </button>
+        {/* Modal Qr and Link */}
+        <span className="flex gap-2 cursor-pointer hover:text-red-700 hover:scale-110 duration-200 absolute right-8 top-[64px] ">
           <AlertDialog>
             <AlertDialogTrigger>
-            <QrCode />
+              <QrCode />
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>QR Code Profile</AlertDialogTitle>
                 <AlertDialogDescription>
-                <div className='flex flex-col justify-center items-center '>
-                  <div className='border-2 rounded-md p-2'>
-                  <QRCode id="qrcode" value={`http://localhost:3000/${userDetails.username}/${userDetails._id}`} />
-                  </div>                                
-                 <div className="flex flex-row gap-3">
-                 <button className='p-2 bg-blue-300 rounded-md my-2 text-black font-medium' onClick={DownloadQRCode}>
-                  Download QrCode
-                  </button>
-                 <button
+                  <div className="flex flex-col justify-center items-center ">
+                    <div className="border-2 rounded-md p-2">
+                      <QRCode
+                        id="qrcode"
+                        value={`http://localhost:3000/${userDetails.username}/${userDetails._id}`}
+                      />
+                    </div>
+                    <div className="flex flex-row gap-3">
+                      <button
+                        className="p-2 bg-blue-300 rounded-md my-2 text-black font-medium"
+                        onClick={DownloadQRCode}
+                      >
+                        Download QrCode
+                      </button>
+                      <button
                         className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                         onClick={ShareQRCode}
-                      >Share Qrcode
-                 </button>
-                 <button
+                      >
+                        Share Qrcode
+                      </button>
+                      <button
                         className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                         onClick={ShareLink}
-                      >Share Link
-                 </button>
+                      >
+                        Share Link
+                      </button>
+                    </div>
                   </div>
-                </div>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -191,120 +241,60 @@ const ShareQRCode = () => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-         </span>
-             {/* Email */}
-          <div className="border-b border-gray-300 my-2"></div>
-             <div className="border-b border-gray-300 my-2">
-                 <h3 className="text-lg font-semibold mb-2">Email : <span className=' font-normal text-gray-600'>{userDetails.email}</span></h3>
-             </div>
-             {/* Social Media */}
+        </span>
+        {/* Email */}
+        <div className="border-b border-gray-300 my-2"></div>
+        <div className="border-b border-gray-300 my-2">
+          <h3 className="text-lg font-semibold mb-2">
+            Email :{" "}
+            <a
+              href={`mailto:${userDetails.email}`}
+              className=" font-normal text-gray-600 cursor-grabbing"
+            >
+              {userDetails.email}{" "}
+            </a>
+          </h3>
+        </div>
+        {/* Social Media */}
         <div>
-          <h3 className="text-lg font-semibold mb-2">Social Media </h3>
-          <ul className="flex space-x-4">
-            {userDetails.fb && (
-              <li>
-                <a href={userDetails.fb} target="_blank">
-                  <Image
-                    src={"/Icons/fb.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.fb}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.instagram && (
-              <li>
-                <a href={userDetails.instagram} target="_blank">
-                  <Image
-                    src={"/Icons/ins.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.instagram}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.Twitter && (
-              <li>
-                <a href={userDetails.Twitter} target="_blank">
-                  <Image
-                    src={"/Icons/twit.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.twitter}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.Linkedin && (
-              <li>
-                <a href={userDetails.Linkedin} target="_blank">
-                  <Image
-                    src={"/Icons/link.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.linkedin}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.github && (
-              <li>
-                <a href={userDetails.github} target="_blank">
-                  <Image
-                    src={"/Icons/github.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.github}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.Youtube && (
-              <li>
-                <a href={userDetails.Youtube} target="_blank">
-                  <Image
-                    src={"/Icons/yt.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.Youtube}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.Telegram && (
-              <li>
-                <a href={userDetails.Telegram} target="_blank">
-                  <Image
-                    src={"/Icons/tele.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.Telegram}
-                  />
-                </a>
-              </li>
-            )}
-            {userDetails.snapchat && (
-              <li>
-                <a href={userDetails.snapchat} target="_blank">
-                  <Image
-                    src={"/Icons/snap.svg"}
-                    width={40}
-                    height={40}
-                    alt={userDetails.snapchat}
-                  />
-                </a>
-              </li>
-            )}
-          </ul>
+          <h3 className="text-lg font-semibold mb-2 hidden">Social Media </h3>
+          <ul className="grid grid-cols-8 gap-2">
+           {datasocial.map((social) => (
+             social.link && (
+               <li key={social.id}>
+                 <a href={social.link} target="_blank" rel="noopener noreferrer">
+                   <Image
+                     src={social.icon}
+                     width={40}
+                     height={40}
+                     alt={social.alt}
+                   />
+                 </a>
+               </li>
+             )
+           ))}
+         </ul>
         </div>
         {/* BIO */}
         <div className="border-b border-gray-300 my-2"></div>
         <div>
-          <h3 className="text-lg font-semibold mb-2">Bio</h3>
+          <h3 className="text-lg font-semibold mb-2">Profile</h3>
           <p className="text-gray-700 overflow-y-auto  md:max-h-[120px] whitespace-pre-wrap">
             {userDetails.bio}
+          </p>
+        </div>
+        <div className="border-b border-gray-300 my-2"></div>
+        <div className={`${userDetails.education === "hidden" && ""}`}>
+          <h3 className="text-lg font-semibold mb-2">Education</h3>
+          <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+            {userDetails.education}
+          </p>
+        </div>
+        <div className="border-b border-gray-300 my-2"></div>
+        <div className={`${userDetails.skills === "hidden" && ""}`}>
+          <h3 className="text-lg font-semibold mb-2">Skills</h3>
+          <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+            {userDetails.skills}
           </p>
         </div>
         {/* <div>

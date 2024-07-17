@@ -187,7 +187,7 @@ function UserProfile({ params }) {
   },[]);
   
   return (
-    <div>
+    <div className="md:h-auto h-[860px]">
       {/* Message window on the right */}
       <div className={` flex flex-col justify-between md:w-auto w-screen`}>
         <div className="flex-1 p-2 ">
@@ -228,7 +228,7 @@ function UserProfile({ params }) {
           </h2>
           {/* Messages */}
           <div
-            className="bg-white p-4 rounded-lg shadow-lg h-[350px] scrollbar-none
+            className="bg-white p-4 rounded-lg shadow-lg h-[600px] md:h-[350px] scrollbar-none
                overflow-y-auto"
             ref={messagesEndRef}
           >

@@ -22,6 +22,10 @@ const CreateProfile = () => {
         urlimage: user?.imageUrl || '',
         bio: '',
         fb: '',
+        whatsapp:'',
+        messenger:'',
+        reddit:'',
+        twitch:'',
         isOnline: false,
         instagram: '',
         snapchat: '',
@@ -30,7 +34,10 @@ const CreateProfile = () => {
         Twitter: '',
         Youtube: '',
         Telegram: '',
-        bgcolorp:''
+        bgcolorp:'',
+        education:'',
+        skills:'',
+        aboni: false
       };      
       const response = await axios.post(`${SERVER_URL}/users`, data);
       console.log("Response:", response.data);
