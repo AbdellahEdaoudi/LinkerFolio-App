@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MessageCircle, User } from "lucide-react";
 
-function UserListMobile({ selectedUser, setSelectedUser }) {
+function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) {
   const [userDetails, setUserDetails] = useState([]);
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
@@ -63,12 +63,6 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
 
   return (
     <div>
-      <div className="flex bg-gray-800 gap-1 px-5 py-1 ">
-        <span className="backdrop-blur-lg bg-white/40  text-white px-4 py-3 rounded-md w-1/2 flex justify-center">
-        <User className="  rounded-md" />
-        </span>
-        <span className=" px-4 py-3 rounded-md  w-1/2 flex justify-center"><MessageCircle /></span>
-      </div>
       <div className="bg-gray-800 w-screen text-white p-4 overflow-y-auto h-screen">
         {/* Search input */}
         <input
@@ -98,7 +92,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
           ) : (
             <div>
               {/* Users List */}
-              <div className="overflow-y-auto max-h-[420px]  scrollbar-none">
+              <div className="overflow-y-auto   scrollbar-none">
                 {userDetails
                   .filter(
                     (user) =>
@@ -135,23 +129,25 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                       }}
                       className={`${
                         searchQuery === "" ? "hidden" : ""
-                      } flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                      } flex items-center  pl-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
                         selectedUser && selectedUser.email === User.email
                           ? "bg-gray-700"
                           : ""
                       }`}
                     >
-                      <div className="relative w-12 h-12">
+                      <Link href={`/${User.username}/${User._id}`} className="relative w-12 h-12">
                         <Image
                           src={User.urlimage}
                           alt="Profile"
                           className="rounded-full"
                           layout="fill"
                         />
-                      </div>
+                      </Link>
                       <div className='flex flex-col'>
-                      <p className="text-lg">{User.fullname}</p>
-                      <p className="text-[10px] text-gray-500">{User.email}</p>
+                      <div  onClick={()=>{setCarousel(false)}} className="cursor-pointer p-4 hover:bg-gray-200">
+                        <p className="text-lg">{User.fullname}</p>
+                        <p className="text-[10px] text-gray-500">{User.email}</p>
+                      </div>
                       </div>
                     </div>
                   ))}
@@ -199,17 +195,17 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                             : ""
                         }`}
                       >
-                        <div className="relative w-12 h-12">
+                        <Link href={`/${User.username}/${User._id}`}  className="relative w-12 h-12">
                           <Image
                             src={User.urlimage}
                             alt="Profile"
                             className="rounded-full"
                             layout="fill"
                           />
-                        </div>
+                        </Link>
                         <div className="flex flex-col">
-                          <p className="text-lg">{User.fullname}</p>
-                          <p className="text-[10px] text-gray-500">
+                          <p onClick={()=>{setCarousel(false)}} className="text-lg">{User.fullname}</p>
+                          <p onClick={()=>{setCarousel(false)}} className="text-[10px] text-gray-500">
                             {User.email}
                           </p>
                         </div>

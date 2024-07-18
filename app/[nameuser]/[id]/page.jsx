@@ -3,9 +3,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Link, MessageCircleMore, QrCode } from "lucide-react";
+import { Link, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
 import { toast } from "sonner";
-import { bgcolorOptions } from "@/app/data/data";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,9 +28,11 @@ function UserDetailsPage() {
   const [copied, setCopied] = useState(false);
   const [Bgcolor, setbgcolor] = useState("");
   const { user } = useUser();
-
+  const CLIENT_URL = "http://localhost:3000";
+  const SERVER_URL = "http://localhost:9999";
+  
   const CopyLinkProfil = () => {
-    const urlToCopy = `http://localhost:3000/${userDetails.username}/${userDetails._id}`;
+    const urlToCopy = `${CLIENT_URL}/${userDetails.username}/${userDetails._id}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
       setCopied(true);
       toast("Copied successfully");
@@ -42,7 +43,7 @@ function UserDetailsPage() {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:9999/user${path}`);
+        const response = await axios.get(`${SERVER_URL}/user${path}`);
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -87,7 +88,7 @@ function UserDetailsPage() {
     const qrCodeDataURL = document
       .getElementById("qrcode")
       .toDataURL("image/png");
-    download(qrCodeDataURL, `${user.fullName}.png`, "image/png");
+    download(qrCodeDataURL, `${userDetails.username}-QrCode-Profile.png`, "image/png");
   };
 
   const ShareQRCode = () => {
@@ -124,7 +125,7 @@ function UserDetailsPage() {
     );
   };
   const ShareLink = () => {
-    const url = `http://localhost:3000/${userDetails.username}/${userDetails._id}`;
+    const url = `${CLIENT_URL}/${userDetails.username}/${userDetails._id}`;
 
     if (navigator.share) {
       navigator
@@ -161,9 +162,18 @@ function UserDetailsPage() {
   ];
   
 
+  const boldNumbers = (text) => {
+    if (!text) {
+      return [];
+    }
+    const parts = text.split(/(\d+|:)/);
+    return parts.map((part, index) =>
+      /\d+|:/.test(part) ? <span key={index} className="text-black font-bold">{part}</span> : part
+    );
+  };
   return (
-    <div className={`container mx-auto py-4 ${userDetails.bgcolorp} h-screen`}>
-      <div className="max-w-lg mx-auto relative bg-slate-50 p-6 rounded-lg border-2 shadow-lg">
+    <div className={` flex items-center justify-center md:h-auto  pt-4 pb-80 ${userDetails.bgcolorp}`}>
+      <div className="w-[640px] mx-4 relative  bg-slate-50 p-6 rounded-lg border-2 shadow-lg">
         <div className="flex justify-between ">
           <div className="flex items-center mb-4">
             <div className="mr-2 duration-500 md:mr-4">
@@ -174,14 +184,15 @@ function UserDetailsPage() {
               />
             </div>
             <div>
-              <h2 className=" font-bold">{userDetails.fullname}</h2>
-              <p className="text-gray-600">@{userDetails.username}</p>
-              <p className="text-gray-600">{userDetails.phoneNumber}</p>
+              <h2 className=" font-bold text-2xl">{userDetails.fullname}</h2>
+              <p className="text-gray-600"><span className="text-green-500">@</span> {userDetails.username}</p>
+              <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{userDetails.country}</p>
+              <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{userDetails.phoneNumber}</p>
               <p
                 onClick={() => {
                   router.push(`/message/to/${path}`);
                 }}
-                className="absolute hover:text-blue-500 right-8 -mt-2 cursor-pointer hover:scale-105 duration-300"
+                className="absolute hover:text-blue-500 right-8 -mt-5 cursor-pointer hover:scale-105 duration-300"
               >
                 <MessageCircleMore />
               </p>
@@ -242,6 +253,13 @@ function UserDetailsPage() {
             </AlertDialogContent>
           </AlertDialog>
         </span>
+        {/* BIO */}
+        <div>
+          <h3 className={`${userDetails.bio ? "" : "hidden"} text-lg font-semibold pt-1 mb-2`}>Profile</h3>
+          <p className="text-gray-700  whitespace-pre-wrap">
+            {userDetails.bio}
+          </p>
+        </div>
         {/* Email */}
         <div className="border-b border-gray-300 my-2"></div>
         <div className="border-b border-gray-300 my-2">
@@ -251,49 +269,44 @@ function UserDetailsPage() {
               href={`mailto:${userDetails.email}`}
               className=" font-normal text-gray-600 cursor-grabbing"
             >
-              {userDetails.email}{" "}
+              {userDetails.email}{""}
             </a>
           </h3>
         </div>
         {/* Social Media */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2 hidden">Social Media </h3>
-          <ul className="grid grid-cols-8 gap-2">
-           {datasocial.map((social) => (
-             social.link && (
-               <li key={social.id}>
-                 <a href={social.link} target="_blank" rel="noopener noreferrer">
-                   <Image
-                     src={social.icon}
-                     width={40}
-                     height={40}
-                     alt={social.alt}
-                   />
-                 </a>
-               </li>
-             )
-           ))}
-         </ul>
+        <div className="mb-4">
+          <h3 className="text-lg hidden font-semibold">Social Media:</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {datasocial
+              .filter((social) => social.link)
+              .map((social) => (
+                <a
+                  key={social.id}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 p-2 rounded-md transition duration-300"
+                >
+                  <Image src={social.icon} alt={social.alt} width={25} height={25} />
+                  <span>{social.alt}</span>
+                </a>
+              ))}
+          </div>
         </div>
-        {/* BIO */}
+        {/* Education */}
+        <div className={`${userDetails.education === "" && "hidden"}`}>
         <div className="border-b border-gray-300 my-2"></div>
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Profile</h3>
-          <p className="text-gray-700 overflow-y-auto  md:max-h-[120px] whitespace-pre-wrap">
-            {userDetails.bio}
-          </p>
-        </div>
-        <div className="border-b border-gray-300 my-2"></div>
-        <div className={`${userDetails.education === "hidden" && ""}`}>
           <h3 className="text-lg font-semibold mb-2">Education</h3>
-          <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
-            {userDetails.education}
+          {/* overflow-y-auto md:max-h-[120px] */}
+          <p className="text-gray-700  whitespace-pre-wrap">
+            {boldNumbers(userDetails.education)}
           </p>
         </div>
+        {/* skills */}
+        <div className={`${userDetails.skills === "" && "hidden"}`}>
         <div className="border-b border-gray-300 my-2"></div>
-        <div className={`${userDetails.skills === "hidden" && ""}`}>
           <h3 className="text-lg font-semibold mb-2">Skills</h3>
-          <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+          <p className="text-gray-700  whitespace-pre-wrap">
             {userDetails.skills}
           </p>
         </div>

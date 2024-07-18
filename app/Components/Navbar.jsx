@@ -21,9 +21,13 @@ function Navbar() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState([]);
+  const CLIENT_URL = "http://localhost:3000";
+  const SERVER_URL = "http://localhost:9999";
+
+
 
   useEffect(() => {
-    axios.get(`http://localhost:9999/users`)
+    axios.get(`${SERVER_URL}/users`)
       .then((res) => {
         setUserDetails(res.data);
         setLoading(false);
@@ -68,9 +72,9 @@ function Navbar() {
                         onClick={() => {
                           router.push(`/${userr.username}/${userr._id}`);
                         }}
-                        className="font-medium hidden md:block text-black cursor-pointer hover:scale-105 transition duration-300"
+                        className="font-medium hidden  md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                       >
-                        {userr.fullName}
+                        {userr.fullname}
                       </span>
                       <span
                         onClick={() => {

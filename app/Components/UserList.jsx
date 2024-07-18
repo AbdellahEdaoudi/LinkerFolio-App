@@ -17,6 +17,8 @@ function UserList({selectedUser,setSelectedUser}) {
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
   const SERVER_URL = 'http://localhost:9999';
+  const CLIENT_URL = "http://localhost:3000";
+
   const filteredMessages = messages.filter(msg => msg.from === userEmail && msg.to === userEmail);
 
   

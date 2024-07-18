@@ -26,10 +26,13 @@ function ProfilePage() {
   const [userDetails, setUserDetails] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const SERVER_URL = "http://localhost:9999";
+  const CLIENT_URL = "http://localhost:3000"
+
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/users`)
+      .get(`${SERVER_URL}/users`)
       .then((res) => {
         setUserDetails(res.data);
         setLoading(false);
@@ -40,11 +43,6 @@ function ProfilePage() {
       });
   }, []);
 
-  // if(!user){
-  //     return  <div className="flex justify-center py-20">
-  //     <SignIn />
-  // </div>
-  // }
 
   const DownloadQRCode = () => {
     const qrCodeDataURL = document
@@ -107,17 +105,25 @@ function ProfilePage() {
     { key: "Youtube", src: "/Icons/yt.svg", alt: "YouTube" },
     { key: "snapchat", src: "/Icons/snap.svg", alt: "Snapchat" }
   ];
-  
+  const boldNumbers = (text) => {
+    if (!text) {
+      return [];
+    }
+    const parts = text.split(/(\d+|:)/);
+    return parts.map((part, index) =>
+      /\d+|:/.test(part) ? <span key={index} className="text-black font-bold">{part}</span> : part
+    );
+  };
 
   return (
     <div>
       {userDetails
         .filter((fl) => fl.fullname === user?.fullName)
         .map((user, i) => (
-          <div className={`container mx-auto h-screen ${user.bgcolorp} py-4`}>
+          <div className={`flex items-center  justify-center pt-4 pb-80 ${user.bgcolorp}  `}>
             <div
               key={i}
-              className={`max-w-lg mx-auto relative bg-slate-100  p-6 rounded-lg border-2 shadow-lg`}
+              className={`w-[640px] mx-4 relative bg-slate-100  p-6 rounded-lg border-2 shadow-lg`}
             >
               <div className="flex justify-between">
                 <div className="flex items-center mb-4">
@@ -131,6 +137,7 @@ function ProfilePage() {
                   <div>
                     <h2 className="font-bold">{user.fullname}</h2>
                     <p className="text-gray-600">@{user.username}</p>
+                    <p className="text-gray-600">{user.country}</p>
                     <p className="text-gray-600">{user.phoneNumber}</p>
                   </div>
                 </div>
@@ -223,7 +230,7 @@ function ProfilePage() {
                         <button
                           className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                           onClick={() => {
-                            const urlToCopy = `http://localhost:3000/${user.username}/${user._id}`;
+                            const urlToCopy = `${CLIENT_URL}/${user.username}/${user._id}`;
                             navigator.clipboard
                               .writeText(urlToCopy)
                               .then(() => {
@@ -255,7 +262,7 @@ function ProfilePage() {
               </div>
               <div>
                 {/* <h3 className="text-lg font-semibold mb-2">Social Media</h3> */}
-                <ul className="grid grid-cols-8 gap-2">
+                <ul className="grid sm:grid-cols-11 duration-500 md:grid-cols-11 grid-cols-8 gap-2">
                 {datasocial.map((item, index) => (
                   user[item.key] && (
                     <li key={index}>
@@ -287,7 +294,7 @@ function ProfilePage() {
                 <div className="border-b border-gray-300 my-2"></div>
                 <h3 className="text-lg font-semibold mb-2">Education</h3>
                 <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
-                  {user.education}
+                  {boldNumbers(user.education)}
                 </p>
               </div>
               <div className="border-b border-gray-300 my-2"></div>

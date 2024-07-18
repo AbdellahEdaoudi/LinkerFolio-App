@@ -5,9 +5,9 @@ import { useUser } from "@clerk/clerk-react";
 const CreateProfile = () => {
   const { user } = useUser();
   const [username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const SERVER_URL = "http://localhost:9999";
 
@@ -19,6 +19,7 @@ const CreateProfile = () => {
         email: user?.emailAddresses[0]?.emailAddress || '',
         username: username,
         phoneNumber: "+000000000000",
+        country: '',
         urlimage: user?.imageUrl || '',
         bio: '',
         fb: '',
@@ -45,10 +46,16 @@ const CreateProfile = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error posting user data:", error);
+      if (error.response && error.response.status === 400 && error.response.data.error === 'Username already exists') {
+        setErrorMessage('Username already exists');
+      } else {
+        setErrorMessage('An error occurred while creating your profile. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
   if (!user?.imageUrl) {
     return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
     <i className="fa fa-spinner fa-spin "></i>
@@ -108,6 +115,8 @@ const CreateProfile = () => {
               <>Create Profile</>
             )}
           </button>
+          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
       </div>
     </div>

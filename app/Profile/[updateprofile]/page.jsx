@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { bgcolorOptions } from "@/app/data/data";
 import { useToast } from "@/components/ui/use-toast";
+import { bgcolorOptions } from "@/app/data/bgcolorOptions";
 function NameUser({ params }) {
   const { user } = useUser();
   const [loading, setLoading] = useState(true); // Initialize loading state
@@ -25,6 +25,7 @@ function NameUser({ params }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [country, setCountry] = useState("");
   const [urlimage, setUrlimage] = useState("");
   const [Imageprofil, setImageprofil] = useState(null);
   const [bio, setBio] = useState("");
@@ -44,6 +45,8 @@ function NameUser({ params }) {
   const [skills, setSkills] = useState("");
   const [education, setEducation] = useState("");
   const [id, setid] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const SERVER_URL = "http://localhost:9999";
   const datasocial = [
     { iconSrc: "/Icons/wts.svg", alt: "WhatsApp Logo", state: whatsapp, setState: setWhatsapp, placeholder: "WhatsApp Link" },
     { iconSrc: "/Icons/messenger.svg", alt: "Messenger Logo", state: messenger, setState: setMessenger, placeholder: "Messenger Link" },
@@ -61,12 +64,13 @@ function NameUser({ params }) {
   // Get Detail User
   useEffect(() => {
     axios
-      .get(`http://localhost:9999/users/${params.updateprofile}`)
+      .get(`${SERVER_URL}/users/${params.updateprofile}`)
       .then((res) => {
         const data = res.data;
         setid(data._id);
         setFullname(data.fullname);
         setbgcolorp(data.bgcolorp);
+        setCountry(data.country)
         setEmail(data.email);
         setUsername(data.username);
         setPhoneNumber(data.phoneNumber);
@@ -91,7 +95,7 @@ function NameUser({ params }) {
       .finally(() => setLoading(false));
   }, [params.updateprofile]);
 
-
+  
   const updateProfile = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -103,6 +107,7 @@ function NameUser({ params }) {
     formData.append('email', email);
     formData.append('username', username);
     formData.append('phoneNumber', phoneNumber);
+    formData.append('country', country);
     formData.append('bio', bio);
     formData.append('fb', fb);
     formData.append('whatsapp', whatsapp);
@@ -129,18 +134,25 @@ function NameUser({ params }) {
     }
     try {
       const response = await axios.put(
-        `http://localhost:9999/users/${params.updateprofile}`,formData);
+        `${SERVER_URL}/users/${params.updateprofile}`, formData
+      );
       toast({
-        description: "updated successfully.",
+        description: "Profile updated successfully.",
       });
       router.push("/Profile");
       console.log("User details updated successfully", response.data);
     } catch (error) {
       console.error("Error updating user details:", error);
+      if (error.response && error.response.status === 400 && error.response.data.error === 'Username already exists') {
+        setErrorMessage('Username already exists');
+      } else {
+        setErrorMessage('An error occurred while updating your profile. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
+  
   const ImageProfileUpCloudinary = (e) => {
     if (e.target && e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
@@ -154,10 +166,10 @@ function NameUser({ params }) {
   
   
   return (
-    <div className={`${bgcolorp} container mx-auto py-3 duration-300 `}>
+    <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300 `}>
       {email === user?.emailAddresses[0]?.emailAddress ? (
         <form onSubmit={updateProfile}>
-          <div className="max-w-lg pb-14 mx-auto bg-white p-6 rounded-lg border-2 shadow-lg">
+          <div className=" mx-4  pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
             <div className="md:flex md:flex-row  duration-500 items-start md:justify-between mb-4 flex flex-col ">
             <div className="md:mr-4 relative md:flex md:flex-col  flex flex-col items-center w-full mb-1 justify-center duration-300">
             <img
@@ -194,6 +206,18 @@ function NameUser({ params }) {
                     </td>
                   </tr>
                   <tr>
+                    <td>Country :</td>
+                    <td>
+                      <input
+                        type="text"
+                        name="country"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Phone :</td>
                     <td>
                       <input
@@ -205,13 +229,14 @@ function NameUser({ params }) {
                       />
                     </td>
                   </tr>
+                  
                 </table>
               </div>
             </div>
             <div className="border-b border-gray-300 my-4"></div>
             <div>
               <h3 className="text-lg font-semibold mb-2">Social Media</h3>
-              <div className="grid grid-cols-8 gap-2">
+              <div className="grid sm:grid-cols-11 duration-500 md:grid-cols-11 grid-cols-8 gap-2">
                 {datasocial.map((item, index) => (
                   <AlertDialog key={index}>
                     <AlertDialogTrigger>
@@ -337,6 +362,17 @@ function NameUser({ params }) {
                 <>Update</>
               )}
             </button>
+          {errorMessage && 
+          <div>
+            <span  style={{ color: 'red' }}>{errorMessage}</span>
+            <input
+                        type="text"
+                        name="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="text-gray-600 bg-white rounded-lg border-2  mb-2 px-3 py-1"
+                      />
+            </div>}
           </div>
         </form>
       ) : (

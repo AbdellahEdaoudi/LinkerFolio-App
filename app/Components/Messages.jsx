@@ -55,7 +55,7 @@ function Messages({ selectedUser }) {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages,selectedUser]);
 
   useEffect(() => {
     getMessages();
@@ -183,14 +183,6 @@ function Messages({ selectedUser }) {
   }
   return (
     <div>
-      <div className="flex md:hidden  gap-1 px-5 py-1 ">
-        <span className=" px-4 py-3 rounded-md w-1/2 flex justify-center">
-          <User className="  rounded-md" />
-        </span>
-        <span className="backdrop-blur-lg bg-white/40  text-white px-4 py-3 rounded-md  w-1/2 flex justify-center">
-          <MessageCircle />
-        </span>
-      </div>
       {/* Message window on the right */}
       <div className={` flex flex-col justify-between md:w-auto w-screen`}>
         <div className="flex-1 p-2 ">

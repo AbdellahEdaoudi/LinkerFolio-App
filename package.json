@@ -35,6 +35,7 @@
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "react-input-emoji": "^5.9.0",
+    "react-swipeable": "^7.0.1",
     "save-svg-as-png": "^1.4.17",
     "socket.io-client": "^4.7.5",
     "sonner": "^1.5.0",
