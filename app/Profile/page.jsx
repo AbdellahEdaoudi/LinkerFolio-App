@@ -120,15 +120,15 @@ function ProfilePage() {
       {userDetails
         .filter((fl) => fl.fullname === user?.fullName)
         .map((user, i) => (
-          <div className={`flex items-center  justify-center pt-4 pb-80 ${user.bgcolorp}  `}>
+          <div key={i} className={`flex items-center  justify-center pt-4 pb-80 ${user.bgcolorp}  `}>
             <div
-              key={i}
+              
               className={`w-[640px] mx-4 relative bg-slate-100  p-6 rounded-lg border-2 shadow-lg`}
             >
               <div className="flex justify-between">
                 <div className="flex items-center mb-4">
                   <div className="mr-3 md:mr-4 duration-500">
-                    <img
+                    <Image width={100} height={100}
                       src={user.urlimage}
                       alt="Profile Image"
                       className="rounded-full h-24 w-full object-cover"

@@ -172,10 +172,11 @@ function NameUser({ params }) {
           <div className=" mx-4  pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
             <div className="md:flex md:flex-row  duration-500 items-start md:justify-between mb-4 flex flex-col ">
             <div className="md:mr-4 relative md:flex md:flex-col  flex flex-col items-center w-full mb-1 justify-center duration-300">
-            <img
+            <Image
               src={Imageprofil ? Imageprofil : urlimage}
               alt="Profile Image"
               className="rounded-full  md:mb-0 duration-300 mb-1 w-36 object-cover"
+              width={100} height={100}
             />
             {/*  file input */}
              <label htmlFor="file-upload" className=" border text-center rounded-full mt-1 mb-2 border-gray-300 inline-block px-4 py-2 cursor-pointer">
@@ -380,7 +381,7 @@ function NameUser({ params }) {
         // <i className="fa fa-spinner fa-spin "></i>
         // </p>
         <div className="flex justify-center items-center h-[490px]">
-          <img
+          <Image width={24} height={24}
             src="/prfl.png"
             alt="prfl.png"
             className=" h-96 rounded-md object-cover"

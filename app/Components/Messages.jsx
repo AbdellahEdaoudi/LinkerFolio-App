@@ -313,9 +313,9 @@ function Messages({ selectedUser }) {
                           <Link
                             href={`/${filtUser?.username}/${filtUser?._id}`}
                           >
-                            <img
+                            <Image alt="Logo"
                               src={msg.fromimg}
-                              width={40}
+                              width={40} height={40}
                               className="hover:scale-105 duration-300 rounded-full"
                             />
                           </Link>

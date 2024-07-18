@@ -177,7 +177,7 @@ function UserDetailsPage() {
         <div className="flex justify-between ">
           <div className="flex items-center mb-4">
             <div className="mr-2 duration-500 md:mr-4">
-              <img
+              <Image width={100} height={100}
                 src={userDetails.urlimage}
                 alt="Profile Image"
                 className="rounded-full h-24  w-full object-cover"
@@ -279,9 +279,9 @@ function UserDetailsPage() {
           <div className="grid grid-cols-3 gap-2">
             {datasocial
               .filter((social) => social.link)
-              .map((social) => (
+              .map((social,i) => (
                 <a
-                  key={social.id}
+                  key={i}
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"

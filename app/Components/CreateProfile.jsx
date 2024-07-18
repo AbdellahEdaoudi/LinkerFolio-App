@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
+import Image from "next/image";
 
 const CreateProfile = () => {
   const { user } = useUser();
@@ -66,7 +67,7 @@ const CreateProfile = () => {
     <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 p-6">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
       <div className="flex items-center justify-around mb-6">
-              {user?.imageUrl ? <img
+              {user?.imageUrl ? <Image width={100} height={100}
                 src={user?.imageUrl}
                 className="rounded-full w-28 h-28 object-cover border-4 border-purple-500 shadow-lg"
                 alt="User profile"
