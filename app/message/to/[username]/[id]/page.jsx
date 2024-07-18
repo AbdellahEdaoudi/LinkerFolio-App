@@ -174,7 +174,7 @@ function UserProfile({ params }) {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:9999/user/${params.username}/${params.id}`);
+        const response = await axios.get(`${SERVER_URL}/user/${params.username}/${params.id}`);
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -184,7 +184,7 @@ function UserProfile({ params }) {
       }
     };
  fetchUserDetails();
-  },[]);
+  },[params.id,params.username]);
   
   return (
     <div className="md:h-auto h-[860px]">
@@ -271,16 +271,7 @@ function UserProfile({ params }) {
                   const DateMsg = new Date(msg.createdAt);
                   const filtUser = userDetails.find((fl) => fl.urlimage === msg.fromimg);
                   return (
-                    <div>
-                      <div
-                        key={i}
-                        className={`mb- ${
-                          (msg.from || msg.to) ===
-                          user.emailAddresses[0].emailAddress
-                            ? "float-righ "
-                            : " float-lef"
-                        }`}
-                      >
+                    <div key={i}>
                         <div
                           className={`${
                             (msg.from || msg.to) ===
@@ -291,9 +282,9 @@ function UserProfile({ params }) {
                         >
                           <Link href={`/${filtUser?.username}/${filtUser?._id}`}
                           >
-                            <img
+                            <Image
                               src={msg.fromimg}
-                              width={40}
+                              width={40} height={40} alt="LOGO"
                               className="hover:scale-105 duration-300 rounded-full"
                             />
                            </Link>
@@ -324,7 +315,6 @@ function UserProfile({ params }) {
                             <EllipsisVertical width={18} />
                           </p>
                         </div>
-                      </div>
                       <span
                         className={`
                           ${
