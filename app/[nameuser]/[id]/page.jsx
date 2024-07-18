@@ -53,7 +53,7 @@ function UserDetailsPage({params}) {
       }
     };
       fetchUserDetails();
-  }, [params.nameuser]);
+  }, [params.id, params.username]);
   if (error) {
     return (
       <div className="h-screen">
@@ -273,8 +273,7 @@ function UserDetailsPage({params}) {
         <div className="mb-4">
           <h3 className="text-lg hidden font-semibold">Social Media:</h3>
           <div className="grid grid-cols-3 gap-2">
-            {datasocial
-              .filter((social) => social.link)
+            {datasocial.filter((social) => social.link)
               .map((social,i) => (
                 <a
                   key={i}
