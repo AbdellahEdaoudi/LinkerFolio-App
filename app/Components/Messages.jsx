@@ -292,16 +292,7 @@ function Messages({ selectedUser }) {
                   const UpdateDate = `${yearu}/${monthu}/${dayu}`;
 
                   return (
-                    <div>
-                      <div
-                        key={i}
-                        className={`mb- ${
-                          (msg.from || msg.to) ===
-                          user.emailAddresses[0].emailAddress
-                            ? "float-righ "
-                            : " float-lef"
-                        }`}
-                      >
+                    <div key={i}>
                         <div
                           className={`${
                             (msg.from || msg.to) ===
@@ -346,7 +337,6 @@ function Messages({ selectedUser }) {
                             <EllipsisVertical width={18} />
                           </p>
                         </div>
-                      </div>
                       <span
                         className={`
                           ${

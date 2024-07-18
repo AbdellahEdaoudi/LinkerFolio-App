@@ -20,7 +20,7 @@ import QRCode from "qrcode.react";
 import download from "downloadjs";
 import { useUser } from "@clerk/nextjs";
 
-function UserDetailsPage() {
+function UserDetailsPage({params}) {
   const path = usePathname();
   const router = useRouter();
   const [userDetails, setUserDetails] = useState(null);
@@ -43,7 +43,7 @@ function UserDetailsPage() {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/user${path}`);
+        const response = await axios.get(`${SERVER_URL}/user/${params.nameuser}/${params.id}`);
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -52,12 +52,8 @@ function UserDetailsPage() {
         setError(error.message);
       }
     };
-
-    if (path) {
       fetchUserDetails();
-    }
-  }, [path]);
-
+  }, [params.nameuser]);
   if (error) {
     return (
       <div className="h-screen">
