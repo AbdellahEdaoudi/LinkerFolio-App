@@ -39,6 +39,8 @@ const CreateProfile = () => {
         bgcolorp:'',
         education:'',
         skills:'',
+        languages : '',
+        services:'',
         aboni: false
       };      
       const response = await axios.post(`${SERVER_URL}/users`, data);

@@ -108,7 +108,7 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                   )
                   .map((User, i) => (
                     <div
-                      // href={`/message/to/${User.username}/${User._id}`}
+                      // href={`/message/to/${User.username}`}
                       key={i}
                       onClick={() => {
                         setSelectedUser(User);
@@ -135,7 +135,7 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                           : ""
                       }`}
                     >
-                      <Link href={`/${User.username}/${User._id}`} className="relative w-12 h-12">
+                      <Link href={`/${User.username}`} className="relative w-12 h-12">
                         <Image
                           src={User.urlimage}
                           alt="Profile"
@@ -171,7 +171,7 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                         key={i}
                         onClick={() => {
                           setSelectedUser(User);
-                          // router.push(`/message/to/${selectedUser.username}/${selectedUser._id}`)
+                          // router.push(`/message/to/${selectedUser.username}`)
                           localStorage.setItem(
                             "SelectedUser",
                             JSON.stringify(User)
@@ -195,7 +195,7 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                             : ""
                         }`}
                       >
-                        <Link href={`/${User.username}/${User._id}`}  className="relative w-12 h-12">
+                        <Link href={`/${User.username}`}  className="relative w-12 h-12">
                           <Image
                             src={User.urlimage}
                             alt="Profile"

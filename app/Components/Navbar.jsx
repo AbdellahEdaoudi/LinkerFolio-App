@@ -70,7 +70,7 @@ function Navbar() {
                       <UserButton />
                       <span
                         onClick={() => {
-                          router.push(`/${userr.username}/${userr._id}`);
+                          router.push(`/${userr.username}`);
                         }}
                         className="font-medium hidden  md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                       >

@@ -191,7 +191,7 @@ function Messages({ selectedUser }) {
             {selectedUser ? (
               <div className="flex items-center justify-between gap-4">
                 <Link
-                  href={`/${selectedUser.username}/${selectedUser._id}`}
+                  href={`/${selectedUser.username}`}
                   className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
                 >
                   <Image
@@ -302,7 +302,7 @@ function Messages({ selectedUser }) {
                           }`}
                         >
                           <Link
-                            href={`/${filtUser?.username}/${filtUser?._id}`}
+                            href={`/${filtUser?.username}`}
                           >
                             <Image alt="Logo"
                               src={msg.fromimg}

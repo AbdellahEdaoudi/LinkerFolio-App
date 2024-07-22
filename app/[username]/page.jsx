@@ -32,7 +32,7 @@ function UserDetailsPage({params}) {
   const SERVER_URL = "http://localhost:9999";
   
   const CopyLinkProfil = () => {
-    const urlToCopy = `${CLIENT_URL}/${userDetails.username}/${userDetails._id}`;
+    const urlToCopy = `${CLIENT_URL}/${userDetails.username}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
       setCopied(true);
       toast("Copied successfully");
@@ -43,7 +43,7 @@ function UserDetailsPage({params}) {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/user/${params.nameuser}/${params.id}`);
+        const response = await axios.get(`${SERVER_URL}/user/${params.username}`);
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -53,7 +53,7 @@ function UserDetailsPage({params}) {
       }
     };
       fetchUserDetails();
-  }, [params.id, params.username]);
+  }, [params.username]);
   if (error) {
     return (
       <div className="h-screen">
@@ -120,8 +120,9 @@ function UserDetailsPage({params}) {
       1.0
     );
   };
+
   const ShareLink = () => {
-    const url = `${CLIENT_URL}/${userDetails.username}/${userDetails._id}`;
+    const url = `${CLIENT_URL}/${userDetails.username}`;
 
     if (navigator.share) {
       navigator
@@ -178,6 +179,7 @@ function UserDetailsPage({params}) {
                 alt="Profile Image"
                 className="rounded-full h-24  w-full object-cover"
               />
+             
             </div>
             <div>
               <h2 className=" font-bold text-2xl">{userDetails.fullname}</h2>
@@ -216,7 +218,7 @@ function UserDetailsPage({params}) {
                     <div className="border-2 rounded-md p-2">
                       <QRCode
                         id="qrcode"
-                        value={`http://localhost:3000/${userDetails.username}/${userDetails._id}`}
+                        value={`${CLIENT_URL}/${userDetails.username}`}
                       />
                     </div>
                     <div className="flex flex-row gap-3">
@@ -249,7 +251,8 @@ function UserDetailsPage({params}) {
             </AlertDialogContent>
           </AlertDialog>
         </span>
-        {/* BIO */}
+        <p className="font-medium ">Mern Stack Developer</p>
+        {/* Profile */}
         <div>
           <h3 className={`${userDetails.bio ? "" : "hidden"} text-lg font-semibold pt-1 mb-2`}>Profile</h3>
           <p className="text-gray-700  whitespace-pre-wrap">
@@ -272,7 +275,7 @@ function UserDetailsPage({params}) {
         {/* Social Media */}
         <div className="mb-4">
           <h3 className="text-lg hidden font-semibold">Social Media:</h3>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-3 duration-500  gap-2">
             {datasocial.filter((social) => social.link)
               .map((social,i) => (
                 <a
@@ -280,7 +283,7 @@ function UserDetailsPage({params}) {
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 p-2 rounded-md transition duration-300"
+                  className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition duration-300"
                 >
                   <Image src={social.icon} alt={social.alt} width={25} height={25} />
                   <span>{social.alt}</span>

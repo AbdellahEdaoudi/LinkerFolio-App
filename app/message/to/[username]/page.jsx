@@ -174,7 +174,7 @@ function UserProfile({ params }) {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/user/${params.username}/${params.id}`);
+        const response = await axios.get(`${SERVER_URL}/user/${params.username}`);
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -196,7 +196,7 @@ function UserProfile({ params }) {
             {userDname ? (
               <div className="flex items-center justify-between gap-4">
                 <Link
-                  href={`/${userDname.username}/${userDname._id}`}
+                  href={`/${userDname.username}`}
                   className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
                 >
                   <Image
@@ -280,7 +280,7 @@ function UserProfile({ params }) {
                               : "flex items-center  gap-2"
                           }`}
                         >
-                          <Link href={`/${filtUser?.username}/${filtUser?._id}`}
+                          <Link href={`/${filtUser?.username}`}
                           >
                             <Image
                               src={msg.fromimg}

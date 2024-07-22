@@ -3,7 +3,7 @@ import { SignIn, useUser } from "@clerk/nextjs";
 import QRCode from "qrcode.react";
 import download from "downloadjs";
 import axios from "axios";
-import { Link2, PenOff, QrCode } from "lucide-react";
+import { Link2, PenOff, Phone, Pin, QrCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -27,8 +27,7 @@ function ProfilePage() {
   const [isLoading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const SERVER_URL = "http://localhost:9999";
-  const CLIENT_URL = "http://localhost:3000"
-
+  const CLIENT_URL = "http://localhost:3000";
 
   useEffect(() => {
     axios
@@ -42,7 +41,6 @@ function ProfilePage() {
         setLoading(false);
       });
   }, []);
-
 
   const DownloadQRCode = () => {
     const qrCodeDataURL = document
@@ -103,7 +101,7 @@ function ProfilePage() {
     { key: "instagram", src: "/Icons/ins.svg", alt: "Instagram" },
     { key: "Twitter", src: "/Icons/twit.svg", alt: "Twitter" },
     { key: "Youtube", src: "/Icons/yt.svg", alt: "YouTube" },
-    { key: "snapchat", src: "/Icons/snap.svg", alt: "Snapchat" }
+    { key: "snapchat", src: "/Icons/snap.svg", alt: "Snapchat" },
   ];
   const boldNumbers = (text) => {
     if (!text) {
@@ -111,7 +109,13 @@ function ProfilePage() {
     }
     const parts = text.split(/(\d+|:)/);
     return parts.map((part, index) =>
-      /\d+|:/.test(part) ? <span key={index} className="text-black font-bold">{part}</span> : part
+      /\d+|:/.test(part) ? (
+        <span key={index} className="text-black font-bold">
+          {part}
+        </span>
+      ) : (
+        part
+      )
     );
   };
 
@@ -120,25 +124,29 @@ function ProfilePage() {
       {userDetails
         .filter((fl) => fl.fullname === user?.fullName)
         .map((user, i) => (
-          <div key={i} className={`flex items-center  justify-center pt-4 pb-80 ${user.bgcolorp}  `}>
+          <div
+            key={i}
+            className={`flex items-center  justify-center pt-4 pb-80 ${user.bgcolorp}  `}
+          >
             <div
-              
               className={`w-[640px] mx-4 relative bg-slate-100  p-6 rounded-lg border-2 shadow-lg`}
             >
               <div className="flex justify-between">
                 <div className="flex items-center mb-4">
                   <div className="mr-3 md:mr-4 duration-500">
-                    <Image width={100} height={100}
+                    <Image
+                      width={100}
+                      height={100}
                       src={user.urlimage}
                       alt="Profile Image"
                       className="rounded-full h-24 w-full object-cover"
                     />
                   </div>
                   <div>
-                    <h2 className="font-bold">{user.fullname}</h2>
-                    <p className="text-gray-600">@{user.username}</p>
-                    <p className="text-gray-600">{user.country}</p>
-                    <p className="text-gray-600">{user.phoneNumber}</p>
+                  <h2 className=" font-bold text-2xl">{user.fullname}</h2>
+                  <p className="text-gray-600"><span className="text-green-500">@</span> {user.username}</p>
+                  <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{user.country}</p>
+                  <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{user.phoneNumber}</p>
                   </div>
                 </div>
                 <Link
@@ -162,7 +170,7 @@ function ProfilePage() {
                           <div className="border-2 rounded-md p-2">
                             <QRCode
                               id="qrcode"
-                              value={`http://localhost:3000/${user.username}/${user._id}`}
+                              value={`${CLIENT_URL}/${user.username}`}
                             />
                           </div>
                           <div className="flex gap-3">
@@ -192,7 +200,7 @@ function ProfilePage() {
               {/* Link Profile */}
               <div
                 className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400 absolute right-7 top-[110px] "
-                href={`/${user.username}/${user._id}`}
+                href={`/${user.username}`}
               >
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
@@ -208,7 +216,7 @@ function ProfilePage() {
                           <button
                             className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                             onClick={() => {
-                              const url = `http://localhost:3000/${user.username}/${user._id}`;
+                              const url = `${CLIENT_URL}/${user.username}`;
 
                               if (navigator.share) {
                                 navigator
@@ -230,7 +238,7 @@ function ProfilePage() {
                         <button
                           className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                           onClick={() => {
-                            const urlToCopy = `${CLIENT_URL}/${user.username}/${user._id}`;
+                            const urlToCopy = `${CLIENT_URL}/${user.username}`;
                             navigator.clipboard
                               .writeText(urlToCopy)
                               .then(() => {
@@ -251,7 +259,21 @@ function ProfilePage() {
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
-              <div className="border-b border-gray-300 my-2"></div>
+              
+              <div className={`${user.bio === "" && "hidden"}`}>
+                <h3 className="text-lg font-semibold mb-2">Profile</h3>
+                <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+                  {user.bio}
+                </p>
+                <div className="border-b border-gray-300 my-2"></div>
+              </div>
+              <div className={`${user.services === "" && "hidden"}`}>
+                <h3 className="text-lg font-semibold mb-2">Services</h3>
+                <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+                  {user.services}
+                </p>
+                <div className="border-b border-gray-300 my-2"></div>
+              </div>
               <div className="border-b border-gray-300 my-2">
                 <h3 className="text-lg font-semibold mb-2">
                   Email:{" "}
@@ -262,34 +284,33 @@ function ProfilePage() {
               </div>
               <div>
                 {/* <h3 className="text-lg font-semibold mb-2">Social Media</h3> */}
-                <ul className="grid sm:grid-cols-11 duration-500 md:grid-cols-11 grid-cols-8 gap-2">
-                {datasocial.map((item, index) => (
-                  user[item.key] && (
-                    <li key={index}>
-                      <a
-                        href={user[item.key]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Image
-                          src={item.src}
-                          width={40}
-                          height={40}
-                          alt={item.alt}
-                        />
-                      </a>
-                    </li>
-                  )
-                ))}
-              </ul>
+                <ul className="grid grid-cols-3 gap-2">
+                  {datasocial.map(
+                    (item, i) =>
+                      user[item.key] && (
+                        <li key={i}>
+                          <a
+                           className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition duration-300"
+
+                            href={user[item.key]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Image
+                              src={item.src}
+                              width={25}
+                              height={25}
+                              alt={item.alt}
+                            />
+                            <span>{item.alt}</span>
+                          </a>
+                        </li>
+                      )
+                  )}
+                </ul>
               </div>
-              <div className={`${user.bio === "" && "hidden"}`}>
-                <div className="border-b border-gray-300 my-2"></div>
-                <h3 className="text-lg font-semibold mb-2">Profile</h3>
-                <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
-                  {user.bio}
-                </p>
-              </div>
+              
+              
               <div className={`${user.education === "" && "hidden"}`}>
                 <div className="border-b border-gray-300 my-2"></div>
                 <h3 className="text-lg font-semibold mb-2">Education</h3>
@@ -302,6 +323,13 @@ function ProfilePage() {
                 <h3 className="text-lg font-semibold mb-2">Skills</h3>
                 <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
                   {user.skills}
+                </p>
+              </div>
+              <div className="border-b border-gray-300 my-2"></div>
+              <div className={`${user.languages === "" && "hidden"}`}>
+                <h3 className="text-lg font-semibold mb-2">Languages</h3>
+                <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+                  {user.languages}
                 </p>
               </div>
             </div>

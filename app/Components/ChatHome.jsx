@@ -13,6 +13,7 @@ function ChatHome() {
   const [carousel, setCarousel] = useState(true);
   const { user } = useUser();
   const [userDetails, setUserDetails] = useState([]);
+  const [loading, setLoading] = useState(true);
   const SERVER_URL = "http://localhost:9999";
 
 
@@ -30,9 +31,11 @@ function ChatHome() {
       .get(`${SERVER_URL}/users`)
       .then((res) => {
         setUserDetails(res.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching user details:", error);
+        setLoading(false);
       });
   }, []);
 
@@ -55,10 +58,17 @@ function ChatHome() {
     preventDefaultTouchmoveEvent: true,
     delta: 10, // Adjust this value to control sensitivity
   });
+  
+  if (loading) {
+    return <p className="flex justify-center items-start h-screen duration-500  md:h-[515px] py-20 text-8xl">
+    <i className="fa fa-spinner fa-spin"></i>
+  </p>;
+  }
 
   if (!filt) {
     return <CreateProfile />;
   }
+  
 
   return (
     <div>
