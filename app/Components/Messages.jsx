@@ -195,13 +195,15 @@ function Messages({ selectedUser }) {
                   href={`/${selectedUser.username}`}
                   className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
                 >
-                  <Image
-                    src={selectedUser.urlimage}
-                    alt="Profile"
-                    className="rounded-full"
-                    width={48}
-                    height={48}
-                  />
+                  <div className="w-14 h-14 rounded-full overflow-hidden">
+                   <Image
+                     width={96}  // 24 * 4
+                     height={96} // 24 * 4
+                     src={selectedUser.urlimage}
+                     alt="Profile Image"
+                     className="object-cover"
+                   />
+                   </div>
                   <p className="font-bold">{selectedUser.fullname}</p>
                 </Link>
                 <p className="font-bold md:block hidden">
