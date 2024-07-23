@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Messages from "./Messages";
 import UserListMobile from "./UserListMobile";
 import UserList from "./UserList";
@@ -7,6 +7,7 @@ import CreateProfile from "./CreateProfile";
 import axios from "axios";
 import { MessageCircle, User } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
+import { MyContext } from "../Context/MyContext";
 
 function ChatHome() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -14,7 +15,7 @@ function ChatHome() {
   const { user } = useUser();
   const [userDetails, setUserDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const SERVER_URL = "http://localhost:9999";
+  const {SERVER_URL} = useContext(MyContext);
 
 
   // Retrieve selected user from localStorage

@@ -3,8 +3,9 @@
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Skeleton } from "@/components/ui/skeleton"
+import { MyContext } from '../Context/MyContext';
 
 
 function UserList({selectedUser,setSelectedUser}) {
@@ -16,10 +17,7 @@ function UserList({selectedUser,setSelectedUser}) {
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const SERVER_URL = 'http://localhost:9999';
-  const CLIENT_URL = "http://localhost:3000";
-
-  const filteredMessages = messages.filter(msg => msg.from === userEmail && msg.to === userEmail);
+  const {SERVER_URL} = useContext(MyContext);
 
   
   //  search input change

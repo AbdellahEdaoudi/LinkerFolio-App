@@ -11,9 +11,10 @@ import { LogOut, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
+import { MyContext } from "../Context/MyContext";
 
 function Navbar() {
   const { user } = useUser();
@@ -21,8 +22,7 @@ function Navbar() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState([]);
-  const CLIENT_URL = "http://localhost:3000";
-  const SERVER_URL = "http://localhost:9999";
+  const {SERVER_URL} = useContext(MyContext);
 
 
 

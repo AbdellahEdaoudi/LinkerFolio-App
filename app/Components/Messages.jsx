@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import Picker from "@emoji-mart/react";
 import io from "socket.io-client";
 import { EllipsisVertical, MessageCircle, User } from "lucide-react";
 import Linkify from "linkify-react";
+import { MyContext } from "../Context/MyContext";
 
 function Messages({ selectedUser }) {
   const { toast } = useToast();
@@ -30,9 +31,9 @@ function Messages({ selectedUser }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
-  const SERVER_URL = "http://localhost:9999";
   const EmailUser = user.emailAddresses[0].emailAddress
   const filtUser =userDetails.find((fl)=>fl.email === EmailUser)
+  const {SERVER_URL} = useContext(MyContext);
 
   useEffect(() => {
     if (selectedUser) {

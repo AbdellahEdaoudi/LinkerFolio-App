@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
+import { MyContext } from "../Context/MyContext";
 
 const CreateProfile = () => {
   const { user } = useUser();
@@ -9,8 +10,7 @@ const CreateProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
-
-  const SERVER_URL = "http://localhost:9999";
+  const {SERVER_URL} = useContext(MyContext);
 
   const postData = async () => {
     try {
@@ -32,6 +32,7 @@ const CreateProfile = () => {
         instagram: '',
         snapchat: '',
         Linkedin: '',
+        category:'',
         github: '',
         Twitter: '',
         Youtube: '',

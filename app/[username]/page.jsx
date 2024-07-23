@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { Link, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
@@ -19,6 +19,7 @@ import {
 import QRCode from "qrcode.react";
 import download from "downloadjs";
 import { useUser } from "@clerk/nextjs";
+import { MyContext } from "../Context/MyContext";
 
 function UserDetailsPage({params}) {
   const path = usePathname();
@@ -28,8 +29,7 @@ function UserDetailsPage({params}) {
   const [copied, setCopied] = useState(false);
   const [Bgcolor, setbgcolor] = useState("");
   const { user } = useUser();
-  const CLIENT_URL = "http://localhost:3000";
-  const SERVER_URL = "http://localhost:9999";
+  const {CLIENT_URL,SERVER_URL} = useContext(MyContext);
   
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${userDetails.username}`;
@@ -172,14 +172,17 @@ function UserDetailsPage({params}) {
     <div className={` flex items-center justify-center md:h-auto  pt-4 pb-80 ${userDetails.bgcolorp}`}>
       <div className="w-[640px] mx-4 relative  bg-slate-50 p-6 rounded-lg border-2 shadow-lg">
         <div className="flex justify-between ">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-2">
             <div className="mr-2 duration-500 md:mr-4">
-              <Image width={100} height={100}
+            <div className="w-24 h-24 rounded-full overflow-hidden">
+              <Image
+                width={96}  // 24 * 4
+                height={96} // 24 * 4
                 src={userDetails.urlimage}
                 alt="Profile Image"
-                className="rounded-full h-24  w-full object-cover"
+                className="object-cover"
               />
-             
+            </div>  
             </div>
             <div>
               <h2 className=" font-bold text-2xl">{userDetails.fullname}</h2>
@@ -251,7 +254,7 @@ function UserDetailsPage({params}) {
             </AlertDialogContent>
           </AlertDialog>
         </span>
-        <p className="font-medium ">Mern Stack Developer</p>
+        <p className="font-medium ">{userDetails.category}</p>
         {/* Profile */}
         <div>
           <h3 className={`${userDetails.bio ? "" : "hidden"} text-lg font-semibold pt-1 mb-2`}>Profile</h3>

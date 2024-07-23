@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io from 'socket.io-client';
 import { EllipsisVertical } from "lucide-react";
+import { MyContext } from "@/app/Context/MyContext";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
@@ -30,7 +31,8 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
-  const SERVER_URL = 'http://localhost:9999';
+  const {SERVER_URL} = useContext(MyContext);
+
 
   //  get users
   useEffect(() => {

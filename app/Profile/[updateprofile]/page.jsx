@@ -1,7 +1,7 @@
 "use client";
 import { SignIn, useUser } from "@clerk/nextjs";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { bgcolorOptions } from "@/app/data/bgcolorOptions";
+import { MyContext } from "@/app/Context/MyContext";
 function NameUser({ params }) {
   const { user } = useUser();
   const [loading, setLoading] = useState(true); // Initialize loading state
@@ -45,11 +46,13 @@ function NameUser({ params }) {
   const [skills, setSkills] = useState("");
   const [services, setServices] = useState("");
   const [languages,setLanguages] = useState("");
+  const [category,setCategory] = useState("");
   const [education, setEducation] = useState("");
   const [id, setid] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const EmailUser = user?.emailAddresses[0]?.emailAddress ;
-  const SERVER_URL = "http://localhost:9999";
+  const {SERVER_URL} = useContext(MyContext);
+  
   const datasocial = [
     { iconSrc: "/Icons/wts.svg", alt: "WhatsApp", state: whatsapp, setState: setWhatsapp, placeholder: "WhatsApp Link" },
     { iconSrc: "/Icons/link.svg", alt: "LinkedIn", state: Linkedin, setState: setLinkedin, placeholder: "LinkedIn Link" },
@@ -79,6 +82,7 @@ function NameUser({ params }) {
         setPhoneNumber(data.phoneNumber);
         setUrlimage(data.urlimage);
         setBio(data.bio);
+        setCategory(data.category);
         setFb(data.fb);
         setWhatsapp(data.whatsapp);
         setMessenger(data.messenger);
@@ -127,6 +131,7 @@ function NameUser({ params }) {
     formData.append('Telegram', Telegram);
     formData.append('skills', skills);
     formData.append('education', education);
+    formData.append('category', category);
     formData.append('languages', languages);
     formData.append('services', services);
     formData.append('aboni', false);
@@ -249,6 +254,19 @@ function NameUser({ params }) {
                         name="phoneNumber"
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Category :</td>
+                    <td>
+                      <input
+                        type="text"
+                        name="category"
+                        placeholder="Developer"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
                         className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
                       />
                     </td>

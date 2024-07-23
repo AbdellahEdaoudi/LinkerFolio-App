@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "./Components/Navbar";
 import { Toaster } from "@/components/ui/sonner"
+import { MyProvider } from "./Context/MyContext";
 
 const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
@@ -20,10 +21,12 @@ export default function RootLayout({ children }) {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       </head>
         <body className={`${prompt.className} scrollbar-none bg-gradient-to-r from-blue-500 to-purple-500`}>
-          <div className="sticky top-0 z-50">
+        <MyProvider>
+        <div className="sticky top-0 z-50">
           <Navbar />
           </div>
-          {children}
+            {children}
+        </MyProvider>
           <Toaster />
         </body>
       </html>

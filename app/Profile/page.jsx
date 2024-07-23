@@ -6,7 +6,7 @@ import axios from "axios";
 import { Link2, PenOff, Phone, Pin, QrCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,14 +20,15 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@chakra-ui/react";
 import { toast } from "sonner";
+import { MyContext } from "../Context/MyContext";
 
 function ProfilePage() {
   const { user } = useUser();
   const [userDetails, setUserDetails] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const SERVER_URL = "http://localhost:9999";
-  const CLIENT_URL = "http://localhost:3000";
+  const {CLIENT_URL,SERVER_URL} = useContext(MyContext);
+
 
   useEffect(() => {
     axios
@@ -132,15 +133,17 @@ function ProfilePage() {
               className={`w-[640px] mx-4 relative bg-slate-100  p-6 rounded-lg border-2 shadow-lg`}
             >
               <div className="flex justify-between">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center mb-2">
                   <div className="mr-3 md:mr-4 duration-500">
-                    <Image
-                      width={100}
-                      height={100}
-                      src={user.urlimage}
-                      alt="Profile Image"
-                      className="rounded-full h-24 w-full object-cover"
-                    />
+                  <div className="w-24 h-24 rounded-full overflow-hidden">
+                   <Image
+                     width={96}  // 24 * 4
+                     height={96} // 24 * 4
+                     src={user.urlimage}
+                     alt="Profile Image"
+                     className="object-cover"
+                   />
+                   </div>
                   </div>
                   <div>
                   <h2 className=" font-bold text-2xl">{user.fullname}</h2>
@@ -259,7 +262,7 @@ function ProfilePage() {
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
-              
+              <p className="font-medium ">{user.category}</p>        
               <div className={`${user.bio === "" && "hidden"}`}>
                 <h3 className="text-lg font-semibold mb-2">Profile</h3>
                 <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
