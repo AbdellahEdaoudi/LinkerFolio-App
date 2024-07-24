@@ -100,7 +100,7 @@ const CreateProfile = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your username"
+              placeholder="Enter your username" required
             />
           </div>
           <button

@@ -44,6 +44,9 @@ function Navbar() {
     }, 0);
     return () => clearTimeout(timer); 
   }, []);
+  const filt = userDetails.find(
+    (fl) => fl.email === user?.emailAddresses[0].emailAddress
+  );
 
   return (
     <div>
@@ -107,26 +110,23 @@ function Navbar() {
       </nav>
       {/* SETTING */}
       <nav
-  onClick={() => {
-    setSetting(!setting);
-  }}
-  className={`overflow-hidden transition-all duration-500 text-white bg-gray-800 rounded-md w-60 right-2 container absolute flex flex-col  ${
-    setting ? " max-h-0" : "max-h-60 p-4"
-  }`}
->
-  <Link
-    href={"/Profile"}
-    onClick={() => {
-      setSetting(!setting);
-    }}
-    className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
-  >
-    Profile Details
-  </Link>
-  <SignOutButton  className="bg-red-500 py-2 border-b border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" />
+          onClick={() => {
+            setSetting(!setting);
+          }}
+          className={`overflow-hidden transition-all duration-500 text-white bg-gray-800 rounded-md w-60 right-2 container absolute flex flex-col  ${
+            setting ? " max-h-0" : "max-h-60 p-4"
+          }`}>
+              <Link
+                href={"/Profile"}
+                onClick={() => {
+                  setSetting(!setting);
+                }}
+                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+              >
+                Profile Details
+              </Link>
+              <SignOutButton  className="bg-red-500 py-2 border-b border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" />
       </nav>
-
-
     </div>
   );
 }

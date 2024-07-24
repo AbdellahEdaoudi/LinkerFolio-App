@@ -11,7 +11,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io from "socket.io-client";
-import { EllipsisVertical, MessageCircle, User } from "lucide-react";
+import { EllipsisVertical} from "lucide-react";
 import Linkify from "linkify-react";
 import { MyContext } from "../Context/MyContext";
 
@@ -195,7 +195,7 @@ function Messages({ selectedUser }) {
                   href={`/${selectedUser.username}`}
                   className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
                 >
-                  <div className="w-14 h-14 rounded-full overflow-hidden">
+                  <div className="w-12 h-12 rounded-full overflow-hidden">
                    <Image
                      width={96}  // 24 * 4
                      height={96} // 24 * 4

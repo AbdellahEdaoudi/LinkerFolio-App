@@ -9,7 +9,6 @@ import { MyContext } from '../Context/MyContext';
 
 
 function UserList({selectedUser,setSelectedUser}) {
-  const [userDetails, setUserDetails] = useState([]);
   const [userByEmail, setuserByEmail] = useState("");
   const {user} = useUser();
   const [messages, setMessages] = useState([]);
@@ -17,7 +16,7 @@ function UserList({selectedUser,setSelectedUser}) {
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const {SERVER_URL} = useContext(MyContext);
+  const {SERVER_URL,userDetails} = useContext(MyContext);
 
   
   //  search input change
@@ -37,16 +36,6 @@ function UserList({selectedUser,setSelectedUser}) {
     return () => clearTimeout(timeout);
   }, [messages]);
 
-  //  get users
-  useEffect(() => {
-    axios.get(`${SERVER_URL}/users`)
-      .then((res) => {
-        setUserDetails(res.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching user details:', error);
-      });
-  }, []);
 
   // Get users By Email
   useEffect(() => {

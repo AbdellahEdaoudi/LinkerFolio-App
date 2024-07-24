@@ -6,18 +6,16 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MessageCircle, User } from "lucide-react";
 import { MyContext } from "../Context/MyContext";
 
-function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) {
-  const [userDetails, setUserDetails] = useState([]);
+function UserListMobile({ selectedUser, setSelectedUser}) {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const {SERVER_URL} = useContext(MyContext);
+  const {SERVER_URL,userDetails} = useContext(MyContext);
   const router = useRouter()
 
   //  search input change
@@ -37,18 +35,7 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
     }, 1);
     return () => clearTimeout(timeout);
   }, [messages]);
-  //  get users
-  useEffect(() => {
-    axios
-      .get(`${SERVER_URL}/users`)
-      .then((res) => {
-        setUserDetails(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-      });
-  }, []);
-
+  
   // Get Messages
   useEffect(() => {
     const fetchData = async () => {
@@ -108,8 +95,8 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                         .includes(searchQuery.toLowerCase())
                   )
                   .map((User, i) => (
-                    <div
-                      // href={`/message/to/${User.username}`}
+                    <Link
+                      href={`/message/to/${User.username}`}
                       key={i}
                       onClick={() => {
                         setSelectedUser(User);
@@ -136,21 +123,21 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                           : ""
                       }`}
                     >
-                      <Link href={`/${User.username}`} className="relative w-12 h-12">
+                      <div onClick={()=>{router.push(`/${User.username}`)}} className="relative w-12 h-12">
                         <Image
                           src={User.urlimage}
                           alt="Profile"
                           className="rounded-full"
                           layout="fill"
                         />
-                      </Link>
+                      </div>
                       <div className='flex flex-col'>
-                      <div  onClick={()=>{setCarousel(false)}} className="cursor-pointer p-4 hover:bg-gray-200">
+                      <div  className="cursor-pointer p-4 hover:bg-gray-200">
                         <p className="text-lg">{User.fullname}</p>
                         <p className="text-[10px] text-gray-500">{User.email}</p>
                       </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 {/* User ilya message */}
                 {userEmail &&
@@ -172,7 +159,7 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                         key={i}
                         onClick={() => {
                           setSelectedUser(User);
-                          // router.push(`/message/to/${selectedUser.username}`)
+                          router.push(`/message/to/${selectedUser.username}`)
                           localStorage.setItem(
                             "SelectedUser",
                             JSON.stringify(User)
@@ -205,8 +192,8 @@ function UserListMobile({ selectedUser, setSelectedUser,setCarousel,carousel }) 
                           />
                         </Link>
                         <div className="flex flex-col">
-                          <p onClick={()=>{setCarousel(false)}} className="text-lg">{User.fullname}</p>
-                          <p onClick={()=>{setCarousel(false)}} className="text-[10px] text-gray-500">
+                          <p className="text-lg">{User.fullname}</p>
+                          <p className="text-[10px] text-gray-500">
                             {User.email}
                           </p>
                         </div>
