@@ -13,7 +13,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import axios from "axios";
 import { MyContext } from "../Context/MyContext";
 
 function Navbar() {
@@ -21,22 +20,10 @@ function Navbar() {
   const [setting, setSetting] = useState(true);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [userDetails, setUserDetails] = useState([]);
-  const {SERVER_URL} = useContext(MyContext);
+  const {userDetails} = useContext(MyContext);
+  // const {SERVER_URL} = useContext(MyContext);
 
 
-
-  useEffect(() => {
-    axios.get(`${SERVER_URL}/users`)
-      .then((res) => {
-        setUserDetails(res.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching user details:', error);
-        setLoading(false);
-      });
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {

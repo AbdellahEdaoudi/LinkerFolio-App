@@ -3,12 +3,13 @@ import Messages from "./Messages";
 import UserListMobile from "./UserListMobile";
 import UserList from "./UserList";
 import { useUser } from "@clerk/nextjs";
-import CreateProfile from "./CreateProfile";
 import { MyContext } from "../Context/MyContext";
+import { useRouter } from "next/navigation";
 
 function ChatHome() {
   const [selectedUser, setSelectedUser] = useState(null);
   const { user } = useUser();
+  const router = useRouter();
   const {userDetails} = useContext(MyContext);
 
 
@@ -25,7 +26,8 @@ function ChatHome() {
     (fl) => fl.email === user?.emailAddresses[0].emailAddress
   );
   if (!filt) {
-    return <CreateProfile />;
+    router.push("/CreateProfile");
+    return ;
   }
 
   

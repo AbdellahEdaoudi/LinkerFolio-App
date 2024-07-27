@@ -21,7 +21,7 @@ export const MyProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching user details:", error);
       });
-  }, []);
+  }, [SERVER_URL]);
 
   return (
     <MyContext.Provider value={{CLIENT_URL,SERVER_URL,userDetails}}>

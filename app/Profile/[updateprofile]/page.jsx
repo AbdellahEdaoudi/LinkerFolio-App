@@ -102,7 +102,7 @@ function NameUser({ params }) {
       })
       .catch((error) => console.error("Error fetching user details:", error))
       .finally(() => setLoading(false));
-  }, [params.updateprofile]);
+  }, [SERVER_URL,params.updateprofile]);
 
   
   const updateProfile = async (e) => {
@@ -174,12 +174,8 @@ function NameUser({ params }) {
       reader.readAsDataURL(file);
     }
   };
-  if (!user) {
-    return <p className="flex justify-center items-start h-screen duration-500  md:h-[515px] py-20 text-8xl">
-          <i className="fa fa-spinner fa-spin"></i>
-        </p>
-  }
-  if (!email || !EmailUser) {
+
+  if (!user || !email || !EmailUser) {
     return <p className="flex justify-center items-start h-screen duration-500  md:h-[515px] py-20 text-8xl">
           <i className="fa fa-spinner fa-spin"></i>
         </p>

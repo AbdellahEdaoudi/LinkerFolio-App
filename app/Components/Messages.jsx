@@ -19,7 +19,6 @@ function Messages({ selectedUser }) {
   const { toast } = useToast();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [userDetails, setUserDetails] = useState([]);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -34,23 +33,14 @@ function Messages({ selectedUser }) {
   const EmailUser = user.emailAddresses[0].emailAddress
   const filtUser =userDetails.find((fl)=>fl.email === EmailUser)
   const {SERVER_URL} = useContext(MyContext);
+  const {userDetails} = useContext(MyContext);
+
 
   useEffect(() => {
     if (selectedUser) {
       setputdelete(true)
     }
   }, [selectedUser]);
-  //  get users
-  useEffect(() => {
-    axios
-      .get(`${SERVER_URL}/users`)
-      .then((res) => {
-        setUserDetails(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-      });
-  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -84,7 +74,7 @@ function Messages({ selectedUser }) {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [SERVER_URL,getMessages]);
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
@@ -179,6 +169,7 @@ function Messages({ selectedUser }) {
       setLoadingu(false);
     }
   };
+  
   if (!selectedUser) {
     return <div></div>;
   }

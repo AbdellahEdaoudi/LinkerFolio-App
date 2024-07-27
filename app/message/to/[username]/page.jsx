@@ -19,7 +19,6 @@ function UserProfile({ params }) {
   const { toast } = useToast();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [userDetails, setUserDetails] = useState([]);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -31,19 +30,8 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
-  const {SERVER_URL} = useContext(MyContext);
+  const {SERVER_URL,userDetails} = useContext(MyContext);
 
-
-  //  get users
-  useEffect(() => {
-    axios.get(`${SERVER_URL}/users`)
-      .then((res) => {
-        setUserDetails(res.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching user details:', error);
-      });
-  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -77,7 +65,7 @@ function UserProfile({ params }) {
     return () => {
       socket.disconnect();
     };
-  }, []); 
+  }, [SERVER_URL]); 
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
@@ -186,7 +174,7 @@ function UserProfile({ params }) {
       }
     };
  fetchUserDetails();
-  },[params.id,params.username]);
+  },[SERVER_URL,params.id,params.username]);
   
   return (
     <div className="md:h-auto h-[860px]">

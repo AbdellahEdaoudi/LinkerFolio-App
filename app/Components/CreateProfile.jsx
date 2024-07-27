@@ -1,16 +1,20 @@
+"use client"
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
 import { MyContext } from "../Context/MyContext";
+import { useRouter } from "next/navigation";
 
 const CreateProfile = () => {
   const { user } = useUser();
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
-  const {SERVER_URL} = useContext(MyContext);
+  const EmailUser = user?.emailAddresses[0].emailAddress
+  const {SERVER_URL,userDetails} = useContext(MyContext);
 
   const postData = async () => {
     try {
@@ -64,6 +68,13 @@ const CreateProfile = () => {
     return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
     <i className="fa fa-spinner fa-spin "></i>
     </p> ;
+  }
+  const filt = userDetails.find(
+    (fl) => fl.email === EmailUser
+  );
+  if (filt) {
+    router.push("/");
+    return ;
   }
 
   return (

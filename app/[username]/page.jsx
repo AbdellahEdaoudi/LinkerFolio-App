@@ -27,8 +27,6 @@ function UserDetailsPage({params}) {
   const [userDetails, setUserDetails] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [Bgcolor, setbgcolor] = useState("");
-  const { user } = useUser();
   const {CLIENT_URL,SERVER_URL} = useContext(MyContext);
   
   const CopyLinkProfil = () => {
@@ -53,7 +51,8 @@ function UserDetailsPage({params}) {
       }
     };
       fetchUserDetails();
-  }, [params.username]);
+  }, [SERVER_URL,params.username]);
+
   if (error) {
     return (
       <div className="h-screen">

@@ -47,7 +47,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
       }
     };
     fetchData();
-  }, []);
+  }, [SERVER_URL]);
 
   return (
     <div>

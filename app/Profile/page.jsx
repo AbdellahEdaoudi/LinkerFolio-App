@@ -24,24 +24,11 @@ import { MyContext } from "../Context/MyContext";
 
 function ProfilePage() {
   const { user } = useUser();
-  const [userDetails, setUserDetails] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL} = useContext(MyContext);
+  const {CLIENT_URL,userDetails} = useContext(MyContext);
 
 
-  useEffect(() => {
-    axios
-      .get(`${SERVER_URL}/users`)
-      .then((res) => {
-        setUserDetails(res.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-        setLoading(false);
-      });
-  }, []);
 
   const DownloadQRCode = () => {
     const qrCodeDataURL = document
@@ -83,7 +70,7 @@ function ProfilePage() {
     );
   };
 
-  if (isLoading) {
+  if (!userDetails) {
     return (
       <p className="flex justify-center items-start h-screen py-32 text-8xl">
         <i className="fa fa-spinner fa-spin "></i>

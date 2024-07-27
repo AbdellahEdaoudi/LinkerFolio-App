@@ -20,7 +20,7 @@ export default function Chat() {
     fetchUsers();
 
     return () => newSocket.close();
-  }, []);
+  }, [fetchUsers]);
 
   useEffect(() => {
     if (socket) {

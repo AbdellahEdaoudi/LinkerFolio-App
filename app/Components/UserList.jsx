@@ -50,7 +50,7 @@ function UserList({selectedUser,setSelectedUser}) {
     if (userEmail) {
       getUserByEmail();
     }
-  }, [userEmail]);
+  }, [SERVER_URL,userEmail]);
 
   // Get Messages
   useEffect(() => {
@@ -63,7 +63,7 @@ function UserList({selectedUser,setSelectedUser}) {
       }
     };
     GetMessages();
-  },[]);
+  },[SERVER_URL]);
   
   
   return (
