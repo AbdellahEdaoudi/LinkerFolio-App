@@ -51,7 +51,7 @@ const CreateProfile = () => {
       const response = await axios.post(`${SERVER_URL}/users`, data);
       console.log("Response:", response.data);
       setSuccessMessage("Your profile has been created !");
-      window.location.reload();
+      router.push("/");
     } catch (error) {
       console.error("Error posting user data:", error);
       if (error.response && error.response.status === 400 && error.response.data.error === 'Username already exists') {
