@@ -17,10 +17,8 @@ export default function Chat() {
     newSocket.emit('auth', localStorage.getItem('token'));
     setSocket(newSocket);
 
-    fetchUsers();
-
     return () => newSocket.close();
-  }, [fetchUsers]);
+  }, []);
 
   useEffect(() => {
     if (socket) {
@@ -32,14 +30,18 @@ export default function Chat() {
     }
   }, [socket, selectedUser]);
 
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/users');
-      setUsers(res.data.filter(u => u._id !== user.id));
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/users');
+        setUsers(res.data.filter(u => u._id !== user.id));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const fetchMessages = async (userId) => {
     try {

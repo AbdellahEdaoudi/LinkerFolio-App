@@ -40,7 +40,6 @@ function UserProfile({ params }) {
   }, [messages]);
 
   useEffect(() => {
-    getMessages();
     const socket = io(SERVER_URL);
     setSocket(socket);
   
@@ -78,14 +77,19 @@ function UserProfile({ params }) {
     }
   };
 
-  const getMessages = async () => {
-    try {
-      const response = await axios.get(`${SERVER_URL}/messages`);
-      setMessages(response.data);
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  };
+  // Get Messages
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL}/messages`);
+        setMessages(response.data);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    getMessages();
+  }, [SERVER_URL]);
 
   const sendMessage = async () => {
     setLoading(true);

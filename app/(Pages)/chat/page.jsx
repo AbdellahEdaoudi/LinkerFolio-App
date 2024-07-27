@@ -3,7 +3,9 @@ import Chat from '../Chat'
 
 function page() {
   return (
-    <div><Chat /> </div>
+    <div>
+    T  {/* <Chat />  */}
+    </div>
   )
 }
 

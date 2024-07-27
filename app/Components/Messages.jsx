@@ -47,9 +47,21 @@ function Messages({ selectedUser }) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   }, [messages,selectedUser]);
+  // Get Messages
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL}/messages`);
+        setMessages(response.data);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    getMessages();
+  }, [SERVER_URL]);
 
   useEffect(() => {
-    getMessages();
     const socket = io(SERVER_URL);
     setSocket(socket);
 
@@ -74,7 +86,7 @@ function Messages({ selectedUser }) {
     return () => {
       socket.disconnect();
     };
-  }, [SERVER_URL,getMessages]);
+  }, [SERVER_URL]);
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
@@ -87,14 +99,6 @@ function Messages({ selectedUser }) {
     }
   };
 
-  const getMessages = async () => {
-    try {
-      const response = await axios.get(`${SERVER_URL}/messages`);
-      setMessages(response.data);
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  };
 
   const sendMessage = async () => {
     setLoading(true);
