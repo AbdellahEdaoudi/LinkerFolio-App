@@ -51,6 +51,7 @@ const CreateProfile = () => {
       const response = await axios.post(`${SERVER_URL}/users`, data);
       console.log("Response:", response.data);
       setSuccessMessage("Your profile has been created !");
+      window.location.reload();
     } catch (error) {
       console.error("Error posting user data:", error);
       if (error.response && error.response.status === 400 && error.response.data.error === 'Username already exists') {
@@ -122,8 +123,8 @@ const CreateProfile = () => {
               <>Create Profile</>
             )}
           </button>
-          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {/* {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} */}
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
       </div>
     </div>
