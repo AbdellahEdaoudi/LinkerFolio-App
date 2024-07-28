@@ -3,13 +3,12 @@ import Messages from "./Messages";
 import UserListMobile from "./UserListMobile";
 import UserList from "./UserList";
 import { useUser } from "@clerk/nextjs";
+import CreateProfile from "./CreateProfile";
 import { MyContext } from "../Context/MyContext";
-import { useRouter } from "next/navigation";
 
 function ChatHome() {
   const [selectedUser, setSelectedUser] = useState(null);
   const { user } = useUser();
-  const router = useRouter();
   const {userDetails} = useContext(MyContext);
 
 
@@ -22,23 +21,16 @@ function ChatHome() {
   }, []);
 
 
-  if (!user) {
-    return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
-    <i className="fa fa-spinner fa-spin "></i>
-    </p> ;
-  }
   const filt = userDetails.find(
     (fl) => fl.email === user?.emailAddresses[0].emailAddress
   );
-  if (!filt) {
-    router.push("/CreateProfile");
-    return ;
-  }
 
   
 
   return (
     <div>
+      {filt ?  
+      <div>
       {/* LAPTOP */}
       <div className="md:block hidden duration-500">
         <div className="flex flex-row overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-500">
@@ -71,6 +63,9 @@ function ChatHome() {
           </div>
         </div>
       </div>
+    </div>
+    : 
+    <CreateProfile />}
     </div>
   );
 }

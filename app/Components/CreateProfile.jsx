@@ -51,7 +51,6 @@ const CreateProfile = () => {
       const response = await axios.post(`${SERVER_URL}/users`, data);
       console.log("Response:", response.data);
       setSuccessMessage("Your profile has been created !");
-      router.push("/");
     } catch (error) {
       console.error("Error posting user data:", error);
       if (error.response && error.response.status === 400 && error.response.data.error === 'Username already exists') {
@@ -68,13 +67,6 @@ const CreateProfile = () => {
     return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
     <i className="fa fa-spinner fa-spin "></i>
     </p> ;
-  }
-  const filt = userDetails.find(
-    (fl) => fl.email === EmailUser
-  );
-  if (filt) {
-    router.push("/");
-    return ;
   }
 
   return (
