@@ -31,9 +31,9 @@ function Messages({ selectedUser }) {
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
   const EmailUser = user.emailAddresses[0].emailAddress
-  const filtUser =userDetails.find((fl)=>fl.email === EmailUser)
   const {SERVER_URL} = useContext(MyContext);
   const {userDetails} = useContext(MyContext);
+  const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
 
 
   useEffect(() => {
