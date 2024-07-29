@@ -173,7 +173,7 @@ function UserDetailsPage({params}) {
 
           <div className="flex md:flex-row md:w-auto md:mt-4 w-full flex-col items-center mb-2">
             <div className="mr-2 duration-500 md:mr-4">
-            <div className="w-24 h-24 rounded-full overflow-hidden">
+            <div className="w-24 mb-2 h-24 rounded-full overflow-hidden">
               <Image
                 width={96}  // 24 * 4
                 height={96} // 24 * 4

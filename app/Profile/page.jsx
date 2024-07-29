@@ -121,7 +121,7 @@ function ProfilePage() {
             >
                 <div className="flex md:flex-row md:w-auto md:mt-1 w-full flex-col items-center mb-2">
             <div className="mr-2 duration-500 md:mr-4">
-            <div className="w-24 h-24 rounded-full overflow-hidden">
+            <div className="w-24 h-24 mb-2 rounded-full overflow-hidden">
               <Image
                 width={96}  // 24 * 4
                 height={96} // 24 * 4
@@ -141,12 +141,12 @@ function ProfilePage() {
               {/* Link to Update */}
               <Link
                   href={`/Profile/${user._id}`}
-                  className="bg-green-400 hover:bg-green-500 hover:rounded-lg duration-300 p-2 h-10 rounded-md absolute right-7 top-6 "
+                  className="bg-green-400 hover:bg-green-500 hover:scale-105 duration-500 p-2  rounded-full absolute right-7 top-6 "
                 >
                   <PenOff />
                 </Link>
               {/* QrCode Profile */}
-              <span className="flex gap-2 cursor-pointer hover:text-sky-700 hover:scale-110 duration-200 absolute right-7 top-20  ">
+              <span className="flex gap-2 cursor-pointer hover:text-sky-700 hover:scale-110 duration-200 absolute right-7 top-[110px] ">
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <QrCode />
@@ -188,7 +188,7 @@ function ProfilePage() {
               </span>
               {/* Link Profile */}
               <div
-                className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400 absolute right-7 top-[110px] "
+                className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400 absolute right-7 top-20 "
                 href={`/${user.username}`}
               >
                 <AlertDialog>
