@@ -13,6 +13,7 @@ import Picker from "@emoji-mart/react";
 import io from 'socket.io-client';
 import { EllipsisVertical } from "lucide-react";
 import { MyContext } from "@/app/Context/MyContext";
+import Linkify from "linkify-react";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
@@ -263,7 +264,33 @@ function UserProfile({ params }) {
                 })
                 .map((msg, i) => {
                   const DateMsg = new Date(msg.createdAt);
-                  const filtUser = userDetails.find((fl) => fl.urlimage === msg.fromimg);
+                  const DateUpdMsg = new Date(msg.updatedAt);
+                  const DateToday = new Date();
+                  const filtUser = userDetails.find(
+                    (fl) => fl.email === msg.from
+                  );
+                  // Date Message
+                  const year = DateMsg.getFullYear();
+                  const month = String(DateMsg.getMonth() + 1).padStart(2, "0"); 
+                  const day = String(DateMsg.getDate()).padStart(2, "0");
+                  const DateAll = `${year}/${month}/${day}`;
+                  // Date Today
+                  const yeart = DateToday.getFullYear();
+                  const montht = String(DateToday.getMonth() + 1).padStart(2, "0"); 
+                  const dayt = String(DateToday.getDate()).padStart(2, "0");
+                  const TodayDate = `${yeart}/${montht}/${dayt}`;
+                  // Date Yesterday
+                  const yeary = DateToday.getFullYear();
+                  const monthy = String(DateToday.getMonth() + 1).padStart(2, "0"); 
+                  const dayy = String(DateToday.getDate() -1).padStart(2, "0");
+                  const YesterdayDate  = `${yeary}/${monthy}/${dayy}`;
+
+                  // UPDATED MESSAGE DATE
+                  const yearu = DateUpdMsg.getFullYear();
+                  const monthu = String(DateUpdMsg.getMonth() + 1).padStart(2, "0"); 
+                  const dayu = String(DateUpdMsg.getDate()).padStart(2, "0");
+                  const UpdateDate = `${yearu}/${monthu}/${dayu}`;
+
                   return (
                     <div key={i}>
                         <div
@@ -274,14 +301,15 @@ function UserProfile({ params }) {
                               : "flex items-center  gap-2"
                           }`}
                         >
-                          <Link href={`/${filtUser?.username}`}
+                          <Link
+                            href={`/${filtUser?.username}`}
                           >
-                            <Image
+                            <Image alt="Logo"
                               src={msg.fromimg}
-                              width={40} height={40} alt="LOGO"
+                              width={40} height={40}
                               className="hover:scale-105 duration-300 rounded-full"
                             />
-                           </Link>
+                          </Link>
                           <p
                             className={`whitespace-pre-wrap break-all  ${
                               (msg.from || msg.to) ===
@@ -290,7 +318,7 @@ function UserProfile({ params }) {
                                 : "bg-green-500"
                             } p-2  rounded-md`}
                           >
-                            {msg.message}
+                            <Linkify>{msg.message}</Linkify>
                           </p>
                           <p
                             onClick={() => {
@@ -319,6 +347,7 @@ function UserProfile({ params }) {
                           }`}
                       >
                         {msg.updated}
+                        {/* {msg.updated && `,${msg.updated && UpdateDate},${DateUpdMsg.toLocaleTimeString()}`} */}
                       </span>
                       <span
                         className={` flex gap-2 mb-1  ${
@@ -328,7 +357,7 @@ function UserProfile({ params }) {
                             : " ml-14"
                         }  text-sm`}
                       >
-                        <p className=" text-gray-700">{`${DateMsg.getFullYear()}/${DateMsg.getMonth()}/${DateMsg.getDay()}`}</p>
+                        <p className=" text-gray-700">{`${DateAll === TodayDate ? "Today," : DateAll === YesterdayDate  ? "Yesterday," : DateAll }`}</p>
                         <p className=" text-gray-900">
                           {DateMsg.toLocaleTimeString()}
                         </p>

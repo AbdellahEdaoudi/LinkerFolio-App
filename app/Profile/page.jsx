@@ -24,7 +24,6 @@ import { MyContext } from "../Context/MyContext";
 
 function ProfilePage() {
   const { user } = useUser();
-  const [isLoading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,userDetails} = useContext(MyContext);
 
@@ -132,7 +131,8 @@ function ProfilePage() {
             </div>  
             </div>
             <div>
-              <h2 className=" font-bold text-2xl  ">{user.fullname}</h2>
+              <h2 className=" font-bold text-2xl md:mr-0 mr-10  ">{user.fullname}</h2>
+              <p className="text-gray-600"><span className="text-green-500"></span> {user.email}</p>
               <p className="text-gray-600"><span className="text-green-500">@</span> {user.username}</p>
               <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{user.country}</p>
               <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{user.phoneNumber}</p>
@@ -248,7 +248,16 @@ function ProfilePage() {
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
-              <p className="font-medium ">{user.category}</p>        
+              <p className="font-medium ">{user.category}</p>  
+              {/* Email */}
+              {/* <div className="border-b border-gray-300 my-2">
+                <h3 className="text-lg font-semibold mb-2">
+                  Email:{" "}
+                  <span className="font-normal text-gray-600">
+                    {user.email}
+                  </span>
+                </h3>
+              </div>       */}
               <div className={`${user.bio === "" && "hidden"}`}>
                 <h3 className="text-lg font-semibold mb-2">Profile</h3>
                 <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
@@ -263,14 +272,7 @@ function ProfilePage() {
                 </p>
                 <div className="border-b border-gray-300 my-2"></div>
               </div>
-              <div className="border-b border-gray-300 my-2">
-                <h3 className="text-lg font-semibold mb-2">
-                  Email:{" "}
-                  <span className="font-normal text-gray-600">
-                    {user.email}
-                  </span>
-                </h3>
-              </div>
+              
               <div>
                 {/* <h3 className="text-lg font-semibold mb-2">Social Media</h3> */}
                 <ul className="grid grid-cols-2 duration-300 md:grid-cols-3 gap-2">

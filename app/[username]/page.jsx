@@ -168,7 +168,7 @@ function UserDetailsPage({params}) {
     );
   };
   return (
-    <div className={` flex items-center justify-center md:h-auto  pt-4 pb-80 ${userDetails.bgcolorp}`}>
+    <div className={` flex items-center justify-center md:h-auto  pt-4 pb-96 ${userDetails.bgcolorp}`}>
       <div className="w-[640px] mx-4 relative  bg-slate-50 px-5 py-3 rounded-lg border-2 shadow-lg">
 
           <div className="flex md:flex-row md:w-auto md:mt-4 w-full flex-col items-center mb-2">
@@ -185,9 +185,10 @@ function UserDetailsPage({params}) {
             </div>
             <div>
               <h2 className=" font-bold text-2xl  ">{userDetails.fullname}</h2>
+              <p className="text-gray-600"><span className="text-green-500"></span> {userDetails.email}</p>
               <p className="text-gray-600"><span className="text-green-500">@</span> {userDetails.username}</p>
-              <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{userDetails.country}</p>
-              <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{userDetails.phoneNumber}</p>
+              <p className="text-gray-600 flex gap-1"><Pin width={15}   className={`${userDetails.country ? "text-red-700" : " md:block hidden md:text-white"}`} />{userDetails.country}</p>
+              <p className="text-gray-600 flex gap-1"><Phone width={15} className={`${userDetails.country ? "text-blue-700" : "md:block hidden md:text-white"}`}  />{userDetails.phoneNumber}</p>
             </div>
           </div>
         {/* CopyLinkProfil */}
@@ -251,6 +252,19 @@ function UserDetailsPage({params}) {
         </button>
         
         <p className="font-medium ">{userDetails.category}</p>
+        {/* Email */}
+        {/* <div className="border-b border-gray-300 my-2">
+        <div className="border-b border-gray-300 my-2"></div>
+          <h3 className="text-lg font-semibold mb-2">
+            Email :{" "}
+            <a
+              href={`mailto:${userDetails.email}`}
+              className=" font-normal text-gray-600 cursor-grabbing"
+            >
+              {userDetails.email}{""}
+            </a>
+          </h3>
+        </div> */}
         {/* Profile */}
         <div>
           <h3 className={`${userDetails.bio ? "" : "hidden"} text-lg font-semibold pt-1 mb-2`}>Profile</h3>
@@ -266,21 +280,9 @@ function UserDetailsPage({params}) {
                   {userDetails.services}
                 </p>
               </div>
-        {/* Email */}
-        <div className="border-b border-gray-300 my-2"></div>
-        <div className="border-b border-gray-300 my-2">
-          <h3 className="text-lg font-semibold mb-2">
-            Email :{" "}
-            <a
-              href={`mailto:${userDetails.email}`}
-              className=" font-normal text-gray-600 cursor-grabbing"
-            >
-              {userDetails.email}{""}
-            </a>
-          </h3>
-        </div>
         {/* Social Media */}
         <div className="mb-4">
+        <div className="border-b border-gray-300 my-2"></div>
           <h3 className="text-lg hidden font-semibold">Social Media:</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 duration-500  gap-2">
             {datasocial.filter((social) => social.link)
