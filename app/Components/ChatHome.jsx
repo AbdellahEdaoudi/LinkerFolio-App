@@ -50,17 +50,10 @@ function ChatHome() {
       {/* MOBILE */}
       <div className="md:hidden block">
         <div className="w-full">
-          {/* slide1 */}
-          <div className={`flex flex-col relative w-full`}>
-            <UserListMobile
+        <UserListMobile
               selectedUser={selectedUser}
               setSelectedUser={setSelectedUser}
             />
-          </div>
-          {/* slide2 */}
-          <div className={`flex flex-col  relative w-full`} >
-            <Messages selectedUser={selectedUser} />
-          </div>
         </div>
       </div>
     </div>

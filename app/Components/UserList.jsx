@@ -14,7 +14,7 @@ function UserList({selectedUser,setSelectedUser}) {
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
-  const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
+  const lodd = Array.from({ length: 10 }, (_, index) => index + 1);
   const userEmail = user?.emailAddresses[0]?.emailAddress;
   const {SERVER_URL,userDetails} = useContext(MyContext);
 

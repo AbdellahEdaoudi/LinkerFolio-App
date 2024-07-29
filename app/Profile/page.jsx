@@ -114,39 +114,38 @@ function ProfilePage() {
         .map((user, i) => (
           <div
             key={i}
-            className={`flex items-center  justify-center pt-4 pb-80 ${user.bgcolorp}  `}
+            className={`flex items-center  justify-center pt-4 pb-96 ${user.bgcolorp}  `}
           >
             <div
               className={`w-[640px] mx-4 relative bg-slate-100  p-6 rounded-lg border-2 shadow-lg`}
             >
-              <div className="flex justify-between">
-                <div className="flex items-center mb-2">
-                  <div className="mr-3 md:mr-4 duration-500">
-                  <div className="w-24 h-24 rounded-full overflow-hidden">
-                   <Image
-                     width={96}  // 24 * 4
-                     height={96} // 24 * 4
-                     src={user.urlimage}
-                     alt="Profile Image"
-                     className="object-cover"
-                   />
-                   </div>
-                  </div>
-                  <div>
-                  <h2 className=" font-bold text-2xl">{user.fullname}</h2>
-                  <p className="text-gray-600"><span className="text-green-500">@</span> {user.username}</p>
-                  <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{user.country}</p>
-                  <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{user.phoneNumber}</p>
-                  </div>
-                </div>
-                <Link
+                <div className="flex md:flex-row md:w-auto md:mt-1 w-full flex-col items-center mb-2">
+            <div className="mr-2 duration-500 md:mr-4">
+            <div className="w-24 h-24 rounded-full overflow-hidden">
+              <Image
+                width={96}  // 24 * 4
+                height={96} // 24 * 4
+                src={user.urlimage}
+                alt="Profile Image"
+                className="object-cover"
+              />
+            </div>  
+            </div>
+            <div>
+              <h2 className=" font-bold text-2xl  ">{user.fullname}</h2>
+              <p className="text-gray-600"><span className="text-green-500">@</span> {user.username}</p>
+              <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{user.country}</p>
+              <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{user.phoneNumber}</p>
+            </div>
+          </div>
+              {/* Link to Update */}
+              <Link
                   href={`/Profile/${user._id}`}
-                  className="bg-green-400 hover:bg-green-500 hover:rounded-lg duration-300 p-2 h-10 rounded-md"
+                  className="bg-green-400 hover:bg-green-500 hover:rounded-lg duration-300 p-2 h-10 rounded-md absolute right-7 top-6 "
                 >
                   <PenOff />
                 </Link>
-              </div>
-              {/* QrCode */}
+              {/* QrCode Profile */}
               <span className="flex gap-2 cursor-pointer hover:text-sky-700 hover:scale-110 duration-200 absolute right-7 top-20  ">
                 <AlertDialog>
                   <AlertDialogTrigger>
@@ -274,7 +273,7 @@ function ProfilePage() {
               </div>
               <div>
                 {/* <h3 className="text-lg font-semibold mb-2">Social Media</h3> */}
-                <ul className="grid grid-cols-3 gap-2">
+                <ul className="grid grid-cols-2 duration-300 md:grid-cols-3 gap-2">
                   {datasocial.map(
                     (item, i) =>
                       user[item.key] && (
@@ -299,8 +298,6 @@ function ProfilePage() {
                   )}
                 </ul>
               </div>
-              
-              
               <div className={`${user.education === "" && "hidden"}`}>
                 <div className="border-b border-gray-300 my-2"></div>
                 <h3 className="text-lg font-semibold mb-2">Education</h3>
@@ -308,15 +305,15 @@ function ProfilePage() {
                   {boldNumbers(user.education)}
                 </p>
               </div>
-              <div className="border-b border-gray-300 my-2"></div>
               <div className={`${user.skills === "" && "hidden"}`}>
+              <div className="border-b border-gray-300 my-2"></div>
                 <h3 className="text-lg font-semibold mb-2">Skills</h3>
                 <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
                   {user.skills}
                 </p>
               </div>
-              <div className="border-b border-gray-300 my-2"></div>
               <div className={`${user.languages === "" && "hidden"}`}>
+              <div className="border-b border-gray-300 my-2"></div>
                 <h3 className="text-lg font-semibold mb-2">Languages</h3>
                 <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
                   {user.languages}

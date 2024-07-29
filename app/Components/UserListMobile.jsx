@@ -51,7 +51,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
 
   return (
     <div>
-      <div className="bg-gray-800 w-screen text-white p-4 overflow-y-auto h-screen">
+      <div className="bg-gray-800 w-screen text-white p-4 overflow-y-auto h-[800px]">
         {/* Search input */}
         <input
           type="search"

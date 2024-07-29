@@ -29,7 +29,7 @@ function UserProfile({ params }) {
   const [putdelete, setputdelete] = useState(true);
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
-  const lod = Array.from({ length: 20 }, (_, index) => index + 1);
+  const lod = Array.from({ length: 10 }, (_, index) => index + 1);
   const {SERVER_URL,userDetails} = useContext(MyContext);
 
 
@@ -181,7 +181,7 @@ function UserProfile({ params }) {
   },[SERVER_URL,params.id,params.username]);
   
   return (
-    <div className="md:h-auto h-[860px]">
+    <div className="">
       {/* Message window on the right */}
       <div className={` flex flex-col justify-between md:w-auto w-screen`}>
         <div className="flex-1 p-2 ">
@@ -222,12 +222,12 @@ function UserProfile({ params }) {
           </h2>
           {/* Messages */}
           <div
-            className="bg-white p-4 rounded-lg shadow-lg h-[600px] md:h-[350px] scrollbar-none
+            className="bg-white p-4 rounded-lg shadow-lg h-[580px] md:h-[350px] scrollbar-none
                overflow-y-auto"
             ref={messagesEndRef}
           >
             {messages.length === 0 ? (
-              <div className="flex justify-around">
+              <div className="md:flex md:justify-around">
                 <div className="space-y-3">
                   {lod.map((l, i) => (
                     <div key={i} className="flex items-center space-x-4">
@@ -239,7 +239,7 @@ function UserProfile({ params }) {
                     </div>
                   ))}
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-3 md:block hidden">
                   {lod.map((l, i) => (
                     <div key={i} className="flex items-center space-x-4">
                       <Skeleton className="h-12 w-12 rounded-full" />

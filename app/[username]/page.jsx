@@ -169,9 +169,9 @@ function UserDetailsPage({params}) {
   };
   return (
     <div className={` flex items-center justify-center md:h-auto  pt-4 pb-80 ${userDetails.bgcolorp}`}>
-      <div className="w-[640px] mx-4 relative  bg-slate-50 p-6 rounded-lg border-2 shadow-lg">
-        <div className="flex justify-between ">
-          <div className="flex items-center mb-2">
+      <div className="w-[640px] mx-4 relative  bg-slate-50 px-5 py-3 rounded-lg border-2 shadow-lg">
+
+          <div className="flex md:flex-row md:w-auto md:mt-4 w-full flex-col items-center mb-2">
             <div className="mr-2 duration-500 md:mr-4">
             <div className="w-24 h-24 rounded-full overflow-hidden">
               <Image
@@ -184,21 +184,13 @@ function UserDetailsPage({params}) {
             </div>  
             </div>
             <div>
-              <h2 className=" font-bold text-2xl">{userDetails.fullname}</h2>
+              <h2 className=" font-bold text-2xl  ">{userDetails.fullname}</h2>
               <p className="text-gray-600"><span className="text-green-500">@</span> {userDetails.username}</p>
               <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{userDetails.country}</p>
               <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{userDetails.phoneNumber}</p>
-              <p
-                onClick={() => {
-                  router.push(`/message/to/${path}`);
-                }}
-                className="absolute hover:text-blue-500 right-8 -mt-5 cursor-pointer hover:scale-105 duration-300"
-              >
-                <MessageCircleMore />
-              </p>
             </div>
           </div>
-        </div>
+        {/* CopyLinkProfil */}
         <button
           onClick={CopyLinkProfil}
           title="Copy link"
@@ -253,6 +245,11 @@ function UserDetailsPage({params}) {
             </AlertDialogContent>
           </AlertDialog>
         </span>
+        {/* messageTo */}
+        <button className="flex gap-2 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200 absolute right-8 top-[103px] "
+           onClick={() => {router.push(`/message/to/${path}`);}}><MessageCircleMore />
+        </button>
+        
         <p className="font-medium ">{userDetails.category}</p>
         {/* Profile */}
         <div>
@@ -261,6 +258,14 @@ function UserDetailsPage({params}) {
             {userDetails.bio}
           </p>
         </div>
+        {/* Services */}
+        <div className={`${userDetails.services === "" && "hidden"}`}>
+                <div className="border-b border-gray-300 my-2"></div>
+                <h3 className="text-lg font-semibold mb-2">Services</h3>
+                <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+                  {userDetails.services}
+                </p>
+              </div>
         {/* Email */}
         <div className="border-b border-gray-300 my-2"></div>
         <div className="border-b border-gray-300 my-2">
@@ -310,6 +315,13 @@ function UserDetailsPage({params}) {
             {userDetails.skills}
           </p>
         </div>
+        <div className={`${userDetails.languages === "" && "hidden"}`}>
+        <div className="border-b border-gray-300 my-2"></div>
+                <h3 className="text-lg font-semibold mb-2">Languages</h3>
+                <p className="text-gray-700 overflow-y-auto md:max-h-[120px] whitespace-pre-wrap">
+                  {userDetails.languages}
+                </p>
+              </div>
         {/* <div>
         <div className="border-b border-gray-300 my-2"></div>
         <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">

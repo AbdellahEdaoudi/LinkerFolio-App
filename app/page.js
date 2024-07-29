@@ -1,9 +1,7 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
 import ChatHome from "./Components/ChatHome";
 
 export default function Home() {
-  const { user } = useUser();
   return (
     <div>
       {/* <CreateProfile /> */}
