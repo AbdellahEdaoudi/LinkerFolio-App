@@ -188,7 +188,7 @@ function UserDetailsPage({params}) {
               <p className="text-gray-600"><span className="text-green-500"></span> {userDetails.email}</p>
               <p className="text-gray-600"><span className="text-green-500">@</span> {userDetails.username}</p>
               <p className="text-gray-600 flex gap-1"><Pin width={15}   className={`${userDetails.country ? "text-red-700" : " md:block hidden md:text-white"}`} />{userDetails.country}</p>
-              <p className="text-gray-600 flex gap-1"><Phone width={15} className={`${userDetails.country ? "text-blue-700" : "md:block hidden md:text-white"}`}  />{userDetails.phoneNumber}</p>
+              <p className="text-gray-600 flex gap-1"><Phone width={15} className={`${userDetails.phoneNumber ? "text-blue-700" : "md:block hidden md:text-white"}`}  />{userDetails.phoneNumber}</p>
             </div>
           </div>
         {/* CopyLinkProfil */}
