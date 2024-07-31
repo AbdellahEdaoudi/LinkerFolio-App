@@ -7,7 +7,7 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import { LogOut, Settings } from "lucide-react";
+import {Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -52,6 +52,7 @@ function Navbar() {
               height={15}
             />
             <SignedIn>
+              <div className="text-black">A</div>
               {user ? (
                 userDetails
                   .filter((fl) => fl.fullname === user?.fullName)
@@ -81,6 +82,7 @@ function Navbar() {
                   <Skeleton className="h-12 w-12 rounded-full" />
                 </div>
               )}
+              <div className="text-black">A</div>
             </SignedIn>
             <SignedOut>
               {loading ? (

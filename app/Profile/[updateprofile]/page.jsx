@@ -191,234 +191,248 @@ function NameUser({ params }) {
   }
   
   return (
-    <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300 `}>
-        <form onSubmit={updateProfile}>
-          <div className=" mx-4 md:w-[640px] pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
-            <div className="md:flex md:flex-row  duration-500 items-start md:justify-between mb-4 flex flex-col ">
-            <div className="md:mr-4 relative md:flex md:flex-col  flex flex-col items-center w-full mb-1 justify-center duration-300">
-            <Image
-              src={Imageprofil ? Imageprofil : urlimage}
-              alt="Profile Image"
-              className="rounded-full  md:mb-0 duration-300 mb-1 w-36 object-cover"
-              width={100} height={100}
-            />
-            {/*  file input */}
-             <label htmlFor="file-upload" className=" border text-center rounded-full mt-1 mb-2 border-gray-300 inline-block px-4 py-2 cursor-pointer">
-                 Upload Image 
-             </label>
-             <input id="file-upload" type="file"
-              name="urlimage"
-              onChange={ImageProfileUpCloudinary}
-              accept="image/*"  className="hidden" />
-
-          </div>
-         
-              <div>
-                <h2 className=" md:block hidden text-xl font-bold md:text-start text-center duration-300 mb-2">
-                  {fullname}
-                </h2>
-                <table>
-                  <tr>
-                    <td>UserName:</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="text-gray-600 bg-white rounded-lg border-2  mb-2 px-3 py-1"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Country :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="country"
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Phone :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="phoneNumber"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Category :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="category"
-                        placeholder="Developer"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="text-gray-600 bg-white rounded-lg border-2  px-3 py-1"
-                      />
-                    </td>
-                  </tr>
-                  
-                </table>
-              </div>
-            </div>
-            <div className="border-b border-gray-300 my-2"></div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Profile</h3>
-              <textarea
-                name="Profile"
-                value={bio}
-                onChange={(e) => {setBio(e.target.value);}}
-                placeholder="Enter Profile"
-                className="rounded-lg bg-white  w-full px-3 h-32  py-2"
-              />
-            </div>
-            {/* Services */}
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Services</h3>
-              <textarea
-                name="services"
-                value={services}
-                onChange={(e)=>{setServices(e.target.value);}}
-                placeholder="Enter Services"
-                className="rounded-lg bg-white  w-full px-3 h-32  py-2"
-              />
-            </div>
-            <div className="border-b border-gray-300 my-2"></div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2 hidden">Social Media</h3>
-              <div className="grid grid-cols-2  md:grid-cols-3 gap-2">
-                {datasocial.map((item, i) => (
-                  <AlertDialog key={i}>
-                    <AlertDialogTrigger>
-                      <div        
-                      className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition duration-300"                      >
-                      <Image
-                        src={item.iconSrc}
-                        width={25}
-                        height={25}
-                        alt={item.alt}
-                      />
-                       <span>{item.alt}</span>
-                      </div>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle className="flex items-center gap-3">
-                          <Image
-                            src={item.iconSrc}
-                            width={40}
-                            height={40}
-                            alt={item.alt}
-                          />
-                          {item.alt.replace("Logo", " Link")}
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          <input
-                            type="text"
-                            value={item.state}
-                            onChange={(e) => item.setState(e.target.value)}
-                            placeholder={item.placeholder}
-                            className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
-                          />
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogAction>Continue</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                ))}
-              </div>
-            </div>
+    <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}>
+  <form onSubmit={updateProfile}>
+    <div className="mx-4  md:w-[800px] px-4 md:px-8 pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
+      
+      {/* Profile Image Section */}
+      <div className="md:flex md:flex-row-reverse items-start justify-around mb-4">
+        <div className="relative flex flex-col items-center w-full md:w-auto mb-4 md:mb-0">
+          <Image
+            src={Imageprofil || urlimage}
+            alt="Profile Image"
+            className="rounded-full w-36 object-cover mb-2"
+            width={100} height={100}
+          />
+          <label htmlFor="file-upload" className="border text-center rounded-full mt-1 mb-2 border-gray-300 px-4 py-2 cursor-pointer">
+            Upload Image 
+          </label>
+          <input 
+            id="file-upload" 
+            type="file" 
+            name="urlimage" 
+            onChange={ImageProfileUpCloudinary} 
+            accept="image/*" 
+            className="hidden" 
+          />
+        </div>
         
-            {/* Education */}
-            <div className="border-b border-gray-300 my-2"></div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Education</h3>
-              <textarea
-                name="Education"
-                value={education}
-                onChange={(e) => {setEducation(e.target.value);}}
-                placeholder="Enter Education"
-                className="rounded-lg bg-white w-full px-3 h-32  py-2"
-              />
-            </div>
-            {/* Skills */}
-            <div className="border-b border-gray-300 my-2"></div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Skills</h3>
-              <textarea
-                name="Skills"
-                value={skills}
-                onChange={(e) => {setSkills(e.target.value);}}
-                placeholder="Enter Skills"
-                className="rounded-lg bg-white w-full px-3 h-32  py-2"
-              />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Languages</h3>
-              <textarea
-                name="languages"
-                value={languages}
-                onChange={(e) => {setLanguages(e.target.value);}}
-                placeholder="Enter Languages"
-                className="rounded-lg bg-white  w-full px-3 h-32  py-2"
-              />
-            </div>
-            <div>
-              <div className="border-b border-gray-300 my-2"></div>
-              <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
-                Select Background Color:
-              </label>
-              <div className="grid  grid-cols-8 gap-2 pb-2">
-                {bgcolorOptions.map((bg, index) => (
-                  <div
-                    key={index}
-                    className={`p-4 rounded-md shadow-md cursor-pointer ${bg} ${
-                      bg === bgcolorp ? "border-2 border-blue-500" : ""
-                    }`}
-                    onClick={() => setbgcolorp(bg)}
-                  ></div>
-                ))}
-              </div>
-            </div>
-            <button
-              disabled={loading}
-              type="submit"
-              className=" gap-2 bg-gray-800 text-white px-5 py-3 float-end rounded-lg text-[14px]"
-            >
-              {loading ? (
-                <>
-                  Updating <i className="fa fa-spinner fa-spin"></i>
-                </>
-              ) : (
-                <>Update</>
-              )}
-            </button>
-          {errorMessage && 
-          <div>
-            <span  style={{ color: 'red' }}>{errorMessage}</span>
-            <input
-                        type="text"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="text-gray-600 bg-white rounded-lg border-2  mb-2 px-3 py-1"
-                      />
-            </div>}
-          </div>
-        </form>
+        {/* User Information Section */}
+        <div className="w-full md:w-auto">
+          <h2 className="text-xl font-bold  hidden md:block mb-2  md:text-center text-start">{fullname}</h2>
+          <table className="w-full">
+            <tbody>
+              <tr>
+                <td className="font-semibold mr-2">UserName : </td>
+                <td>
+                  <input
+                    type="text"
+                    name="username"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="font-semibold">Country :</td>
+                <td>
+                  <input
+                    type="text"
+                    name="country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="font-semibold">Phone :</td>
+                <td>
+                  <input
+                    type="text"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="font-semibold">Category :</td>
+                <td>
+                  <input
+                    type="text"
+                    name="category"
+                    placeholder="Developer"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div className="border-b border-gray-300 my-4"></div>
+      
+      {/* Profile Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Profile</h3>
+        <textarea
+          name="Profile"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          placeholder="Enter Profile"
+          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        />
+      </div>
+
+      {/* Services Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Services</h3>
+        <textarea
+          name="services"
+          value={services}
+          onChange={(e) => setServices(e.target.value)}
+          placeholder="Enter Services"
+          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        />
+      </div>
+
+      <div className="border-b border-gray-300 my-4"></div>
+
+      {/* Social Media Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2 hidden">Social Media</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+          {datasocial.map((item, i) => (
+            <AlertDialog key={i}>
+              <AlertDialogTrigger>
+                <div className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition duration-300">
+                  <Image src={item.iconSrc} width={25} height={25} alt={item.alt} />
+                  <span>{item.alt}</span>
+                </div>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="flex items-center gap-3">
+                    <Image src={item.iconSrc} width={40} height={40} alt={item.alt} />
+                    {item.alt.replace("Logo", " Link")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    <input
+                      type="text"
+                      value={item.state}
+                      onChange={(e) => item.setState(e.target.value)}
+                      placeholder={item.placeholder}
+                      className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
+                    />
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogAction>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          ))}
+        </div>
+      </div>
+      
+      <div className="border-b border-gray-300 my-4"></div>
+
+      {/* Education Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Education</h3>
+        <textarea
+          name="Education"
+          value={education}
+          onChange={(e) => setEducation(e.target.value)}
+          placeholder="Enter Education"
+          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        />
+      </div>
+
+      {/* Skills Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Skills</h3>
+        <textarea
+          name="Skills"
+          value={skills}
+          onChange={(e) => setSkills(e.target.value)}
+          placeholder="Enter Skills"
+          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        />
+      </div>
+
+      {/* Languages Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Languages</h3>
+        <textarea
+          name="languages"
+          value={languages}
+          onChange={(e) => setLanguages(e.target.value)}
+          placeholder="Enter Languages"
+          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        />
+      </div>
+
+      <div className="border-b border-gray-300 my-4"></div>
+
+      {/* Background Color Selection */}
+      <div>
+        <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
+          Select Background Color:
+        </label>
+        <div className="grid grid-cols-8 gap-2 pb-2">
+          {bgcolorOptions.map((bg, index) => (
+            <div
+              key={index}
+              className={`p-4 rounded-md shadow-md cursor-pointer ${bg} ${
+                bg === bgcolorp ? "border-2 border-blue-500" : ""
+              }`}
+              onClick={() => setbgcolorp(bg)}
+            ></div>
+          ))}
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        disabled={loading}
+        type="submit"
+        className="flex items-center justify-center gap-2 bg-gray-800 text-white px-5 py-3 rounded-lg text-[14px] float-right"
+      >
+        {loading ? (
+          <>
+            Updating <i className="fa fa-spinner fa-spin"></i>
+          </>
+        ) : (
+          "Update"
+        )}
+      </button>
+
+      {/* Error Message */}
+      {errorMessage && (
+        <div className="text-red-600 mt-4">
+          <span>{errorMessage}</span>
+          <input
+            type="text"
+            required
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
+          />
+        </div>
+      )}
     </div>
+  </form>
+</div>
+
   );
 }
 
