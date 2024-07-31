@@ -2,8 +2,8 @@ import React from 'react'
 import GetUserByUsername from "@/app/[username]/GetUserByUsername"
 
 export async function generateMetadata({ params }) {
-      // const SERVER_URL = "https://saas-app-api.vercel.app";
-      const SERVER_URL = "http://localhost:9999";
+      const SERVER_URL = "https://saas-app-api.vercel.app";
+      // const SERVER_URL = "http://localhost:9999";
   try {
 
     const response = await fetch(`${SERVER_URL}/user/${params.username}`, {
