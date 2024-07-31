@@ -1,9 +1,9 @@
 "use client";
-import { SignIn, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import QRCode from "qrcode.react";
 import download from "downloadjs";
-import axios from "axios";
-import { Link2, PenOff, Phone, Pin, QrCode } from "lucide-react";
+
+import { Link2, MailCheck, PenOff, Phone, Pin, QrCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
@@ -131,22 +131,24 @@ function ProfilePage() {
             </div>  
             </div>
             <div>
-              <h2 className=" font-bold text-2xl md:mr-0 mr-10  ">{user.fullname}</h2>
-              <p className="text-gray-600"><span className="text-green-500"></span> {user.email}</p>
-              <p className="text-gray-600"><span className="text-green-500">@</span> {user.username}</p>
+              <h2 className="font-bold text-2xl md:text-start   text-center ">{user.fullname}</h2>
+              <p className="text-gray-600 flex gap-1"><span className="text-green-500"><MailCheck width={15} /></span> {user.email}</p>
+              <p className="text-gray-600"><span className="text-green-700">@</span> {user.username}</p>
               <p className="text-gray-600 flex gap-1"><Pin width={15} style={{ color:"red" }} />{user.country}</p>
               <p className="text-gray-600 flex gap-1"><Phone width={15} style={{ color:"blue" }} />{user.phoneNumber}</p>
             </div>
           </div>
-              {/* Link to Update */}
-              <Link
-                  href={`/Profile/${user._id}`}
-                  className="bg-green-400 hover:bg-green-500 hover:scale-105 duration-500 p-2  rounded-full absolute right-7 top-6 "
-                >
-                  <PenOff />
-                </Link>
+              {/* Setting */}
+              <div className="absolute top-4 space-y-2 right-7">
+                {/* Link to Update */}
+               <Link
+                 href={`/Profile/${user._id}`}
+                 className="flex items-center justify-center bg-gradient-to-r from-teal-400 to-green-500 hover:scale-105 duration-500 p-2 rounded-full shadow-lg border border-teal-600 text-white transform transition-transform"
+               >
+                 <PenOff className="w-6 h-6" />
+               </Link>
               {/* QrCode Profile */}
-              <span className="flex gap-2 cursor-pointer hover:text-sky-700 hover:scale-110 duration-200 absolute right-7 top-[110px] ">
+              <span className="border p-2 rounded-full  flex gap-2 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  ">
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <QrCode />
@@ -188,13 +190,13 @@ function ProfilePage() {
               </span>
               {/* Link Profile */}
               <div
-                className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400 absolute right-7 top-20 "
+                className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400  "
                 href={`/${user.username}`}
               >
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="gap-1">
-                      Link <Link2 />
+                    <Button variant="outline" className="gap-1 p-2 border rounded-full">
+                       <Link2 />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
@@ -248,7 +250,11 @@ function ProfilePage() {
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
-              <p className="font-medium ">{user.category}</p>  
+              </div>
+              {/* category */}
+              <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
+                 {user.category}
+               </p>
               {/* Email */}
               {/* <div className="border-b border-gray-300 my-2">
                 <h3 className="text-lg font-semibold mb-2">

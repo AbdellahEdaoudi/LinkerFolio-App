@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Link, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
+import { Link, MailCheck, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -184,18 +184,17 @@ function UserDetailsPage({params}) {
             </div>  
             </div>
             <div>
-              <h2 className=" font-bold text-2xl  ">{userDetails.fullname}</h2>
-              <p className="text-gray-600"><span className="text-green-500"></span> {userDetails.email}</p>
-              <p className="text-gray-600"><span className="text-green-500">@</span> {userDetails.username}</p>
+              <h2 className=" font-bold text-2xl md:text-start   text-center ">{userDetails.fullname}</h2>
+              <p className="text-gray-600 flex gap-1"><span className="text-green-500"><MailCheck width={15} /></span> {userDetails.email}</p>
+              <p className="text-gray-600"><span className="text-green-700">@</span> {userDetails.username}</p>
               <p className="text-gray-600 flex gap-1"><Pin width={15}   className={`${userDetails.country ? "text-red-700" : " md:block hidden md:text-white"}`} />{userDetails.country}</p>
               <p className="text-gray-600 flex gap-1"><Phone width={15} className={`${userDetails.phoneNumber ? "text-blue-700" : "md:block hidden md:text-white"}`}  />{userDetails.phoneNumber}</p>
             </div>
           </div>
         {/* CopyLinkProfil */}
-        <button
+        <button className="rounded-full absolute right-2 top-0 m-4 hover:scale-110 flex justify-center hover:bg-gray-200 border h-10 w-10 p-2  duration-300"
           onClick={CopyLinkProfil}
           title="Copy link"
-          className="rounded-full absolute right-2 top-0 m-4 hover:scale-110 flex justify-center hover:bg-gray-200 border h-10 w-10 p-2  duration-300"
         >
           {copied ? <p className="text-[14px]">Copied!</p> : <Link />} <br />
         </button>
@@ -250,8 +249,10 @@ function UserDetailsPage({params}) {
         <button className="flex gap-2 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200 absolute right-8 top-[103px] "
            onClick={() => {router.push(`/message/to/${path}`);}}><MessageCircleMore />
         </button>
-        
-        <p className="font-medium ">{userDetails.category}</p>
+        {/* category */}
+        <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
+                 {userDetails.category}
+               </p>
         {/* Email */}
         {/* <div className="border-b border-gray-300 my-2">
         <div className="border-b border-gray-300 my-2"></div>
