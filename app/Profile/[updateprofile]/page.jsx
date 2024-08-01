@@ -1,5 +1,5 @@
 "use client";
-import { SignIn, useUser } from "@clerk/nextjs";
+import {useUser} from "@clerk/nextjs";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -14,14 +14,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 import { bgcolorOptions } from "@/app/data/bgcolorOptions";
 import { MyContext } from "@/app/Context/MyContext";
 function NameUser({ params }) {
   const { user } = useUser();
   const [loading, setLoading] = useState(true); // Initialize loading state
   const router = useRouter();
-  const { toast } = useToast();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -147,9 +145,6 @@ function NameUser({ params }) {
       const response = await axios.put(
         `${SERVER_URL}/users/${params.updateprofile}`, formData
       );
-      toast({
-        description: "Profile updated successfully.",
-      });
       router.push("/Profile");
       console.log("User details updated successfully", response.data);
     } catch (error) {
@@ -195,183 +190,180 @@ function NameUser({ params }) {
   <form onSubmit={updateProfile}>
     <div className="mx-4  md:w-[800px] px-4 md:px-8 pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
       
-      {/* Profile Image Section */}
-      <div className="md:flex md:flex-row-reverse items-start justify-around mb-4">
-        <div className="relative flex flex-col items-center w-full md:w-auto mb-4 md:mb-0">
-          <Image
-            src={Imageprofil || urlimage}
-            alt="Profile Image"
-            className="rounded-full w-36 object-cover mb-2"
-            width={100} height={100}
-          />
-          <label htmlFor="file-upload" className="border text-center rounded-full mt-1 mb-2 border-gray-300 px-4 py-2 cursor-pointer">
-            Upload Image 
-          </label>
-          <input 
-            id="file-upload" 
-            type="file" 
-            name="urlimage" 
-            onChange={ImageProfileUpCloudinary} 
-            accept="image/*" 
-            className="hidden" 
-          />
-        </div>
-        
-        {/* User Information Section */}
-        <div className="w-full md:w-auto">
-          <h2 className="text-xl font-bold  hidden md:block mb-2  md:text-center text-start">{fullname}</h2>
-          <table className="w-full">
-            <tbody>
-              <tr>
-                <td className="font-semibold mr-2">UserName : </td>
-                <td>
-                  <input
-                    type="text"
-                    name="username"
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="font-semibold">Country :</td>
-                <td>
-                  <input
-                    type="text"
-                    name="country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="font-semibold">Phone :</td>
-                <td>
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="font-semibold">Category :</td>
-                <td>
-                  <input
-                    type="text"
-                    name="category"
-                    placeholder="Developer"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-      <div className="border-b border-gray-300 my-4"></div>
-      
-      {/* Profile Section */}
+    <div className="flex flex-col md:flex-row items-start justify-between mb-8 space-y-8 md:space-y-0 md:space-x-8">
+  {/* Profile Image Section */}
+  <div className="flex md:ml-5 flex-col items-center bg-white shadow-xl border border-gray-200 rounded-lg p-6 w-full md:w-1/3">
+    <Image
+      src={Imageprofil || urlimage}
+      alt="Profile Image"
+      className="rounded-full  w-40 h-40 object-cover mb-4 border-4 border-green-500 shadow-lg"
+      width={160}
+      height={160}
+    />
+    <label htmlFor="file-upload" className="bg-gradient-to-r  from-teal-400 to-green-500 text-white font-semibold rounded-full px-4 py-2 cursor-pointer transition duration-300 hover:bg-green-600">
+      Upload Image 
+    </label>
+    <input 
+      id="file-upload" 
+      type="file" 
+      name="urlimage" 
+      onChange={ImageProfileUpCloudinary} 
+      accept="image/*" 
+      className="hidden" 
+    />
+  </div>
+
+  {/* User Information Section */}
+  <div className="bg-white shadow-xl border border-gray-200 rounded-lg p-6 w-full md:w-2/3 space-y-4">
+    <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">{fullname}</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Profile</h3>
-        <textarea
-          name="Profile"
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          placeholder="Enter Profile"
-          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        <label className="block text-gray-700 font-semibold mb-2">Fullname:</label>
+        <input
+          type="text"
+          name="fullname"
+          required
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
+          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
-
-      {/* Services Section */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">Services</h3>
-        <textarea
-          name="services"
-          value={services}
-          onChange={(e) => setServices(e.target.value)}
-          placeholder="Enter Services"
-          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        <label className="block text-gray-700 font-semibold mb-2">Username:</label>
+        <input
+          type="text"
+          name="username"
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
-
-      <div className="border-b border-gray-300 my-4"></div>
-
-      {/* Social Media Section */}
       <div>
-        <h3 className="text-lg font-semibold mb-2 hidden">Social Media</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          {datasocial.map((item, i) => (
-            <AlertDialog key={i}>
-              <AlertDialogTrigger>
-                <div className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition duration-300">
-                  <Image src={item.iconSrc} width={25} height={25} alt={item.alt} />
-                  <span>{item.alt}</span>
-                </div>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="flex items-center gap-3">
-                    <Image src={item.iconSrc} width={40} height={40} alt={item.alt} />
-                    {item.alt.replace("Logo", " Link")}
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    <input
-                      type="text"
-                      value={item.state}
-                      onChange={(e) => item.setState(e.target.value)}
-                      placeholder={item.placeholder}
-                      className="rounded-lg bg-white text-black px-3 py-2 mb-2 w-full border-2 border-black"
-                    />
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogAction>Continue</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          ))}
-        </div>
-      </div>
-      
-      <div className="border-b border-gray-300 my-4"></div>
-
-      {/* Education Section */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Education</h3>
-        <textarea
-          name="Education"
-          value={education}
-          onChange={(e) => setEducation(e.target.value)}
-          placeholder="Enter Education"
-          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        <label className="block text-gray-700 font-semibold mb-2">Country:</label>
+        <input
+          type="text"
+          name="country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
-
-      {/* Skills Section */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">Skills</h3>
-        <textarea
-          name="Skills"
-          value={skills}
-          onChange={(e) => setSkills(e.target.value)}
-          placeholder="Enter Skills"
-          className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
+        <label className="block text-gray-700 font-semibold mb-2">Phone:</label>
+        <input
+          type="text"
+          name="phoneNumber"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
+      <div>
+        <label className="block text-gray-700 font-semibold mb-2">Category:</label>
+        <input
+          type="text"
+          name="category"
+          placeholder="Developer"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+      </div>
+    </div>
+  </div>
+    </div>
 
+<div className="border-b border-gray-300 my-8"></div>
+
+{/* Profile Section */}
+<div className="mb-8">
+<h3 className="text-2xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
+<textarea
+    name="Profile"
+    value={bio}
+    onChange={(e) => setBio(e.target.value)}
+    placeholder="Enter Profile"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+
+{/* Services Section */}
+<div className="mb-8">
+<h3 className="text-2xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
+<textarea
+    name="services"
+    value={services}
+    onChange={(e) => setServices(e.target.value)}
+    placeholder="Enter Services"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+
+<div className="border-b border-gray-300 my-8"></div>
+
+{/* Social Media Section */}
+<div className="mb-8">
+  <div className="flex flex-wrap gap-4 justify-center">
+    {datasocial.map((item, i) => (
+      <AlertDialog key={i}>
+        <AlertDialogTrigger>
+          <div className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-3 rounded-full shadow-md transition duration-300">
+            <Image src={item.iconSrc} width={24} height={24} alt={item.alt} />
+            <span className="ml-2 text-gray-800 font-medium">{item.alt}</span>
+          </div>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-3">
+              <Image src={item.iconSrc} width={50} height={50} alt={item.alt} />
+              {item.alt.replace("Logo", " Link")}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <input
+                type="text"
+                value={item.state}
+                onChange={(e) => item.setState(e.target.value)}
+                placeholder={item.placeholder}
+                className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Save</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    ))}
+  </div>
+</div>
+<div className="border-b border-gray-300 my-8"></div>
+{/* Education Section */}
+<div className="mb-8">
+<h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
+ <textarea
+    name="Education"
+    value={education}
+    onChange={(e) => setEducation(e.target.value)}
+    placeholder="Enter Education"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+{/* Skills Section */}
+<div className="mb-8">
+<h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
+  <textarea
+    name="Skills"
+    value={skills}
+    onChange={(e) => setSkills(e.target.value)}
+    placeholder="Enter Skills"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
       {/* Languages Section */}
       <div>
-        <h3 className="text-lg font-semibold mb-2">Languages</h3>
-        <textarea
+      <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
+      <textarea
           name="languages"
           value={languages}
           onChange={(e) => setLanguages(e.target.value)}
@@ -379,13 +371,12 @@ function NameUser({ params }) {
           className="rounded-lg bg-white w-full px-3 h-32 py-2 border-2"
         />
       </div>
-
       <div className="border-b border-gray-300 my-4"></div>
-
       {/* Background Color Selection */}
       <div>
         <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
-          Select Background Color:
+        <h3 className="text-xl font-semibold  mb-2">🏷️ Select Background Color: </h3>
+
         </label>
         <div className="grid grid-cols-8 gap-2 pb-2">
           {bgcolorOptions.map((bg, index) => (
@@ -411,7 +402,7 @@ function NameUser({ params }) {
             Updating <i className="fa fa-spinner fa-spin"></i>
           </>
         ) : (
-          "Update"
+          "Save"
         )}
       </button>
 

@@ -6,10 +6,9 @@ import download from "downloadjs";
 import { Link2, MailCheck, PenOff, Phone, Pin, QrCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -24,6 +23,7 @@ import { MyContext } from "../Context/MyContext";
 
 function ProfilePage() {
   const { user } = useUser();
+  const EmailUser = user?.emailAddresses[0]?.emailAddress ;
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,userDetails} = useContext(MyContext);
 
@@ -109,7 +109,7 @@ function ProfilePage() {
   return (
     <div>
       {userDetails
-        .filter((fl) => fl.fullname === user?.fullName)
+        .filter((fl) => fl.email === EmailUser)
         .map((user, i) => (
           <div
             key={i}
@@ -119,8 +119,8 @@ function ProfilePage() {
               className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`}
             >
               {/* Image Profile and info user */}
-             <div className=" border flex flex-col md:flex-row items-center mb-4 p-4 bg-white rounded-lg shadow-md">
-               <div className="w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
+             <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
+               <div className="border-4 border-green-600 w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
                  <Image
                    width={96}
                    height={96}
@@ -263,16 +263,14 @@ function ProfilePage() {
                  {user.category}
                </p>
               {/* Profile */}
-        <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-105">
           {user.bio && (
-            <>
+        <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-105">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
                 {user.bio}
               </p>
-            </>
-          )}
         </div>
+          )}
         
         {/* Services */}
         {user.services && (

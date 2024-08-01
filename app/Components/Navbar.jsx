@@ -31,7 +31,8 @@ function Navbar() {
     }, 0);
     return () => clearTimeout(timer); 
   }, []);
-  const filt = userDetails.find(
+
+  const filt = userDetails.filter(
     (fl) => fl.email === user?.emailAddresses[0].emailAddress
   );
 
@@ -46,16 +47,14 @@ function Navbar() {
                 router.push("/");
                 setSetting(true);
               }}
-              src={"/Logo.png"}
+              src="/Logo.png"
               alt="Logo"
               width={160}
               height={15}
             />
             <SignedIn>
               {user ? (
-                userDetails
-                  .filter((fl) => fl.fullname === user?.fullName)
-                  .map((userr, i) => (
+                filt.map((userr, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <UserButton />
                       <span

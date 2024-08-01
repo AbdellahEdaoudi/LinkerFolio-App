@@ -1,5 +1,5 @@
 import React from 'react'
-import GetUserByUsername from "@/app/[username]/GetUserByUsername"
+import GetUserByUsername from './GetUserByUsername';
 
 export async function generateMetadata({ params }) {
       const SERVER_URL = "https://saas-app-api.vercel.app";

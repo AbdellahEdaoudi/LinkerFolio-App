@@ -19,7 +19,7 @@ import QRCode from "qrcode.react";
 import download from "downloadjs";
 import { MyContext } from "../Context/MyContext";
 
-function UserDetailsPage({params}) {
+function GetUserByUsername({params}) {
   const path = usePathname();
   const router = useRouter();
   const [userDetails, setUserDetails] = useState(null);
@@ -170,14 +170,14 @@ function UserDetailsPage({params}) {
     <div className={` flex items-center justify-center md:h-auto  pt-4 pb-96 ${userDetails.bgcolorp}`}>
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-3 pb-8 rounded-lg border-2 shadow-lg">
            {/* Image Profile and info user */}
-           <div className=" border flex flex-col md:flex-row items-center mb-4 p-4 bg-white rounded-lg shadow-md">
-               <div className="w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
+           <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
+               <div className="border-4  border-green-600 shadow-lg w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
                  <Image
                    width={96}
                    height={96}
                    src={userDetails.urlimage}
                    alt="Profile Image"
-                   className="object-cover"
+                   className="object-cover cursor-pointer"
                  />
                </div>
                <div className="text-center md:text-left">
@@ -278,7 +278,7 @@ function UserDetailsPage({params}) {
           <div className="mt-3 p-4 bg-white rounded-lg border shadow-md duration-500 hover:scale-105">
             {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
             <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
-            <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-normal tracking-normal text-base">
+            <p className="text-gray-800 overflow-y-auto whitespace-pre-wrap leading-normal tracking-normal text-base">
               {userDetails.services}
             </p>
           </div>
@@ -351,4 +351,4 @@ function UserDetailsPage({params}) {
   );
 }
 
-export default UserDetailsPage;
+export default GetUserByUsername;

@@ -11,7 +11,6 @@ function ChatHome() {
   const { user } = useUser();
   const {userDetails} = useContext(MyContext);
 
-
   // Retrieve selected user from localStorage
   useEffect(() => {
     const UserSelected = localStorage.getItem("SelectedUser");
@@ -20,6 +19,11 @@ function ChatHome() {
     }
   }, []);
 
+  if (!userDetails) {
+    return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
+    <i className="fa fa-spinner fa-spin "></i>
+    </p> ;
+  }
 
   const filt = userDetails.find(
     (fl) => fl.email === user?.emailAddresses[0].emailAddress

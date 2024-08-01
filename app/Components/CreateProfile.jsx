@@ -14,14 +14,14 @@ const CreateProfile = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const EmailUser = user?.emailAddresses[0].emailAddress
-  const {SERVER_URL,userDetails} = useContext(MyContext);
+  const {SERVER_URL} = useContext(MyContext);
 
   const postData = async () => {
     try {
       setIsLoading(true);
       const data = {
         fullname: user?.fullName || '',
-        email: user?.emailAddresses[0]?.emailAddress || '',
+        email: EmailUser|| '',
         username: username,
         phoneNumber: "+000000000000",
         country: '',
@@ -79,7 +79,6 @@ const CreateProfile = () => {
                 className="rounded-full w-28 h-28 object-cover border-4 border-purple-500 shadow-lg"
                 alt="User profile"
               /> :<div className="rounded-full bg-gray-500 animate-pulse w-28 h-28 object-cover border-4 border-purple-500 shadow-lg">
-                
                 </div>}
             </div>
         <div className="space-y-6">
