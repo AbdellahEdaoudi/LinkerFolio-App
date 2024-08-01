@@ -46,6 +46,7 @@ function NameUser({ params }) {
   const [languages,setLanguages] = useState("");
   const [category,setCategory] = useState("");
   const [education, setEducation] = useState("");
+  const [experience, setExperience] = useState("");
   const [id, setid] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const EmailUser = user?.emailAddresses[0]?.emailAddress ;
@@ -94,6 +95,7 @@ function NameUser({ params }) {
         setTelegram(data.Telegram);
         setSnapchat(data.snapchat);
         setEducation(data.education);
+        setExperience(data.experience);
         setSkills(data.skills);
         setServices(data.services);
         setLanguages(data.languages)
@@ -129,6 +131,7 @@ function NameUser({ params }) {
     formData.append('Telegram', Telegram);
     formData.append('skills', skills);
     formData.append('education', education);
+    formData.append('experience', experience);
     formData.append('category', category);
     formData.append('languages', languages);
     formData.append('services', services);
@@ -171,7 +174,7 @@ function NameUser({ params }) {
   };
 
   if (!user || !email || !EmailUser) {
-    return <p className="flex justify-center items-start h-screen duration-500  md:h-[515px] py-20 text-8xl">
+    return <p className="flex justify-center items-start h-screen duration-500  py-20 text-8xl">
           <i className="fa fa-spinner fa-spin"></i>
         </p>
   }
@@ -316,7 +319,7 @@ function NameUser({ params }) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-3">
-              <Image src={item.iconSrc} width={50} height={50} alt={item.alt} />
+              <Image src={item.iconSrc} width={30} height={30} alt={item.alt} />
               {item.alt.replace("Logo", " Link")}
             </AlertDialogTitle>
             <AlertDialogDescription>
@@ -346,6 +349,18 @@ function NameUser({ params }) {
     value={education}
     onChange={(e) => setEducation(e.target.value)}
     placeholder="Enter Education"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+<div className="border-b border-gray-300 my-8"></div>
+{/* Experience Section */}
+<div className="mb-8">
+<h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
+ <textarea
+    name="Experience"
+    value={experience}
+    onChange={(e) => setExperience(e.target.value)}
+    placeholder="Enter Experience"
     className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
   />
 </div>

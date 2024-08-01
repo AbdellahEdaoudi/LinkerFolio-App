@@ -6,7 +6,7 @@ import download from "downloadjs";
 import { Link2, MailCheck, PenOff, Phone, Pin, QrCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -26,7 +26,13 @@ function ProfilePage() {
   const EmailUser = user?.emailAddresses[0]?.emailAddress ;
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,userDetails} = useContext(MyContext);
-
+  const FiltUser = userDetails.find((fl) => fl.email === EmailUser)
+  const [filtUser, setFiltUser] = useState(null);
+  
+  useEffect(() => {
+    const user = userDetails.find((fl) => fl.email === EmailUser);
+    setFiltUser(user);
+  }, [userDetails, EmailUser]);
 
 
   const DownloadQRCode = () => {
@@ -90,6 +96,16 @@ function ProfilePage() {
     { key: "Youtube", src: "/Icons/yt.svg", alt: "YouTube" },
     { key: "snapchat", src: "/Icons/snap.svg", alt: "Snapchat" },
   ];
+
+  const datamodul = filtUser ? [
+    { name: "🔷 Profile", data: filtUser.bio },
+    { name: "💼 Services", data: filtUser.services },
+    { name: "🎓 Education", data: filtUser.education },
+    { name: "⭐ Experience", data: filtUser.experience },
+    { name: "💡 Skills", data: filtUser.skills },
+    { name: "🌍 Languages", data: filtUser.languages },
+  ] : [];
+  
   const boldNumbers = (text) => {
     if (!text) {
       return [];
@@ -108,9 +124,7 @@ function ProfilePage() {
 
   return (
     <div>
-      {userDetails
-        .filter((fl) => fl.email === EmailUser)
-        .map((user, i) => (
+      {userDetails.filter((fl) => fl.email === EmailUser).map((user, i) => (
           <div
             key={i}
             className={`flex items-center  justify-center pt-4 pb-96 ${user.bgcolorp}  `}
@@ -121,13 +135,34 @@ function ProfilePage() {
               {/* Image Profile and info user */}
              <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
                <div className="border-4 border-green-600 w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
-                 <Image
-                   width={96}
-                   height={96}
-                   src={user.urlimage}
-                   alt="Profile Image"
-                   className="object-cover"
-                 />
+               <AlertDialog>
+                  <AlertDialogTrigger>
+                   <Image
+                     width={96}
+                     height={96}
+                     src={user.urlimage}
+                     alt="Profile Image"
+                     className="object-cover cursor-pointer"
+                   />
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogDescription className="flex justify-center">
+                                <Image
+                             width={400}
+                             height={400}
+                             src={user.urlimage}
+                             alt="Profile Image"
+                             className="object-cover rounded-full cursor-pointer"
+                           />
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
                </div>
                <div className="text-center md:text-left">
                  <h2 className="font-bold text-2xl text-gray-800">{user.fullname}</h2>
@@ -144,6 +179,7 @@ function ProfilePage() {
                    <Phone width={18} style={{ color: "blue" }} />{user.phoneNumber}
                  </p>
                </div>
+               
              </div>
               {/* Setting */}
               <div className="absolute top-8 space-y-2 right-7 md:top-10  md:right-12">
@@ -262,35 +298,39 @@ function ProfilePage() {
               <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
                  {user.category}
                </p>
-              {/* Profile */}
-          {user.bio && (
-        <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-105">
-              <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
-              <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-                {user.bio}
-              </p>
-        </div>
-          )}
-        
-        {/* Services */}
-        {user.services && (
-          <div className=" border mt-3 p-4 bg-white rounded-lg shadow-md duration-500 hover:scale-105">
-            {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-            <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
-            <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {user.services}
-            </p>
-          </div>
-        )}
-              {/* datasocial */}
-              <div className="my-4">
+               {/* Modul */}
+         <div className="flex flex-wrap gap-2  justify-center">
+         {datamodul.map((dt,i)=>{
+          return (
+            <div key={i} >
+              <AlertDialog>
+               <AlertDialogTrigger className={`p-2 ${!dt.data && "hidden"} bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}>{dt.name}</AlertDialogTrigger>
+               <AlertDialogContent>
+                 <AlertDialogHeader>
+                   <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
+                   <AlertDialogDescription className="bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                   {boldNumbers(dt.data)}
+                   </AlertDialogDescription>
+                 </AlertDialogHeader>
+                 <AlertDialogFooter>
+                   <AlertDialogCancel className='bg-gray-100 hover:bg-gray-200 duration-300'>Cancel</AlertDialogCancel>
+                   {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                 </AlertDialogFooter>
+               </AlertDialogContent>
+             </AlertDialog>
+            </div>
+          )
+         })}
+         </div>
+         {/* datasocial */}
+         <div className="my-4">
                 <ul className="flex flex-wrap gap-4 justify-center">
                   {datasocial.map(
                     (item, i) =>
                       user[item.key] && (
                         <li key={i}>
                           <a
-                           className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-3 rounded-full shadow-md transition duration-300"
+                           className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md border shadow-md transition duration-300"
 
                             href={user[item.key]}
                             target="_blank"
@@ -309,18 +349,49 @@ function ProfilePage() {
                   )}
                 </ul>
               </div>
+              {/* Profile */}
+          {user.bio && (
+        <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
+              <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
+              <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
+                {user.bio}
+              </p>
+        </div>
+          )}
+        {/* Services */}
+        {user.services && (
+          <div className=" border mt-3 p-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
+            {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
+            <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
+            <p className="text-gray-800 overflow-y-auto md:max-h-max  max-h-[120px] whitespace-pre-wrap leading-normal tracking-normal text-base">
+              {user.services}
+            </p>
+          </div>
+        )}
+              
 
               {/* Education */}
-        <div className={`${!user.education && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-105 duration-500`}>
+        <div className={`${!user.education && "hidden"} mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 
+          hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
             {boldNumbers(user.education)}
           </p>
         </div>
+             {/* Experience */}
+             <div className={`${!user.experience && "hidden"} border p-4 bg-white rounded-lg shadow-md 
+              mb-6 hover:scale-100 duration-500`}>
+          {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
+          <h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
+          <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+            {boldNumbers(user.experience)}
+          </p>
+        </div>
         
         {/* Skills */}
-        <div className={`${!user.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-105 duration-500`}>
+        <div className={`${!user.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6
+           hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
@@ -329,7 +400,8 @@ function ProfilePage() {
         </div>
         
         {/* Languages */}
-        <div className={`${!user.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md hover:scale-105 duration-500`}>
+        <div className={`${!user.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md 
+          hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
           <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">

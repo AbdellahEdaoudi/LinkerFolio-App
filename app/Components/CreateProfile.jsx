@@ -43,6 +43,7 @@ const CreateProfile = () => {
         Telegram: '',
         bgcolorp:'',
         education:'',
+        experience:'',
         skills:'',
         languages : '',
         services:'',

@@ -155,6 +155,14 @@ function GetUserByUsername({params}) {
     { id: 5, icon: '/Icons/fb.svg', alt: 'Facebook', link: userDetails.fb },
     { id: 12, icon: '/Icons/snap.svg', alt: 'Snapchat', link: userDetails.snapchat },
   ];
+  const datamodul = [
+    {name : "🔷 Profile" , data:userDetails.bio },
+    {name : "💼 Services" , data:userDetails.services },
+    {name : "🎓 Education" , data:userDetails.education },
+    {name : "⭐ Experience" , data:userDetails.experience },
+    {name : "💡 Skills" , data:userDetails.skills },
+    {name : "🌍 Languages" , data:userDetails.languages },
+  ]
   
 
   const boldNumbers = (text) => {
@@ -168,17 +176,38 @@ function GetUserByUsername({params}) {
   };
   return (
     <div className={` flex items-center justify-center md:h-auto  pt-4 pb-96 ${userDetails.bgcolorp}`}>
-      <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-3 pb-8 rounded-lg border-2 shadow-lg">
+      <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
            {/* Image Profile and info user */}
            <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
                <div className="border-4  border-green-600 shadow-lg w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
-                 <Image
-                   width={96}
-                   height={96}
-                   src={userDetails.urlimage}
-                   alt="Profile Image"
-                   className="object-cover cursor-pointer"
-                 />
+                 <AlertDialog>
+                  <AlertDialogTrigger>
+                   <Image
+                     width={96}
+                     height={96}
+                     src={userDetails.urlimage}
+                     alt="Profile Image"
+                     className="object-cover cursor-pointer"
+                   />
+                  </AlertDialogTrigger>
+                  <AlertDialogContent >
+                    <AlertDialogHeader>
+                      <AlertDialogDescription className="flex justify-center">
+                                <Image
+                             width={400}
+                             height={400}
+                             src={userDetails.urlimage}
+                             alt="Profile Image"
+                             className="object-cover rounded-full cursor-pointer"
+                           />
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="bg-gray-100 hover:bg-gray-200 duration-300 hover:scale-105">Cancel</AlertDialogCancel>
+                      {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
                </div>
                <div className="text-center md:text-left">
                  <h2 className="font-bold text-2xl text-gray-800">{userDetails.fullname}</h2>
@@ -262,10 +291,52 @@ function GetUserByUsername({params}) {
         {/* Category */}
         <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
                  {userDetails.category}
-               </p>
+         </p>
+         {/* Modul */}
+         <div className="flex flex-wrap gap-2  justify-center">
+         {datamodul.map((dt,i)=>{
+          return (
+            <div key={i} >
+              <AlertDialog>
+               <AlertDialogTrigger className={`p-2 ${!dt.data && "hidden"} bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}>{dt.name}</AlertDialogTrigger>
+               <AlertDialogContent>
+                 <AlertDialogHeader>
+                   <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
+                   <AlertDialogDescription className="bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                   {boldNumbers(dt.data)}
+                   </AlertDialogDescription>
+                 </AlertDialogHeader>
+                 <AlertDialogFooter>
+                   <AlertDialogCancel className='bg-gray-100 hover:bg-gray-200 duration-300'>Cancel</AlertDialogCancel>
+                   {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                 </AlertDialogFooter>
+               </AlertDialogContent>
+             </AlertDialog>
+            </div>
+          )
+         })}
+         </div>
+         {/* Social Media */}
+        <div className="my-4">
+          <div className="flex flex-wrap gap-4 justify-center ">
+            {datasocial.filter((social) => social.link)
+              .map((social, i) => (
+                <a
+                  key={i}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md shadow-md transition duration-300"
+                >
+                  <Image src={social.icon} alt={social.alt} width={24} height={24} />
+                  <span className="ml-2 text-gray-800 font-medium">{social.alt}</span>
+                </a>
+              ))}
+          </div>
+        </div>
         {/* Profile */}
           {userDetails.bio && (
-        <div className="p-4 mt-4 bg-white rounded-lg shadow-md border duration-500 hover:scale-105">
+        <div className="p-4 mt-4 bg-white rounded-lg shadow-md border duration-500 hover:scale-100">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
                 {userDetails.bio}
@@ -275,7 +346,7 @@ function GetUserByUsername({params}) {
         
         {/* Services */}
         {userDetails.services && (
-          <div className="mt-3 p-4 bg-white rounded-lg border shadow-md duration-500 hover:scale-105">
+          <div className="mt-3 p-4 bg-white rounded-lg border shadow-md duration-500 hover:scale-100">
             {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
             <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
             <p className="text-gray-800 overflow-y-auto whitespace-pre-wrap leading-normal tracking-normal text-base">
@@ -284,36 +355,26 @@ function GetUserByUsername({params}) {
           </div>
         )}
 
-        {/* Social Media */}
-        <div className="my-4">
-          <div className="flex flex-wrap gap-4 justify-center">
-            {datasocial.filter((social) => social.link)
-              .map((social, i) => (
-                <a
-                  key={i}
-                  href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-3 rounded-full shadow-md transition duration-300"
-                >
-                  <Image src={social.icon} alt={social.alt} width={24} height={24} />
-                  <span className="ml-2 text-gray-800 font-medium">{social.alt}</span>
-                </a>
-              ))}
-          </div>
-        </div>
-
         {/* Education */}
-        <div className={`${!userDetails.education && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-105 duration-500`}>
+        <div className={`${!userDetails.education && "hidden"} mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
             {boldNumbers(userDetails.education)}
           </p>
         </div>
+
+        {/* Experience */}
+        <div className={`${!userDetails.experience && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
+          {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
+          <h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
+          <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+            {boldNumbers(userDetails.experience)}
+          </p>
+        </div>
         
         {/* Skills */}
-        <div className={`${!userDetails.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-105 duration-500`}>
+        <div className={`${!userDetails.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
@@ -322,7 +383,7 @@ function GetUserByUsername({params}) {
         </div>
         
         {/* Languages */}
-        <div className={`${!userDetails.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md hover:scale-105 duration-500`}>
+        <div className={`${!userDetails.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
           <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
