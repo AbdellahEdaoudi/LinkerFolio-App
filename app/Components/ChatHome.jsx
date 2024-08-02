@@ -25,9 +25,9 @@ function ChatHome() {
     </p> ;
   }
 
-  const filt = userDetails.find(
-    (fl) => fl.email === user?.emailAddresses[0].emailAddress
-  );
+    const filt = userDetails.find(
+      (fl) => fl.email === user?.emailAddresses[0].emailAddress
+    );
 
   
 

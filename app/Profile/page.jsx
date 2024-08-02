@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import QRCode from "qrcode.react";
 import download from "downloadjs";
 
-import { Link2, MailCheck, PenOff, Phone, Pin, QrCode } from "lucide-react";
+import { Link2, MailCheck, MapPin, PenOff, Phone, Pin, QrCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
@@ -20,6 +20,7 @@ import {
 import { Button } from "@chakra-ui/react";
 import { toast } from "sonner";
 import { MyContext } from "../Context/MyContext";
+import UserLinks from "../[username]/UserLinks";
 
 function ProfilePage() {
   const { user } = useUser();
@@ -169,15 +170,35 @@ function ProfilePage() {
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
                    <span className="text-green-500"><MailCheck width={18} /></span> {user.email}
                  </p>
-                 <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <span className="text-green-700">@</span> {user.username}
+                 <p className="text-gray-600 md:flex items-center justify-center   md:gap-2 mt-1">
+                   <span className="text-green-900">@ {user.username}</span>
+                  <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{user.country}</span>
                  </p>
-                 <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <Pin width={18} style={{ color: "red" }} />{user.country}
-                 </p>
+                 
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
                    <Phone width={18} style={{ color: "blue" }} />{user.phoneNumber}
                  </p>
+                 {/* Business Links */}
+                 <AlertDialog>
+                    <AlertDialogTrigger>
+                    <p  className="text-blue-900 hover:cursor-pointer flex items-center justify-center md:justify-start gap-2 mt-1">
+                    <Link2 width={18}  />Business Links
+                   </p>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogDescription className="overflow-y-auto max-h-96">
+                        {/* UserLinks */}
+                          <UserLinks />
+                        {/* UserLinks */}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                </div>
                
              </div>
@@ -308,7 +329,7 @@ function ProfilePage() {
                <AlertDialogContent>
                  <AlertDialogHeader>
                    <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
-                   <AlertDialogDescription className="bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                    {boldNumbers(dt.data)}
                    </AlertDialogDescription>
                  </AlertDialogHeader>

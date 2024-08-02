@@ -178,6 +178,7 @@ function NameUser({ params }) {
           <i className="fa fa-spinner fa-spin"></i>
         </p>
   }
+  
   if (email !== EmailUser) {
     return (<div className="flex justify-center items-start py-4 h-screen">
       <Image width={600} height={600}

@@ -13,7 +13,7 @@ const CreateProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
-  const EmailUser = user?.emailAddresses[0].emailAddress
+  const EmailUser = user?.emailAddresses[0].emailAddress;
   const {SERVER_URL} = useContext(MyContext);
 
   const postData = async () => {

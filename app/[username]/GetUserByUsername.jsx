@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Link, MailCheck, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
+import { Link, Mail, MailCheck, MapPin, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -18,6 +18,7 @@ import {
 import QRCode from "qrcode.react";
 import download from "downloadjs";
 import { MyContext } from "../Context/MyContext";
+import UserLinks from "./UserLinks";
 
 function GetUserByUsername({params}) {
   const path = usePathname();
@@ -25,7 +26,7 @@ function GetUserByUsername({params}) {
   const [userDetails, setUserDetails] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL} = useContext(MyContext);
+  const {CLIENT_URL,SERVER_URL,userLinks,EmailUser} = useContext(MyContext);
   
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${userDetails.username}`;
@@ -210,25 +211,47 @@ function GetUserByUsername({params}) {
                 </AlertDialog>
                </div>
                <div className="text-center md:text-left">
-                 <h2 className="font-bold text-2xl text-gray-800">{userDetails.fullname}</h2>
-                 <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
+                 <h2 className="font-bold text-2xl text-gray-800">
+                  {userDetails.fullname}
+                 </h2>
+                 <p className="hidden text-gray-600 fle items-center justify-center md:justify-start gap-2 mt-1">
                    <span className="text-green-500"><MailCheck width={18} /></span> {userDetails.email}
                  </p>
-                 <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <span className="text-green-700">@</span> {userDetails.username}
+                 <p className="text-gray-600 md:flex items-center justify-center   md:gap-2 mt-1">
+                   <span className="text-green-900">@ {userDetails.username}</span>
+                  <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{userDetails.country}</span>
                  </p>
+                 
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <Pin width={18} style={{ color: "red" }} />{userDetails.country}
+                   <Phone width={18} style={{ color: "green" }} />{userDetails.phoneNumber}
                  </p>
-                 <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <Phone width={18} style={{ color: "blue" }} />{userDetails.phoneNumber}
-                 </p>
+                 {/* Business Links */}
+                 <AlertDialog>
+                    <AlertDialogTrigger>
+                    <p  className="text-blue-900 hover:cursor-pointer flex items-center justify-center md:justify-start gap-2 mt-1">
+                    <Link width={18}  />Business Links
+                   </p>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogDescription className="overflow-y-auto max-h-96">
+                        {/* UserLinks */}
+                          <UserLinks />
+                        {/* UserLinks */}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                  {/* className={`${userDetails.phoneNumber ? "text-blue-700" : "md:block hidden md:text-white"}`} */}
                  {/* className={`${userDetails.country ? "text-red-700" : " md:block hidden md:text-white"}`} */}
                </div>
              </div>
               {/* Setting  */}
-              <nav className="absolute md:right-12 right-6 top-6 space-y-2">
+              <nav className="grid grid-cols-1 md:grid-cols-2 absolute md:right-24 right-7 top-10 md:gap-5 duration-300 gap-4">
                 {/* CopyLinkProfil */}
                  <button className="rounded-full hover:scale-110 flex justify-center hover:bg-gray-200 border h-10 w-10 p-2  duration-300" 
                   onClick={CopyLinkProfil}
@@ -283,6 +306,11 @@ function GetUserByUsername({params}) {
                     </AlertDialogContent>
                   </AlertDialog>
                  </span>
+                 {/* Email User */}
+                 <span className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  "> 
+                 <a className="hover:scale-105 duration-500 hover:text-green-700" href={`mailto:${userDetails.email}`}><Mail width={23} /></a>
+
+                 </span>
                  {/* messageTo */}
                  <button className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200  "
                     onClick={() => {router.push(`/message/to/${path}`);}}><MessageCircleMore />
@@ -302,7 +330,7 @@ function GetUserByUsername({params}) {
                <AlertDialogContent>
                  <AlertDialogHeader>
                    <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
-                   <AlertDialogDescription className="bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                    {boldNumbers(dt.data)}
                    </AlertDialogDescription>
                  </AlertDialogHeader>
