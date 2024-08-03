@@ -99,7 +99,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                       key={i}
                       onClick={() => {
                         setSelectedUser(User);
-                        router.push(`/message/to/${User.username}`)
+                        // router.push(`/message/to/${User.username}`)
                         localStorage.setItem(
                           "SelectedUser",
                           JSON.stringify(User)
@@ -131,7 +131,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                           layout="fill"
                         />
                       </div>
-                      <div className='flex flex-col'>
+                      <div onClick={()=>router.push(`/message/to/${User.username}`)} className='flex flex-col'>
                       <div  className="cursor-pointer p-4 hover:bg-gray-200">
                         <p className="text-lg">{User.fullname}</p>
                         <p className="text-[10px] text-gray-500">{User.email}</p>
@@ -159,7 +159,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                         key={i}
                         onClick={() => {
                           setSelectedUser(User);
-                          router.push(`/message/to/${selectedUser.username}`)
+                          // router.push(`/message/to/${selectedUser.username}`)
                           localStorage.setItem(
                             "SelectedUser",
                             JSON.stringify(User)
@@ -191,7 +191,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                             layout="fill"
                           />
                         </Link>
-                        <div className="flex flex-col">
+                        <div onClick={()=>router.push(`/message/to/${User.username}`)} className="flex flex-col">
                           <p className="text-lg">{User.fullname}</p>
                           <p className="text-[10px] text-gray-500">
                             {User.email}
