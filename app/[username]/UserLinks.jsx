@@ -35,7 +35,7 @@ function UserLinks({emailuser}) {
                       <AlertDialogHeader>
                         <AlertDialogDescription >
                         {/* UserLinks */}
-                        <section className=' p-4  rounded-lg  text-black'>
+                        <section className=' rounded-lg  text-black'>
                             <h1 className='text-3xl font-semibold  text-center text-gray-800 mb-4'>Links</h1>
                             <div className="p-2 space-y-3 overflow-y-auto scrollbar-non max-h-96">
                             {/* Links */}
@@ -48,11 +48,11 @@ function UserLinks({emailuser}) {
                                userLinks
                                  .filter(fl => fl.useremail === emailuser)
                                  .map((lnk, i) => (
-                                   <a href={lnk.link} target='_blank' key={i} className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-100 pl-4 items-center gap-4 rounded-lg p-2'>
+                                   <a href={lnk.link} target='_blank' key={i} className='  flex border border-gray-300 shadow-md duration-300 hover:bg-gray-100 pl-3 items-center gap-2 rounded-lg p-2'>
                                      <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
                                        <Link />
                                      </p>
-                                     <p className=''>{lnk.namelink}</p>
+                                     <p className='text-sm'>{lnk.namelink}</p>
                                    </a>
                                  ))
                              }

@@ -160,20 +160,20 @@ function EditUserLinks() {
             userLinks
               .filter(fl => fl.useremail === EmailUser)
               .map((lnk, i) => (
-                <div key={i} className='flex justify-between ring-1 items-center mx-10 p-2 border rounded-md'>
+                <div key={i} className='flex justify-between ring-1 items-center  p-2 border rounded-md'>
                   <div className=' flex items-center gap-3'>
                   <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
                      <Link />
                    </p>
-                   <p className=''>{lnk.namelink}</p>
+                   <p className='text-sm'>{lnk.namelink}</p>
                   </div>
-                  <div className='space-x-5'>
+                  <div className=' flex space-x-3'>
                    <button onClick={() =>{EditLink(lnk);window.scrollTo(0, 0);}} 
-                   className='text-blue-500 border p-2 rounded-full ring-1'>
+                   className='text-blue-500 border p-1 rounded-full ring-1'>
                      <Edit3 />
                    </button>
                    <button onClick={() => DeleteLink(lnk._id)} 
-                   className='text-red-500 border p-2 rounded-full ring-1'>
+                   className='text-red-500 border p-1 rounded-full ring-1'>
                      <Trash2 />
                    </button>
                    </div>
