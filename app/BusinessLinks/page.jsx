@@ -7,7 +7,6 @@ import { toast } from "sonner";
 
 function EditUserLinks() {
   const { SERVER_URL, EmailUser, userDetails } = useContext(MyContext);
-  const [user, setUser] = useState("");
   const [userLinks, setUserLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingt, setLoadingt] = useState(false);
@@ -35,12 +34,6 @@ function EditUserLinks() {
     }
   }, [userLinks]);
 
-  useEffect(() => {
-    if (userDetails && userDetails.length > 0) {
-      const filt = userDetails.find(fl => fl.email === EmailUser);
-      setUser(filt);
-    }
-  }, [userDetails, EmailUser]);
 
   const AddLink = async (e) => {
     e.preventDefault();
@@ -116,7 +109,7 @@ function EditUserLinks() {
   };
 
   return (
-    <div className={`${user.bgcolorp} pt-4 pb-96 flex justify-center`}>
+    <div className={`bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 pt-4 pb-96 flex justify-center`}>
       {/* UserLinks */}
       <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800'>
         <div className='flex items-center justify-around mb-4'>
@@ -172,7 +165,7 @@ function EditUserLinks() {
                   <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
                      <Link />
                    </p>
-                   <p className='whitespace-nowrap'>{lnk.namelink}</p>
+                   <p className=''>{lnk.namelink}</p>
                   </div>
                   <div className='space-x-5'>
                    <button onClick={() =>{EditLink(lnk);window.scrollTo(0, 0);}} 

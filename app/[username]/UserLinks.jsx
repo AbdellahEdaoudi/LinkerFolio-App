@@ -52,7 +52,7 @@ function UserLinks({emailuser}) {
                                      <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
                                        <Link />
                                      </p>
-                                     <p className='whitespace-nowrap'>{lnk.namelink}</p>
+                                     <p className=''>{lnk.namelink}</p>
                                    </a>
                                  ))
                              }
