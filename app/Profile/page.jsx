@@ -123,11 +123,11 @@ function ProfilePage() {
   };
 
   return (
-    <div>
+    <div className="">
       {userDetails.filter((fl) => fl.email === EmailUser).map((user, i) => (
           <div
             key={i}
-            className={`flex items-center  justify-center pt-4 pb-96 ${user.bgcolorp}  `}
+            className={`flex items-start  justify-center md:h-auto h-screen  pt-4 pb-96 ${user.bgcolorp}  `}
           >
             <div
               className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`}
@@ -169,16 +169,49 @@ function ProfilePage() {
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
                    <span className="text-green-500"><MailCheck width={18} /></span> {user.email}
                  </p>
-                 <p className="text-gray-600 md:flex items-center justify-center   md:gap-2 mt-1">
+                 <p className="text-gray-600 md:flex items-center justify-center md:justify-start  md:gap-2 mt-1">
                    <span className="text-green-900">@ {user.username}</span>
-                  <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{user.country}</span>
+                   {user.country && 
+                   <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{user.country}</span>
+                     }
                  </p>
-                 
+                 {user.phoneNumber &&
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
                    <Phone width={18} style={{ color: "blue" }} />{user.phoneNumber}
                  </p>
+                 }
+                 
                  {/* Business Links */}
-                 <UserLinks />
+                 <p>
+                  <UserLinks />
+                </p>
+                {/* datasocial */}
+            <div className="my-1">
+                <ul className="flex flex-wrap gap-4 justify-center">
+                  {datasocial.map(
+                    (item, i) =>
+                      user[item.key] && (
+                        <li key={i}>
+                          <a
+                           className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md border shadow-md transition duration-300"
+
+                            href={user[item.key]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Image
+                              src={item.src}
+                              width={25}
+                              height={25}
+                              alt={item.alt}
+                            />
+                            {/* <span className="ml-2 text-gray-800 font-medium">{item.alt}</span> */}
+                          </a>
+                        </li>
+                      )
+                  )}
+                </ul>
+              </div>
                </div>
                
              </div>
@@ -300,7 +333,7 @@ function ProfilePage() {
                  {user.category}
                </p>
                {/* Modul */}
-         <div className="flex flex-wrap gap-2  justify-center">
+         <div className="flex flex-wrap gap-2 mb-2 justify-center">
          {datamodul.map((dt,i)=>{
           return (
             <div key={i} >
@@ -323,41 +356,15 @@ function ProfilePage() {
           )
          })}
          </div>
-         {/* datasocial */}
-         <div className="my-4">
-                <ul className="flex flex-wrap gap-4 justify-center">
-                  {datasocial.map(
-                    (item, i) =>
-                      user[item.key] && (
-                        <li key={i}>
-                          <a
-                           className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md border shadow-md transition duration-300"
-
-                            href={user[item.key]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Image
-                              src={item.src}
-                              width={25}
-                              height={25}
-                              alt={item.alt}
-                            />
-                            <span className="ml-2 text-gray-800 font-medium">{item.alt}</span>
-                          </a>
-                        </li>
-                      )
-                  )}
-                </ul>
-              </div>
+         
               {/* Profile */}
-          {user.bio && (
-        <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
+           {user.bio && (
+           <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
                 {user.bio}
               </p>
-        </div>
+           </div>
           )}
         {/* Services */}
         {user.services && (

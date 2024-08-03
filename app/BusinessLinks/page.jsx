@@ -1,24 +1,20 @@
 'use client';
 import React, { useContext, useState, useEffect } from 'react';
-import { CirclePlus, Link, X } from 'lucide-react';
+import { CirclePlus, Link, X, Edit3, Trash2 } from 'lucide-react';
 import { MyContext } from '../Context/MyContext';
 import axios from 'axios';
 import { toast } from "sonner";
 
 function EditUserLinks() {
-  const { SERVER_URL, EmailUser,userDetails} = useContext(MyContext);
-  const [user,setUser]=useState("")
-  useEffect(()=>{
-    const filt = userDetails.find(fl=>fl.email === EmailUser)
-    setUser(filt)
-  },[])
+  const { SERVER_URL, EmailUser, userDetails } = useContext(MyContext);
+  const [user, setUser] = useState("");
   const [userLinks, setUserLinks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
   const [loadingt, setLoadingt] = useState(false);
   const [namelink, setNamelink] = useState('');
   const [link, setLink] = useState('');
   const [Add, setAdd] = useState(true);
+  const [editLinkId, setEditLinkId] = useState(null);
 
   useEffect(() => {
     axios
@@ -39,6 +35,13 @@ function EditUserLinks() {
     }
   }, [userLinks]);
 
+  useEffect(() => {
+    if (userDetails && userDetails.length > 0) {
+      const filt = userDetails.find(fl => fl.email === EmailUser);
+      setUser(filt);
+    }
+  }, [userDetails, EmailUser]);
+
   const AddLink = async (e) => {
     e.preventDefault();
     setLoadingt(true);
@@ -52,15 +55,64 @@ function EditUserLinks() {
       console.log('Link added:', response.data);
       setUserLinks(Links => [response.data.data, ...Links]);
       toast("Link added successfully!");
-      setTimeout(() => setMessage(""), 2000);
       setLink('');
       setNamelink('');
     } catch (error) {
       console.error('There was an error adding the link!', error);
-      setMessage('Failed to add link.');
+      toast.error('Failed to add link.');
     } finally {
       setLoadingt(false);
     }
+  };
+
+  const UpdateLink = async (e) => {
+    e.preventDefault();
+    setLoadingt(true);
+
+    try {
+      const response = await axios.put(`${SERVER_URL}/links/${editLinkId}`, {
+        namelink,
+        link
+      });
+      console.log('Link updated:', response.data);
+      setUserLinks((Links) =>
+        Links.map((item) =>
+          item._id === editLinkId ? response.data.data : item
+        )
+      );
+      toast("Link updated successfully!");
+      setEditLinkId(null);
+      setLink('');
+      setNamelink('');
+    } catch (error) {
+      console.error('There was an error updating the link!', error);
+      toast.error('Failed to update link.');
+    } finally {
+      setLoadingt(false);
+    }
+  };
+
+  const DeleteLink = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this link?");
+    
+    if (confirmDelete) {
+      try {
+        await axios.delete(`${SERVER_URL}/links/${id}`);
+        setUserLinks((Links) => Links.filter((item) => item._id !== id));
+        toast("Link deleted successfully!");
+      } catch (error) {
+        console.error('There was an error deleting the link!', error);
+        toast.error('Failed to delete the link.');
+      }
+    }
+  };
+  
+
+  const EditLink = (lnk) => {
+    setEditLinkId(lnk._id);
+    setNamelink(lnk.namelink);
+    setLink(lnk.link);
+    setAdd(false);
   };
 
   return (
@@ -73,9 +125,9 @@ function EditUserLinks() {
             {Add ? <CirclePlus /> : <X />}
           </p>
         </div>
-        {/* Add Links */}
+        {/* Add or Update Links */}
         <div className={`${Add ? "opacity-0 max-h-0" : "max-h-48"} overflow-hidden transition-all duration-500 max-w-md mx-auto p-4 bg-white rounded-lg `}>
-          <form onSubmit={AddLink} className="space-y-4">
+          <form onSubmit={editLinkId ? UpdateLink : AddLink} className="space-y-4">
             <div>
               <input
                 type="text"
@@ -101,27 +153,44 @@ function EditUserLinks() {
               type="submit"
               className="w-full bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition duration-300"
             >
-              {loadingt ? <><i className="fa fa-spinner fa-spin"></i></> : "Add Link"}
+              {loadingt ? <><i className="fa fa-spinner fa-spin"></i></> : editLinkId ? "Update" : "Add Link"}
             </button>
           </form>
         </div>
-        {message && <p className="mt-4 text-green-600 text-center">{message}</p>}
         {/* Links */}
-        <div className='p-2 space-y-3'>
+        <div className='p-2 space-y-3 grid grid-cols-1'>
           {loading ? (
-            <p className="flex bg-white justify-center py-28 items-start text-8xl">
+            <p className="flex justify-center py-24 items-start text-8xl">
               <i className="fa fa-spinner fa-spin"></i>
             </p>
           ) :
             userLinks
               .filter(fl => fl.useremail === EmailUser)
               .map((lnk, i) => (
-                <a href={lnk.link} target='_blank' key={i} className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-50 pl-4 items-center gap-4 rounded-lg p-2'>
+                <div key={i} className='flex justify-between ring-1 items-center mx-10 p-2 border rounded-md'>
+                  <div className=' flex items-center gap-3'>
                   <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
-                    <Link />
-                  </p>
-                  <p className='whitespace-nowrap'>{lnk.namelink}</p>
-                </a>
+                     <Link />
+                   </p>
+                   <p className='whitespace-nowrap'>{lnk.namelink}</p>
+                  </div>
+                  <div className='space-x-5'>
+                   <button onClick={() =>{EditLink(lnk);window.scrollTo(0, 0);}} 
+                   className='text-blue-500 border p-2 rounded-full ring-1'>
+                     <Edit3 />
+                   </button>
+                   <button onClick={() => DeleteLink(lnk._id)} 
+                   className='text-red-500 border p-2 rounded-full ring-1'>
+                     <Trash2 />
+                   </button>
+                   </div>
+                   </div>
+                // <div key={i} >
+                //   <div className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-50 pl-4 items-center gap-4 rounded-lg p-2'>
+                //   
+                //   </div>
+                //   
+                // </div>
               ))
           }
         </div>

@@ -176,7 +176,7 @@ function GetUserByUsername({params}) {
     );
   };
   return (
-    <div className={` flex items-center justify-center md:h-auto  pt-4 pb-96 ${userDetails.bgcolorp}`}>
+    <div className={` flex items-start justify-center md:h-auto h-screen  pt-4 pb-96 ${userDetails.bgcolorp}`}>
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
            {/* Image Profile and info user */}
            <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
@@ -217,16 +217,38 @@ function GetUserByUsername({params}) {
                  <p className="hidden text-gray-600 fle items-center justify-center md:justify-start gap-2 mt-1">
                    <span className="text-green-500"><MailCheck width={18} /></span> {userDetails.email}
                  </p>
-                 <p className="text-gray-600 md:flex items-center justify-center   md:gap-2 mt-1">
+                 <p className="text-gray-600 md:flex items-center md:justify-start justify-center   md:gap-2 mt-1">
                    <span className="text-green-900">@ {userDetails.username}</span>
+                   {userDetails.country &&
                   <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{userDetails.country}</span>
+                   }
                  </p>
-                 
+                 {userDetails.phoneNumber &&
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
                    <Phone width={18} style={{ color: "green" }} />{userDetails.phoneNumber}
                  </p>
+                 }
+                 
                  {/* Business Links */}
-                 <UserLinks />
+                 <p>
+                 <UserLinks /> 
+                 </p>
+                 {/* Social Media */}
+                    <div className="flex flex-wrap gap-4 justify-center my-2 ">
+                      {datasocial.filter((social) => social.link)
+                        .map((social, i) => (
+                          <a
+                            key={i}
+                            href={social.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md shadow-md transition duration-300"
+                          >
+                            <Image src={social.icon} alt={social.alt} width={24} height={24} />
+                            {/* <span className="ml-2 text-gray-800 font-medium">{social.alt}</span> */}
+                          </a>
+                        ))}
+                  </div>
                  {/* className={`${userDetails.phoneNumber ? "text-blue-700" : "md:block hidden md:text-white"}`} */}
                  {/* className={`${userDetails.country ? "text-red-700" : " md:block hidden md:text-white"}`} */}
                </div>
@@ -302,7 +324,7 @@ function GetUserByUsername({params}) {
                  {userDetails.category}
          </p>
          {/* Modul */}
-         <div className="flex flex-wrap gap-2  justify-center">
+         <div className="flex flex-wrap gap-2 mb-2 justify-center">
          {datamodul.map((dt,i)=>{
           return (
             <div key={i} >
@@ -325,24 +347,7 @@ function GetUserByUsername({params}) {
           )
          })}
          </div>
-         {/* Social Media */}
-        <div className="my-4">
-          <div className="flex flex-wrap gap-4 justify-center ">
-            {datasocial.filter((social) => social.link)
-              .map((social, i) => (
-                <a
-                  key={i}
-                  href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md shadow-md transition duration-300"
-                >
-                  <Image src={social.icon} alt={social.alt} width={24} height={24} />
-                  <span className="ml-2 text-gray-800 font-medium">{social.alt}</span>
-                </a>
-              ))}
-          </div>
-        </div>
+         
         {/* Profile */}
           {userDetails.bio && (
         <div className="p-4 mt-4 bg-white rounded-lg shadow-md border duration-500 hover:scale-100">

@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { MyContext } from '../Context/MyContext';
 import { Link } from 'lucide-react';
 import {
@@ -14,6 +15,14 @@ import {
 
 function UserLinks() {
   const { userLinks, EmailUser } = useContext(MyContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (userLinks) {
+      setLoading(false);
+    }
+  }, [userLinks]);
+
 
   return (
     <AlertDialog className="bg-black">
@@ -29,15 +38,25 @@ function UserLinks() {
                         <section className=' p-4  rounded-lg  text-black'>
                             <h1 className='text-3xl font-semibold  text-center text-gray-800 mb-4'>Links</h1>
                             <div className="p-2 space-y-3 overflow-y-auto scrollbar-non max-h-96">
-                            {userLinks
-                              .filter(fl => fl.useremail === EmailUser)
-                              .map((lnk, i) => (
-                                <a href={lnk.link} target='_blank' key={i} 
-                                className=' flex border-black shadow-md  duration-300 hover:bg-gray-100 pl-4 items-center gap-4 border rounded-lg p-1 '>
-                                  <p className='p-2  border border-black rounded-full'><Link /></p>
-                                  <p className='whitespace-nowrap'>{lnk.namelink}</p>
-                                </a>
-                              ))}
+                            {/* Links */}
+                           <div className='p-2 space-y-3'>
+                             {loading ? (
+                               <p className="flex bg-white justify-center py-28 items-start text-8xl">
+                                 <i className="fa fa-spinner fa-spin"></i>
+                               </p>
+                             ) :
+                               userLinks
+                                 .filter(fl => fl.useremail === EmailUser)
+                                 .map((lnk, i) => (
+                                   <a href={lnk.link} target='_blank' key={i} className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-100 pl-4 items-center gap-4 rounded-lg p-2'>
+                                     <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
+                                       <Link />
+                                     </p>
+                                     <p className='whitespace-nowrap'>{lnk.namelink}</p>
+                                   </a>
+                                 ))
+                             }
+                           </div>
                           </div>
                           </section>
                         {/* UserLinks */}

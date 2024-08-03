@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -188,12 +189,20 @@ function NameUser({ params }) {
       />
     </div>); 
   }
+  const datamodul = [
+    {name : "🔷 Profile" , state:bio , setState:setBio},
+    {name : "💼 Services" , state:services , setState:setServices},
+    {name : "🎓 Education" , state:education , setState:setEducation},
+    {name : "⭐ Experience" , state:experience , setState:setExperience},
+    {name : "💡 Skills" , state:skills , setState:setSkills},
+    {name : "🌍 Languages" , state:languages , setState:setLanguages},
+  ]
   
   return (
     <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}>
   <form onSubmit={updateProfile}>
     <div className="mx-4  md:w-[800px] px-4 md:px-8 pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
-      
+    
     <div className="flex flex-col md:flex-row items-start justify-between mb-8 space-y-8 md:space-y-0 md:space-x-8">
   {/* Profile Image Section */}
   <div className="flex md:ml-5 flex-col items-center bg-white shadow-xl border border-gray-200 rounded-lg p-6 w-full md:w-1/3">
@@ -277,34 +286,39 @@ function NameUser({ params }) {
     </div>
   </div>
     </div>
-
-<div className="border-b border-gray-300 my-8"></div>
-
-{/* Profile Section */}
-<div className="mb-8">
-<h3 className="text-2xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
-<textarea
-    name="Profile"
-    value={bio}
-    onChange={(e) => setBio(e.target.value)}
-    placeholder="Enter Profile"
-    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-  />
+    {/* Modul */}
+<div className="flex flex-wrap gap-2 mb-2 justify-center">
+  {datamodul.map((dt) => (
+    <div key={dt.name}>
+      <AlertDialog>
+        <AlertDialogTrigger className={`p-2 bg-slate-100 hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}>
+          {dt.name}
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
+            <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50 p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+              <div className="mb-8">
+                <h3 className="text-2xl font-semibold text-indigo-500 mb-2">{dt.name}</h3>
+                <textarea
+                  name={dt.name}
+                  value={dt.state}
+                  onChange={(e) => dt.setState(e.target.value)}
+                  placeholder={`Enter ${(dt.name).split(" ")[1]}`}
+                  className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-gray-100 hover:bg-gray-200 duration-300">Continue</AlertDialogCancel>
+            {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  ))}
 </div>
-
-{/* Services Section */}
-<div className="mb-8">
-<h3 className="text-2xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
-<textarea
-    name="services"
-    value={services}
-    onChange={(e) => setServices(e.target.value)}
-    placeholder="Enter Services"
-    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-  />
-</div>
-
-<div className="border-b border-gray-300 my-8"></div>
 
 {/* Social Media Section */}
 <div className="mb-8">
@@ -334,13 +348,62 @@ function NameUser({ params }) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Save</AlertDialogAction>
+            <AlertDialogAction className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     ))}
   </div>
 </div>
+<div className="border-b border-gray-300 my-8"></div>
+{/* Background Color Selection */}
+<div>
+        <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
+        <h3 className="text-xl font-semibold  mb-2">🏷️ Select Background Color: </h3>
+
+        </label>
+        <div className="grid grid-cols-8 gap-2 pb-2">
+          {bgcolorOptions.map((bg, index) => (
+            <div
+              key={index}
+              className={`p-4 rounded-md shadow-md cursor-pointer ${bg} ${
+                bg === bgcolorp ? "border-2 border-blue-500" : ""
+              }`}
+              onClick={() => setbgcolorp(bg)}
+            ></div>
+          ))}
+        </div>
+      </div>
+      <div className="border-b border-gray-300 my-4"></div>
+
+
+{/* Profile Section */}
+<div className="mb-8">
+<h3 className="text-2xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
+<textarea
+    name="Profile"
+    value={bio}
+    onChange={(e) => setBio(e.target.value)}
+    placeholder="Enter Profile"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+
+{/* Services Section */}
+<div className="mb-8">
+<h3 className="text-2xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
+<textarea
+    name="services"
+    value={services}
+    onChange={(e) => setServices(e.target.value)}
+    placeholder="Enter Services"
+    className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+
+<div className="border-b border-gray-300 my-8"></div>
+
+
 <div className="border-b border-gray-300 my-8"></div>
 {/* Education Section */}
 <div className="mb-8">
@@ -388,30 +451,13 @@ function NameUser({ params }) {
         />
       </div>
       <div className="border-b border-gray-300 my-4"></div>
-      {/* Background Color Selection */}
-      <div>
-        <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
-        <h3 className="text-xl font-semibold  mb-2">🏷️ Select Background Color: </h3>
-
-        </label>
-        <div className="grid grid-cols-8 gap-2 pb-2">
-          {bgcolorOptions.map((bg, index) => (
-            <div
-              key={index}
-              className={`p-4 rounded-md shadow-md cursor-pointer ${bg} ${
-                bg === bgcolorp ? "border-2 border-blue-500" : ""
-              }`}
-              onClick={() => setbgcolorp(bg)}
-            ></div>
-          ))}
-        </div>
-      </div>
+      
 
       {/* Submit Button */}
       <button
         disabled={loading}
         type="submit"
-        className="flex items-center justify-center gap-2 bg-gray-800 text-white px-5 py-3 rounded-lg text-[14px] float-right"
+        className="flex items-center justify-center mb-2 gap-2 bg-gray-800 text-white px-5 py-3 rounded-lg text-[14px] float-right"
       >
         {loading ? (
           <>
@@ -421,7 +467,6 @@ function NameUser({ params }) {
           "Save"
         )}
       </button>
-
       {/* Error Message */}
       {errorMessage && (
         <div className="text-red-600 mt-4">
