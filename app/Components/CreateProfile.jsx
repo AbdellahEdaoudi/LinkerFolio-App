@@ -23,7 +23,7 @@ const CreateProfile = () => {
         fullname: user?.fullName || '',
         email: EmailUser|| '',
         username: username,
-        phoneNumber: "+000000000000",
+        phoneNumber: "",
         country: '',
         urlimage: user?.imageUrl || '',
         bio: '',
