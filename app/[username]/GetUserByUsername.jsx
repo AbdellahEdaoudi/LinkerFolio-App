@@ -175,6 +175,7 @@ function GetUserByUsername({params}) {
       /\d+|:/.test(part) ? <span key={index} className="text-black font-bold">{part}</span> : part
     );
   };
+  const emailuser =userDetails.email
   return (
     <div className={` flex items-start justify-center md:h-auto h-screen  pt-4 pb-96 ${userDetails.bgcolorp}`}>
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
@@ -231,7 +232,7 @@ function GetUserByUsername({params}) {
                  
                  {/* Business Links */}
                  <p>
-                 <UserLinks /> 
+                 <UserLinks emailuser={emailuser}  /> 
                  </p>
                  {/* Social Media */}
                     <div className="flex flex-wrap gap-4 justify-center my-2 ">

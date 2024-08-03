@@ -13,7 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-function UserLinks() {
+function UserLinks({emailuser}) {
   const { userLinks, EmailUser } = useContext(MyContext);
   const [loading, setLoading] = useState(true);
 
@@ -40,26 +40,22 @@ function UserLinks() {
                             <div className="p-2 space-y-3 overflow-y-auto scrollbar-non max-h-96">
                             {/* Links */}
                            <div className='p-2 space-y-3'>
-                           {loading ? (
-                              <p className="flex bg-white justify-center py-28 items-start text-8xl">
-                                <i className="fa fa-spinner fa-spin"></i>
-                              </p>
-                            ) : userLinks.length === 0 ? (
-                              <p className="flex bg-white justify-center py-28 items-start text-xl">
-                                No links available
-                              </p>
-                            ) : (
-                              userLinks
-                                .filter(fl => fl.useremail === EmailUser)
-                                .map((lnk, i) => (
-                                  <a href={lnk.link} target='_blank' rel='noopener noreferrer' key={i} className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-100 pl-4 items-center gap-4 rounded-lg p-2'>
-                                    <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
-                                      <Link />
-                                    </p>
-                                    <p className='whitespace-nowrap'>{lnk.namelink}</p>
-                                  </a>
-                                ))
-                            )}
+                             {loading ? (
+                               <p className="flex bg-white justify-center py-28 items-start text-8xl">
+                                 <i className="fa fa-spinner fa-spin"></i>
+                               </p>
+                             ) :
+                               userLinks
+                                 .filter(fl => fl.useremail === emailuser)
+                                 .map((lnk, i) => (
+                                   <a href={lnk.link} target='_blank' key={i} className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-100 pl-4 items-center gap-4 rounded-lg p-2'>
+                                     <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
+                                       <Link />
+                                     </p>
+                                     <p className='whitespace-nowrap'>{lnk.namelink}</p>
+                                   </a>
+                                 ))
+                             }
                            </div>
                           </div>
                           </section>

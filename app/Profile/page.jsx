@@ -183,7 +183,7 @@ function ProfilePage() {
                  
                  {/* Business Links */}
                  <p>
-                  <UserLinks />
+                  <UserLinks emailuser={user.email} />
                 </p>
                 {/* datasocial */}
             <div className="my-1">
