@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { MyContext } from '../Context/MyContext';
-import { Link } from 'lucide-react';
+import { Link} from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-function UserLinks() {
+function EditUserLinks() {
   const { userLinks, EmailUser } = useContext(MyContext);
 
   return (
@@ -52,4 +52,4 @@ function UserLinks() {
   );
 }
 
-export default UserLinks;
+export default EditUserLinks;

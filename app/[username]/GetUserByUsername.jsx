@@ -226,26 +226,7 @@ function GetUserByUsername({params}) {
                    <Phone width={18} style={{ color: "green" }} />{userDetails.phoneNumber}
                  </p>
                  {/* Business Links */}
-                 <AlertDialog>
-                    <AlertDialogTrigger>
-                    <p  className="text-blue-900 hover:cursor-pointer flex items-center justify-center md:justify-start gap-2 mt-1">
-                    <Link width={18}  />Business Links
-                   </p>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogDescription className="overflow-y-auto max-h-96">
-                        {/* UserLinks */}
-                          <UserLinks />
-                        {/* UserLinks */}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        {/* <AlertDialogAction>Continue</AlertDialogAction> */}
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                 <UserLinks />
                  {/* className={`${userDetails.phoneNumber ? "text-blue-700" : "md:block hidden md:text-white"}`} */}
                  {/* className={`${userDetails.country ? "text-red-700" : " md:block hidden md:text-white"}`} */}
                </div>
@@ -330,7 +311,7 @@ function GetUserByUsername({params}) {
                <AlertDialogContent>
                  <AlertDialogHeader>
                    <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
-                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                    {boldNumbers(dt.data)}
                    </AlertDialogDescription>
                  </AlertDialogHeader>

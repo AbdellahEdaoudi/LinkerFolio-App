@@ -27,7 +27,6 @@ function ProfilePage() {
   const EmailUser = user?.emailAddresses[0]?.emailAddress ;
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,userDetails} = useContext(MyContext);
-  const FiltUser = userDetails.find((fl) => fl.email === EmailUser)
   const [filtUser, setFiltUser] = useState(null);
   
   useEffect(() => {
@@ -179,26 +178,7 @@ function ProfilePage() {
                    <Phone width={18} style={{ color: "blue" }} />{user.phoneNumber}
                  </p>
                  {/* Business Links */}
-                 <AlertDialog>
-                    <AlertDialogTrigger>
-                    <p  className="text-blue-900 hover:cursor-pointer flex items-center justify-center md:justify-start gap-2 mt-1">
-                    <Link2 width={18}  />Business Links
-                   </p>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogDescription className="overflow-y-auto max-h-96">
-                        {/* UserLinks */}
-                          <UserLinks />
-                        {/* UserLinks */}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        {/* <AlertDialogAction>Continue</AlertDialogAction> */}
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                 <UserLinks />
                </div>
                
              </div>
@@ -325,11 +305,11 @@ function ProfilePage() {
           return (
             <div key={i} >
               <AlertDialog>
-               <AlertDialogTrigger className={`p-2 ${!dt.data && "hidden"} bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}>{dt.name}</AlertDialogTrigger>
+               <AlertDialogTrigger className={`p-2 ${!dt.data && "hidden"} bg-slate-100  hover:bg-slate-200  duration-300 rounded-lg border-2`}>{dt.name}</AlertDialogTrigger>
                <AlertDialogContent>
                  <AlertDialogHeader>
                    <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
-                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-1 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                    {boldNumbers(dt.data)}
                    </AlertDialogDescription>
                  </AlertDialogHeader>

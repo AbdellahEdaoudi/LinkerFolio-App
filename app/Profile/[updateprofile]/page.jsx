@@ -325,7 +325,7 @@ function NameUser({ params }) {
             </AlertDialogTitle>
             <AlertDialogDescription>
               <input
-                type="text"
+                type="url"
                 value={item.state}
                 onChange={(e) => item.setState(e.target.value)}
                 placeholder={item.placeholder}

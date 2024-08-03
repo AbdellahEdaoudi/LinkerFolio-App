@@ -10,10 +10,10 @@ export const MyProvider = ({ children }) => {
   const {user}=useUser()
   const EmailUser = user?.emailAddresses[0].emailAddress;
 
-  const CLIENT_URL = "http://localhost:3000";
-  const SERVER_URL = "http://localhost:9999";
-  //  const CLIENT_URL = "https://chatfloww.vercel.app";
-  // const SERVER_URL = "https://socketserver-muhp.onrender.com";
+  // const CLIENT_URL = "http://localhost:3000";
+  // const SERVER_URL = "http://localhost:9999";
+   const CLIENT_URL = "https://chatfloww.vercel.app";
+  const SERVER_URL = "https://socketserver-muhp.onrender.com";
   //  const SERVER_URL = "https://saas-app-api.vercel.app";
 
    // Get Users
@@ -40,7 +40,7 @@ export const MyProvider = ({ children }) => {
   }, [SERVER_URL]);
 
   return (
-    <MyContext.Provider value={{CLIENT_URL,SERVER_URL,userDetails,userLinks,EmailUser}}>
+    <MyContext.Provider value={{CLIENT_URL,SERVER_URL,userDetails,userLinks,setUserLinks,EmailUser}}>
       {children}
     </MyContext.Provider>
   );
