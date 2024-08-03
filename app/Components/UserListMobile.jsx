@@ -95,11 +95,11 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                         .includes(searchQuery.toLowerCase())
                   )
                   .map((User, i) => (
-                    <Link
-                      href={`/message/to/${User.username}`}
+                    <div
                       key={i}
                       onClick={() => {
                         setSelectedUser(User);
+                        router.push(`/message/to/${User.username}`)
                         localStorage.setItem(
                           "SelectedUser",
                           JSON.stringify(User)
@@ -137,7 +137,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                         <p className="text-[10px] text-gray-500">{User.email}</p>
                       </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 {/* User ilya message */}
                 {userEmail &&
