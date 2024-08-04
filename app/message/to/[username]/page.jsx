@@ -31,7 +31,8 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {SERVER_URL,userDetails} = useContext(MyContext);
+  const {SERVER_URL,userDetails,EmailUser} = useContext(MyContext);
+  const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
 
 
   useEffect(() => {
@@ -96,8 +97,9 @@ function UserProfile({ params }) {
     setLoading(true);
     try {
       const data = {
-        from: user.emailAddresses[0].emailAddress,
-        fromimg: user.imageUrl,
+        from: EmailUser,
+        fromimg: filtUser.urlimage,
+        fromname:filtUser.username,
         to: userDname.email,
         toimg: userDname.urlimage,
         message: messageInput,
@@ -256,10 +258,10 @@ function UserProfile({ params }) {
               messages
                 .filter((fl) => {
                   return (
-                    (fl.from === user?.emailAddresses[0]?.emailAddress &&
+                    (fl.from === EmailUser &&
                       fl.to === userDname.email) ||
                     (fl.from === userDname.email &&
-                      fl.to === user?.emailAddresses[0]?.emailAddress)
+                      fl.to === EmailUser)
                   );
                 })
                 .map((msg, i) => {
@@ -295,25 +297,24 @@ function UserProfile({ params }) {
                     <div key={i}>
                         <div
                           className={`${
-                            (msg.from || msg.to) ===
-                            user.emailAddresses[0].emailAddress
+                            (msg.from || msg.to) === EmailUser
                               ? "flex items-center flex-row-reverse gap-2"
                               : "flex items-center  gap-2"
                           }`}
                         >
-                          <Link
-                            href={`/${filtUser?.username}`}
+                          <div
+                            onClick={()=>router.push(`/${filtUser?.username}`)}
+                            className="flex-shrink-0"
                           >
                             <Image alt="Logo"
                               src={msg.fromimg}
                               width={40} height={40}
                               className="hover:scale-105 duration-300 rounded-full"
                             />
-                          </Link>
+                          </div>
                           <p
                             className={`whitespace-pre-wrap break-all  ${
-                              (msg.from || msg.to) ===
-                              user.emailAddresses[0].emailAddress
+                              (msg.from || msg.to) === EmailUser
                                 ? "bg-sky-500"
                                 : "bg-green-500"
                             } p-2  rounded-md`}
@@ -328,8 +329,7 @@ function UserProfile({ params }) {
                             }}
                             className={`cursor-pointer
                           ${
-                            (msg.from || msg.to) ===
-                            user.emailAddresses[0].emailAddress
+                            (msg.from || msg.to) === EmailUser
                               ? "block"
                               : "hidden"
                           }`}
@@ -340,8 +340,7 @@ function UserProfile({ params }) {
                       <span
                         className={`
                           ${
-                            (msg.from || msg.to) ===
-                            user.emailAddresses[0].emailAddress
+                            (msg.from || msg.to) === EmailUser
                               ? "text-right text-[10px] flex justify-end mr-14"
                               : "text-left  text-[10px] flex justify-start ml-14"
                           }`}
@@ -351,8 +350,7 @@ function UserProfile({ params }) {
                       </span>
                       <span
                         className={` flex gap-2 mb-1  ${
-                          (msg.from || msg.to) ===
-                          user.emailAddresses[0].emailAddress
+                          (msg.from || msg.to) === EmailUser
                             ? "justify-end mr-14 "
                             : " ml-14"
                         }  text-sm`}

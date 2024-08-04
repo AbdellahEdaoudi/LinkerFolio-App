@@ -18,7 +18,7 @@ export const MyProvider = ({ children }) => {
   // const SERVER_URL = "http://localhost:9999";
    const CLIENT_URL = "https://chatfloww.vercel.app";
    const SERVER_URL = "https://socketserver-muhp.onrender.com";
-  //  const SERVER_URL = "https://saas-app-api.vercel.app";
+   const SERVER_URL_V = "https://saas-app-api.vercel.app";
 
   // Initialize Socket.io
   const socket = io(SERVER_URL, {
@@ -58,14 +58,14 @@ export const MyProvider = ({ children }) => {
   // Fetch initial data
   useEffect(() => {
     axios
-      .get(`${SERVER_URL}/users`)
+      .get(`${SERVER_URL_V}/users`)
       .then((res) => {
         setUserDetails(res.data);
       })
       .catch((error) => {
         console.error("Error fetching user details:", error);
       });
-  }, [SERVER_URL]);
+  }, [SERVER_URL_V]);
     
   useEffect(() => {
     const getMessages = async () => {
@@ -82,14 +82,14 @@ export const MyProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${SERVER_URL}/links`)
+      .get(`${SERVER_URL_V}/links`)
       .then((res) => {
         setUserLinks(res.data);
       })
       .catch((error) => {
         console.error("Error fetching user details:", error);
       });
-  }, [SERVER_URL]);
+  }, [SERVER_URL_V]);
 
   const Notification = messages.filter(
     (fl) => fl.to === EmailUser && fl.from !== EmailUser
@@ -105,6 +105,8 @@ export const MyProvider = ({ children }) => {
         setUserLinks,
         EmailUser,
         Notification,
+        SERVER_URL_V,
+        messages,
       }}
     >
       {children}

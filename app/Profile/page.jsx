@@ -127,7 +127,7 @@ function ProfilePage() {
       {userDetails.filter((fl) => fl.email === EmailUser).map((user, i) => (
           <div
             key={i}
-            className={`flex items-start  justify-center md:h-auto h-screen  pt-4 pb-96 ${user.bgcolorp}  `}
+            className={`flex items-start  justify-center   pt-4 pb-96 ${user.bgcolorp}  `}
           >
             <div
               className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`}

@@ -21,8 +21,7 @@ function Navbar() {
   const [notification, setNotification] = useState(true);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const {userDetails,Notification} = useContext(MyContext);
-  // const {SERVER_URL} = useContext(MyContext);
+  const {userDetails,Notification,EmailUser} = useContext(MyContext);
 
 
 
@@ -34,7 +33,7 @@ function Navbar() {
   }, []);
 
   const filt = userDetails.filter(
-    (fl) => fl.email === user?.emailAddresses[0].emailAddress
+    (fl) => fl.email === EmailUser
   );
 
   return (
@@ -56,7 +55,7 @@ function Navbar() {
             <SignedIn>
               {user ? (
                 filt.map((userr, i) => (
-                    <div key={i} className="flex items-center gap-2">
+                    <div key={i} className="flex items-center gap-3">
                       <UserButton />
                       <span
                         onClick={() => {
@@ -68,6 +67,23 @@ function Navbar() {
                       >
                         {userr.fullname}
                       </span>
+                      {/* Icon Notification */}
+                      <div onClick={() => {
+                        setNotification(!notification);
+                        setSetting(true)
+                      }} className="relative flex items-center">
+                      <span 
+                      className="text-black cursor-pointer ml-2 relative">
+                      <Bell />
+                      </span>
+                      <div onClick={() => {
+                        setNotification(!notification);
+                        setSetting(true)
+                      }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
+                       {Notification.length}
+                      </div>
+                      </div>
+                      {/* Icon Settings */}
                       <span
                         onClick={() => {
                           setSetting(!setting);
@@ -77,20 +93,6 @@ function Navbar() {
                       >
                         <Settings />
                       </span>
-                      {/* Icon Notification */}
-                      <div className="relative flex items-center">
-                      <span 
-                       onClick={() => {
-                        setNotification(!notification);
-                        setSetting(true)
-                      }}
-                      className="text-black cursor-pointer ml-2 relative">
-                      <Bell />
-                      </span>
-                      <div className=" w-6 h-4 text-[12px] flex items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {Notification.length}
-                      </div>
-                      </div>
                     </div>
                   ))
               ) : (

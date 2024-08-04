@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
@@ -14,6 +14,7 @@ import io from "socket.io-client";
 import { EllipsisVertical} from "lucide-react";
 import Linkify from "linkify-react";
 import { MyContext } from "../Context/MyContext";
+import { useRouter } from "next/navigation";
 
 function Messages({ selectedUser }) {
   const { toast } = useToast();
@@ -32,6 +33,7 @@ function Messages({ selectedUser }) {
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
   const {SERVER_URL,userDetails,EmailUser} = useContext(MyContext);
   const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -45,6 +47,7 @@ function Messages({ selectedUser }) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   }, [messages,selectedUser]);
+
   // Get Messages
   useEffect(() => {
     const getMessages = async () => {
@@ -176,6 +179,14 @@ function Messages({ selectedUser }) {
   if (!selectedUser) {
     return <div></div>;
   }
+  const FilterMessages = messages.filter((fl) => {
+    return (
+      (fl.from === EmailUser &&
+        fl.to === selectedUser.email) ||
+      (fl.from === selectedUser.email &&
+        fl.to === EmailUser)
+    );
+  })
   return (
     <div>
       {/* Message window on the right */}
@@ -250,15 +261,7 @@ function Messages({ selectedUser }) {
                 </div>
               </div>
             ) : (
-              messages
-                .filter((fl) => {
-                  return (
-                    (fl.from === EmailUser &&
-                      fl.to === selectedUser.email) ||
-                    (fl.from === selectedUser.email &&
-                      fl.to === EmailUser)
-                  );
-                })
+              FilterMessages
                 .map((msg, i) => {
                   const DateMsg = new Date(msg.createdAt);
                   const DateUpdMsg = new Date(msg.updatedAt);
@@ -298,25 +301,27 @@ function Messages({ selectedUser }) {
                           }`}
                         >
                           {/* Logo */}
-                          <Link
-                            href={`/${filtUser?.username}`}
+                          <div  
+                            className="flex-shrink-0"
+                            onClick={()=>router.push(`/${filtUser?.username}`)}
                           >
                             <Image alt="Logo"
                               src={msg.fromimg}
                               width={40} height={40}
-                              className="hover:scale-105  duration-300 rounded-full"
+                              className=" hover:scale-105 cursor-pointer  duration-300 rounded-full"
                             />
-                          </Link>
+                          </div>
                           {/* Msg */}
                           <div
-                            className={`whitespace-pre-wrap break-all w-9/12 ${
+                            className={`whitespace-pre-wrap break-all  ${
                               (msg.from || msg.to) === EmailUser
                                 ? "bg-sky-500"
                                 : "bg-green-500"
-                            } p-2  rounded-md`}
+                            } p-2  rounded-md `}
                           >
                             <Linkify>{msg.message}</Linkify>
                           </div>
+                          {/* Icon 3 point */}
                           <p
                             onClick={() => {
                               setUMessage(msg.message);
@@ -325,8 +330,7 @@ function Messages({ selectedUser }) {
                             }}
                             className={`cursor-pointer
                           ${
-                            (msg.from || msg.to) ===
-                            user.emailAddresses[0].emailAddress
+                            (msg.from || msg.to) === EmailUser
                               ? "block"
                               : "hidden"
                           }`}
@@ -337,8 +341,7 @@ function Messages({ selectedUser }) {
                       <span
                         className={`
                           ${
-                            (msg.from || msg.to) ===
-                            user.emailAddresses[0].emailAddress
+                            (msg.from || msg.to) === EmailUser
                               ? "text-right text-[10px] flex justify-end mr-14"
                               : "text-left  text-[10px] flex justify-start ml-14"
                           }`}
@@ -348,8 +351,7 @@ function Messages({ selectedUser }) {
                       </span>
                       <span
                         className={` flex gap-2 mb-1  ${
-                          (msg.from || msg.to) ===
-                          user.emailAddresses[0].emailAddress
+                          (msg.from || msg.to) === EmailUser
                             ? "justify-end mr-14 "
                             : " ml-14"
                         }  text-sm`}
