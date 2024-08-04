@@ -21,7 +21,7 @@ function ChatHome() {
 
   if (!userDetails) {
     return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
-    <i className="fa fa-spinner fa-spin "></i>
+    <i className="fa fa-spinner fa-spin "></i> 
     </p> ;
   }
 
@@ -62,7 +62,7 @@ function ChatHome() {
       </div>
     </div>
     : 
-    <CreateProfile />}
+    <CreateProfile userDetails={userDetails} />}
     </div>
   );
 }

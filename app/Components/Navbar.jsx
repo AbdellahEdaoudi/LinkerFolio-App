@@ -7,7 +7,7 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import {Settings } from "lucide-react";
+import {Bell, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,9 +18,10 @@ import { MyContext } from "../Context/MyContext";
 function Navbar() {
   const { user } = useUser();
   const [setting, setSetting] = useState(true);
+  const [notification, setNotification] = useState(true);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const {userDetails} = useContext(MyContext);
+  const {userDetails,Notification} = useContext(MyContext);
   // const {SERVER_URL} = useContext(MyContext);
 
 
@@ -59,6 +60,8 @@ function Navbar() {
                       <UserButton />
                       <span
                         onClick={() => {
+                          setSetting(true);
+                          setNotification(true)
                           router.push(`/${userr.username}`);
                         }}
                         className="font-medium hidden  md:block text-black cursor-pointer hover:scale-105 transition duration-300"
@@ -68,11 +71,26 @@ function Navbar() {
                       <span
                         onClick={() => {
                           setSetting(!setting);
+                          setNotification(true)
                         }}
                         className="text-gray-800 hover:scale-105 duration-300 cursor-pointer"
                       >
                         <Settings />
                       </span>
+                      {/* Icon Notification */}
+                      <div className="relative flex items-center">
+                      <span 
+                       onClick={() => {
+                        setNotification(!notification);
+                        setSetting(true)
+                      }}
+                      className="text-black cursor-pointer ml-2 relative">
+                      <Bell />
+                      </span>
+                      <div className=" w-6 h-4 text-[12px] flex items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
+                       {Notification.length}
+                      </div>
+                      </div>
                     </div>
                   ))
               ) : (
@@ -122,6 +140,81 @@ function Navbar() {
               </Link>
               <SignOutButton  className="bg-red-500 py-2 border-b border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" />
       </nav>
+      {/* notification */}
+<nav
+  onClick={() => {
+    setNotification(!notification);
+  }}
+  className={`overflow-hidden transition-all overflow-y-auto duration-500 text-white bg-gray-800 rounded-md w-96 right-2 container absolute flex flex-col ${
+    notification ? "max-h-0" : "max-h-60 p-4"
+  }`}
+>
+  {Notification.length > 0 ? (
+    Notification.map((nt, i) => {
+      const DateMsg = new Date(nt.createdAt);
+      const DateToday = new Date();
+      
+      // Date Message
+      const year = DateMsg.getFullYear();
+      const month = String(DateMsg.getMonth() + 1).padStart(2, "0"); 
+      const day = String(DateMsg.getDate()).padStart(2, "0");
+      const DateAll = `${year}/${month}/${day}`;
+      
+      // Date Today
+      const yeart = DateToday.getFullYear();
+      const montht = String(DateToday.getMonth() + 1).padStart(2, "0"); 
+      const dayt = String(DateToday.getDate()).padStart(2, "0");
+      const TodayDate = `${yeart}/${montht}/${dayt}`;
+      
+      // Date Yesterday
+      const yeary = DateToday.getFullYear();
+      const monthy = String(DateToday.getMonth() + 1).padStart(2, "0"); 
+      const dayy = String(DateToday.getDate() - 1).padStart(2, "0");
+      const YesterdayDate = `${yeary}/${monthy}/${dayy}`;
+      
+      // Determine display date
+      let displayDate = "";
+      if (DateAll === TodayDate) {
+        displayDate = "Today";
+      } else if (DateAll === YesterdayDate) {
+        displayDate = "Yesterday";
+      } else {
+        displayDate = DateAll;
+      }
+
+      return (
+        <div
+        onClick={()=>{router.push(`/${nt.fromname}`)}}
+          key={i}
+          className="flex cursor-pointer hover:scale-105 duration-300 items-center p-2 mb-2 bg-gray-700 rounded-md shadow-md"
+        >
+          <Image width={40} height={40}
+            src={nt.fromimg}
+            alt="Sender Image"
+            className="w-10 h-10 rounded-full mr-3"
+          />
+          <div>
+            <nav className="flex gap-2 items-center">
+            <h4 className="">{(nt.from).split("@")[0]}</h4>
+            <div className="flex gap-1 text-[10px]">
+            <p className="text-gray-300">{displayDate}</p>
+            <p className="text-gray-300">
+              {DateMsg.toLocaleTimeString()}
+            </p>
+            </div>
+            </nav>
+            <p className="text-sm text-gray-400 font-bold">{nt.message}</p>
+            
+          </div>
+        </div>
+      );
+    })
+  ) : (
+    <p className="text-center text-sm text-gray-400">No notifications</p>
+  )}
+</nav>
+
+
     </div>
   );
 }

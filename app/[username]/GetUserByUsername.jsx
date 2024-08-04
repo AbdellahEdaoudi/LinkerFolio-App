@@ -181,16 +181,18 @@ function GetUserByUsername({params}) {
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
            {/* Image Profile and info user */}
            <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
-               <div className="border-4  border-green-600 shadow-lg w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
+               <div>
                  <AlertDialog>
                   <AlertDialogTrigger>
+                    <div className="border-4  border-green-600 shadow-lg  rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
                    <Image
-                     width={96}
-                     height={96}
+                     width={136}
+                     height={0}
                      src={userDetails.urlimage}
                      alt="Profile Image"
                      className="object-cover cursor-pointer"
-                   />
+                     />
+                     </div>
                   </AlertDialogTrigger>
                   <AlertDialogContent >
                     <AlertDialogHeader>

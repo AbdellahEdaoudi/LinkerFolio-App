@@ -134,18 +134,20 @@ function ProfilePage() {
             >
               {/* Image Profile and info user */}
              <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
-               <div className="border-4 border-green-600 w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
-               <AlertDialog>
+               <div>
+                 <AlertDialog>
                   <AlertDialogTrigger>
+                    <div className="border-4  border-green-600 shadow-lg  rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
                    <Image
-                     width={96}
-                     height={96}
+                     width={136}
+                     height={0}
                      src={user.urlimage}
                      alt="Profile Image"
                      className="object-cover cursor-pointer"
-                   />
+                     />
+                     </div>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent >
                     <AlertDialogHeader>
                       <AlertDialogDescription className="flex justify-center">
                                 <Image
@@ -158,7 +160,7 @@ function ProfilePage() {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel className="bg-gray-100 hover:bg-gray-200 duration-300 hover:scale-105">Cancel</AlertDialogCancel>
                       {/* <AlertDialogAction>Continue</AlertDialogAction> */}
                     </AlertDialogFooter>
                   </AlertDialogContent>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
 
-const CreateProfile = () => {
+const CreateProfile = ({userDetails}) => {
   const { user } = useUser();
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -65,7 +65,7 @@ const CreateProfile = () => {
     }
   };
 
-  if (!user) {
+  if (!user && userDetails) {
     return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
     <i className="fa fa-spinner fa-spin "></i>
     </p> ;

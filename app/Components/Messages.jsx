@@ -30,9 +30,7 @@ function Messages({ selectedUser }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
-  const EmailUser = user.emailAddresses[0].emailAddress
-  const {SERVER_URL} = useContext(MyContext);
-  const {userDetails} = useContext(MyContext);
+  const {SERVER_URL,userDetails,EmailUser} = useContext(MyContext);
   const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
 
 
@@ -107,6 +105,7 @@ function Messages({ selectedUser }) {
       const data = {
         from: EmailUser,
         fromimg: filtUser.urlimage,
+        fromname:filtUser.username,
         to: selectedUser.email,
         toimg: selectedUser.urlimage,
         message: messageInput,
@@ -254,10 +253,10 @@ function Messages({ selectedUser }) {
               messages
                 .filter((fl) => {
                   return (
-                    (fl.from === user?.emailAddresses[0]?.emailAddress &&
+                    (fl.from === EmailUser &&
                       fl.to === selectedUser.email) ||
                     (fl.from === selectedUser.email &&
-                      fl.to === user?.emailAddresses[0]?.emailAddress)
+                      fl.to === EmailUser)
                   );
                 })
                 .map((msg, i) => {
@@ -293,31 +292,31 @@ function Messages({ selectedUser }) {
                     <div key={i}>
                         <div
                           className={`${
-                            (msg.from || msg.to) ===
-                            user.emailAddresses[0].emailAddress
+                            (msg.from || msg.to) === EmailUser
                               ? "flex items-center flex-row-reverse gap-2"
                               : "flex items-center  gap-2"
                           }`}
                         >
+                          {/* Logo */}
                           <Link
                             href={`/${filtUser?.username}`}
                           >
                             <Image alt="Logo"
                               src={msg.fromimg}
                               width={40} height={40}
-                              className="hover:scale-105 duration-300 rounded-full"
+                              className="hover:scale-105  duration-300 rounded-full"
                             />
                           </Link>
-                          <p
-                            className={`whitespace-pre-wrap break-all  ${
-                              (msg.from || msg.to) ===
-                              user.emailAddresses[0].emailAddress
+                          {/* Msg */}
+                          <div
+                            className={`whitespace-pre-wrap break-all w-9/12 ${
+                              (msg.from || msg.to) === EmailUser
                                 ? "bg-sky-500"
                                 : "bg-green-500"
                             } p-2  rounded-md`}
                           >
                             <Linkify>{msg.message}</Linkify>
-                          </p>
+                          </div>
                           <p
                             onClick={() => {
                               setUMessage(msg.message);
