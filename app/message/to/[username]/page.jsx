@@ -14,6 +14,7 @@ import io from 'socket.io-client';
 import { EllipsisVertical } from "lucide-react";
 import { MyContext } from "@/app/Context/MyContext";
 import Linkify from "linkify-react";
+import { useRouter } from "next/navigation";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
@@ -33,6 +34,7 @@ function UserProfile({ params }) {
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
   const {SERVER_URL,userDetails,EmailUser} = useContext(MyContext);
   const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -309,7 +311,7 @@ function UserProfile({ params }) {
                             <Image alt="Logo"
                               src={msg.fromimg}
                               width={40} height={40}
-                              className="hover:scale-105 duration-300 rounded-full"
+                              className="hover:scale-105 cursor-pointer duration-300 rounded-full"
                             />
                           </div>
                           <p
