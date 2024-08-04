@@ -1,7 +1,7 @@
 "use client"
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 
 export const MyContext = createContext();
@@ -10,9 +10,9 @@ export const MyProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState([]);
   const [userLinks, setUserLinks] = useState([]);
   const [messages, setMessages] = useState([]);
-
   const { user } = useUser();
   const EmailUser = user?.emailAddresses[0].emailAddress;
+  const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
 
   // const CLIENT_URL = "http://localhost:3000";
   // const SERVER_URL = "http://localhost:9999";
@@ -25,6 +25,8 @@ export const MyProvider = ({ children }) => {
     transports: ['websocket'],
     reconnection: true,
   });
+
+  const audioRef = useRef(null);
 
   useEffect(() => {
     // Connect to Socket.io
@@ -79,7 +81,7 @@ export const MyProvider = ({ children }) => {
 
     getMessages();
   }, [SERVER_URL]);
-
+  // links
   useEffect(() => {
     axios
       .get(`${SERVER_URL_V}/links`)
@@ -94,6 +96,14 @@ export const MyProvider = ({ children }) => {
   const Notification = messages.filter(
     (fl) => fl.to === EmailUser && fl.from !== EmailUser
   );
+  useEffect(() => {
+    if (Notification.length > previousNotificationCount) {
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+    }
+    setPreviousNotificationCount(Notification.length);
+  }, [Notification.length, previousNotificationCount]);
 
   return (
     <MyContext.Provider
@@ -109,6 +119,7 @@ export const MyProvider = ({ children }) => {
         messages,
       }}
     >
+      <audio ref={audioRef} src="/notification.mp3" preload="auto" />
       {children}
     </MyContext.Provider>
   );
