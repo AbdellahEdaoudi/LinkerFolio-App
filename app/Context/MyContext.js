@@ -119,7 +119,7 @@ export const MyProvider = ({ children }) => {
         messages,
       }}
     >
-      <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+      <audio ref={audioRef} src="/notification2.mp3" preload="auto" />
       {children}
     </MyContext.Provider>
   );
