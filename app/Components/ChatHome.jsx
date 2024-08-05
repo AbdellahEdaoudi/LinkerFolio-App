@@ -2,14 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Messages from "./Messages";
 import UserListMobile from "./UserListMobile";
 import UserList from "./UserList";
-import { useUser } from "@clerk/nextjs";
 import CreateProfile from "./CreateProfile";
 import { MyContext } from "../Context/MyContext";
 
 function ChatHome() {
   const [selectedUser, setSelectedUser] = useState(null);
-  const { user } = useUser();
-  const {userDetails} = useContext(MyContext);
+  const {userDetails,EmailUser} = useContext(MyContext);
 
   // Retrieve selected user from localStorage
   useEffect(() => {
@@ -19,17 +17,15 @@ function ChatHome() {
     }
   }, []);
 
-  if (!userDetails) {
+  if (!userDetails && !EmailUser) {
     return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
     <i className="fa fa-spinner fa-spin "></i> 
     </p> ;
   }
 
     const filt = userDetails.find(
-      (fl) => fl.email === user?.emailAddresses[0].emailAddress
+      (fl) => fl.email === EmailUser
     );
-
-  
 
   return (
     <div>

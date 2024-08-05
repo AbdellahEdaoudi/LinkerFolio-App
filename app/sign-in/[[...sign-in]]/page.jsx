@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <div className="flex justify-center py-20 h-screen">
       {loading ? (
-        <p className="flex justify-center items-center py-20 text-8xl">
+        <p className="flex justify-center items-start py-20 text-8xl">
           <i className="fa fa-spinner fa-spin"></i>
         </p>
       ) : (
