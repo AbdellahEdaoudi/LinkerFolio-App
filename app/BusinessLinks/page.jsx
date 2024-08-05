@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast } from "sonner";
 
 function EditUserLinks() {
-  const { SERVER_URL, EmailUser, userDetails } = useContext(MyContext);
+  const {SERVER_URL_V, EmailUser, userDetails } = useContext(MyContext);
   const [userLinks, setUserLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingt, setLoadingt] = useState(false);
@@ -17,7 +17,7 @@ function EditUserLinks() {
 
   useEffect(() => {
     axios
-      .get(`${SERVER_URL}/links`)
+      .get(`${SERVER_URL_V}/links`)
       .then((res) => {
         const links = res.data;
         const sortedLinks = links.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -26,7 +26,7 @@ function EditUserLinks() {
       .catch((error) => {
         console.error("Error fetching user details:", error);
       });
-  }, [SERVER_URL]);
+  }, [SERVER_URL_V]);
 
   useEffect(() => {
     if (userLinks) {
@@ -40,7 +40,7 @@ function EditUserLinks() {
     setLoadingt(true);
 
     try {
-      const response = await axios.post(`${SERVER_URL}/links`, {
+      const response = await axios.post(`${SERVER_URL_V}/links`, {
         useremail: EmailUser,
         namelink,
         link
@@ -63,7 +63,7 @@ function EditUserLinks() {
     setLoadingt(true);
 
     try {
-      const response = await axios.put(`${SERVER_URL}/links/${editLinkId}`, {
+      const response = await axios.put(`${SERVER_URL_V}/links/${editLinkId}`, {
         namelink,
         link
       });
@@ -90,7 +90,7 @@ function EditUserLinks() {
     
     if (confirmDelete) {
       try {
-        await axios.delete(`${SERVER_URL}/links/${id}`);
+        await axios.delete(`${SERVER_URL_V}/links/${id}`);
         setUserLinks((Links) => Links.filter((item) => item._id !== id));
         toast("Link deleted successfully!");
       } catch (error) {

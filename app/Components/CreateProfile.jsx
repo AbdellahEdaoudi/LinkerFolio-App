@@ -14,7 +14,7 @@ const CreateProfile = ({userDetails}) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const EmailUser = user?.emailAddresses[0].emailAddress;
-  const {SERVER_URL} = useContext(MyContext);
+  const {SERVER_URL_V} = useContext(MyContext);
 
   const postData = async () => {
     try {
@@ -49,7 +49,7 @@ const CreateProfile = ({userDetails}) => {
         services:'',
         aboni: false
       };      
-      const response = await axios.post(`${SERVER_URL}/users`, data);
+      const response = await axios.post(`${SERVER_URL_V}/users`, data);
       console.log("Response:", response.data);
       setSuccessMessage("Your profile has been created !");
       window.location.reload();
@@ -102,7 +102,10 @@ const CreateProfile = ({userDetails}) => {
             <input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                const newValue = e.target.value.replace(/[/\s]/g, "");
+                setUsername(newValue);
+              }}
               className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               placeholder="Enter your username" required
             />

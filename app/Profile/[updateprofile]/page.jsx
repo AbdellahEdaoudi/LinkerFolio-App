@@ -51,7 +51,7 @@ function NameUser({ params }) {
   const [id, setid] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
   const EmailUser = user?.emailAddresses[0]?.emailAddress ;
-  const {SERVER_URL} = useContext(MyContext);
+  const {SERVER_URL_V} = useContext(MyContext);
   
   const datasocial = [
     { iconSrc: "/Icons/wts.svg", alt: "WhatsApp", state: whatsapp, setState: setWhatsapp, placeholder: "WhatsApp Link" },
@@ -70,7 +70,7 @@ function NameUser({ params }) {
   // Get Detail User
   useEffect(() => {
     axios
-      .get(`${SERVER_URL}/users/${params.updateprofile}`)
+      .get(`${SERVER_URL_V}/users/${params.updateprofile}`)
       .then((res) => {
         const data = res.data;
         setid(data._id);
@@ -103,7 +103,7 @@ function NameUser({ params }) {
       })
       .catch((error) => console.error("Error fetching user details:", error))
       .finally(() => setLoading(false));
-  }, [SERVER_URL,params.updateprofile]);
+  }, [SERVER_URL_V,params.updateprofile]);
 
   
   const updateProfile = async (e) => {
@@ -147,7 +147,7 @@ function NameUser({ params }) {
     }
     try {
       const response = await axios.put(
-        `${SERVER_URL}/users/${params.updateprofile}`, formData
+        `${SERVER_URL_V}/users/${params.updateprofile}`, formData
       );
       router.push("/Profile");
       console.log("User details updated successfully", response.data);
@@ -248,7 +248,10 @@ function NameUser({ params }) {
           name="username"
           required
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            const newValue = e.target.value.replace(/[/\s]/g, ""); // إزالة العلامة '/' والمسافات
+            setUsername(newValue);
+          }}
           className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
@@ -472,13 +475,16 @@ function NameUser({ params }) {
         <div className="text-red-600 mt-4">
           <span>{errorMessage}</span>
           <input
-            type="text"
-            required
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
-          />
+           type="text"
+           required
+           name="username"
+           value={username}
+           onChange={(e) => {
+             const newValue = e.target.value.replace(/[/\s]/g, ""); // إزالة العلامة '/' والمسافات
+             setUsername(newValue);
+           }}
+           className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
+            />
         </div>
       )}
     </div>

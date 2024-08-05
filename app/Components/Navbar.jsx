@@ -7,7 +7,7 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import {Bell, Settings } from "lucide-react";
+import {Bell, MessagesSquare, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -74,7 +74,7 @@ function Navbar() {
                       }} className="relative flex items-center">
                       <span 
                       className="text-black cursor-pointer ml-2 relative">
-                      <Bell />
+                      <MessagesSquare />
                       </span>
                       <div onClick={() => {
                         setNotification(!notification);

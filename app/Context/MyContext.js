@@ -72,7 +72,7 @@ export const MyProvider = ({ children }) => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/messages`);
+        const response = await axios.get(`${SERVER_URL_V}/messages`);
         setMessages(response.data.reverse());
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -80,7 +80,7 @@ export const MyProvider = ({ children }) => {
     };
 
     getMessages();
-  }, [SERVER_URL]);
+  }, [SERVER_URL_V]);
   // links
   useEffect(() => {
     axios

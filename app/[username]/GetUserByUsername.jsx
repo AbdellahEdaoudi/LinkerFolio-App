@@ -71,7 +71,7 @@ function GetUserByUsername({params}) {
               />
             </svg>
             <p className="text-red-700 text-lg font-semibold">
-              The link entered by the user does not work
+               Account not found
             </p>
           </div>
         </div>
