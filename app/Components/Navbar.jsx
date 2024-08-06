@@ -38,11 +38,21 @@ function Navbar() {
 
   return (
     <div>
-      <nav className=" border-b border-b-black bg-white shadow-lg">
+      <nav className=" border-b drop-shadow-2xl bg-white ">
         <section className="container mx-auto py-3">
           <div className="flex justify-between items-center text-white">
+          <div className="flex items-center gap-1 hover:scale-105 duration-300 cursor-pointer">
+          <Image
+              onClick={() => {
+                router.push("/");
+                setSetting(true);
+              }}
+              src="/Logop.png"
+              alt="Logo"
+              width={30}
+              height={15}
+            />
             <Image
-              className="cursor-pointer hover:scale-105 duration-300"
               onClick={() => {
                 router.push("/");
                 setSetting(true);
@@ -52,11 +62,12 @@ function Navbar() {
               width={160}
               height={15}
             />
+          </div>
             <SignedIn>
               {user ? (
                 filt.map((userr, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <UserButton />
+                    <div key={i} className="flex items-center gap-1">
+                      <UserButton  />
                       <span
                         onClick={() => {
                           setSetting(true);
@@ -67,7 +78,9 @@ function Navbar() {
                       >
                         {userr.fullname}
                       </span>
-                      {/* Icon Notification */}
+                      {/* Icons Navbar */}
+                      <div className="flex items-center gap-6">
+                        {/* Icon Notification */}
                       <div onClick={() => {
                         setNotification(!notification);
                         setSetting(true)
@@ -93,6 +106,7 @@ function Navbar() {
                       >
                         <Settings />
                       </span>
+                      </div>
                     </div>
                   ))
               ) : (
