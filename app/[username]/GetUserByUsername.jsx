@@ -266,10 +266,11 @@ function GetUserByUsername({params}) {
                   {copied ? <p className="text-[14px]">Copied!</p> : <Link />} <br />
                  </button>
                  {/* Modal Qr and Link */}
-                 <span className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  "> 
                   <AlertDialog>
                     <AlertDialogTrigger>
+                    <span  className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  ">
                       <QrCode />
+                    </span>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
@@ -311,7 +312,6 @@ function GetUserByUsername({params}) {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-                 </span>
                  {/* Email User */}
                  <span className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  "> 
                  <a className="hover:scale-105 duration-500 hover:text-green-700" href={`mailto:${userDetails.email}`}><Mail width={23} /></a>

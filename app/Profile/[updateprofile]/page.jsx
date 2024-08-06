@@ -233,26 +233,33 @@ function NameUser({ params }) {
       <div>
         <label className="block text-gray-700 font-semibold mb-2">Fullname:</label>
         <input
-          type="text"
-          name="fullname"
-          required
-          value={fullname}
-          onChange={(e) => setFullname(e.target.value)}
-          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
+  type="text"
+  name="fullname"
+  required
+  value={fullname}
+  onChange={(e) => {
+    const capitalizeWords = (str) => {
+      return str
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+    };
+    setFullname(capitalizeWords(e.target.value));
+  }}
+  className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+/>
+
       </div>
       <div>
         <label className="block text-gray-700 font-semibold mb-2">Username:</label>
         <input
           type="text"
-          name="username"
-          required
           value={username}
           onChange={(e) => {
-            const newValue = e.target.value.replace(/[/\s]/g, ""); // إزالة العلامة '/' والمسافات
+            const newValue = e.target.value.replace(/[/\s]/g, "").toLowerCase();
             setUsername(newValue);
           }}
-          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          placeholder="Enter your username" required
         />
       </div>
       <div>
@@ -475,16 +482,15 @@ function NameUser({ params }) {
         <div className="text-red-600 mt-4">
           <span>{errorMessage}</span>
           <input
-           type="text"
-           required
-           name="username"
-           value={username}
-           onChange={(e) => {
-             const newValue = e.target.value.replace(/[/\s]/g, ""); // إزالة العلامة '/' والمسافات
-             setUsername(newValue);
-           }}
-           className="text-gray-600 bg-white rounded-lg border-2 mb-2 px-3 py-1 w-full"
-            />
+  type="text"
+  value={username}
+  onChange={(e) => {
+    const newValue = e.target.value.replace(/[/\s]/g, "").toLowerCase();
+    setUsername(newValue);
+  }}
+  className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+  placeholder="Enter your username" required
+/>
         </div>
       )}
     </div>

@@ -47,7 +47,8 @@ const CreateProfile = ({userDetails}) => {
         skills:'',
         languages : '',
         services:'',
-        aboni: false
+        aboni: false,
+        blocked: false
       };      
       const response = await axios.post(`${SERVER_URL_V}/users`, data);
       console.log("Response:", response.data);
@@ -100,15 +101,15 @@ const CreateProfile = ({userDetails}) => {
               Username
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => {
-                const newValue = e.target.value.replace(/[/\s]/g, "");
-                setUsername(newValue);
-              }}
-              className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your username" required
-            />
+  type="text"
+  value={username}
+  onChange={(e) => {
+    const newValue = e.target.value.replace(/[/\s]/g, "").toLowerCase();
+    setUsername(newValue);
+  }}
+  className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+  placeholder="Enter your username" required
+/>
           </div>
           <button
             onClick={postData}

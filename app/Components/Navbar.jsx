@@ -21,7 +21,17 @@ function Navbar() {
   const [notification, setNotification] = useState(true);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [Adminfind, setAdminfind] = useState(false);
   const {userDetails,Notification,EmailUser} = useContext(MyContext);
+
+  useEffect(() => {
+    const User = userDetails.find(user => user.email === EmailUser);
+    if (User && User.email === "abdellahedaoudi80@gmail.com") {
+      setAdminfind(true);
+    }
+  }, [userDetails, EmailUser]);
+
+  
 
 
 
@@ -154,6 +164,27 @@ function Navbar() {
               >
                Business Links
               </Link>
+              {Adminfind &&
+              <Link
+                href={"/Admin"}
+                onClick={() => {
+                  setSetting(!setting);
+                }}
+                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+              >
+               Admin
+              </Link>
+              }
+              
+              <Link
+                href={"/Contact"}
+                onClick={() => {
+                  setSetting(!setting);
+                }}
+                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+              >
+               Contact Us
+              </Link>
               <SignOutButton  className="bg-red-500 py-2 border-b border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" />
       </nav>
       {/* notification */}
@@ -165,7 +196,7 @@ function Navbar() {
     notification ? "max-h-0" : "max-h-60 p-4"
   }`}
 >
-  {Notification.length > 0 ? (
+    {Notification.length > 0 ? (
     Notification.map((nt, i) => {
       const DateMsg = new Date(nt.createdAt);
       const DateToday = new Date();
