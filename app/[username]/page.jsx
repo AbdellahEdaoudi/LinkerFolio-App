@@ -17,9 +17,9 @@ export async function generateMetadata({ params }) {
     return {
       title: `${user.fullname}`,
       description: user.bio,
-      icons: {
-        icon: user.urlimage,
-      },
+      // icons: {
+      //   icon: user.urlimage,
+      // },
     };
   } catch (error) {
     console.error('Error fetching user data:', error);
