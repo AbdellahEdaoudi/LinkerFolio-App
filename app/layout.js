@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
 
 export const metadata = {
-  title: "LinkerFolio - Your Ultimate Portfolio and Social Media Link Manager",
+  title: "LinkerFolio",
   description: "LinkerFolio is an innovative platform for managing your portfolio and social media links seamlessly. Create, customize, and share your personal or professional links with ease.",
   keywords: "LinkerFolio, portfolio management, social media links, personal branding, professional portfolio, link manager, online portfolio, social media integration, custom profiles",
   author: "Abdellah Edaoudi",
