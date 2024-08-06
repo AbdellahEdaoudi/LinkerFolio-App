@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import AdminLogin from "./Components/AdminLogin";
-import { LayoutDashboard, User, Mail } from "lucide-react";
+import { LayoutDashboard, User, Mail, LogOut } from "lucide-react";
 import Users from "./Components/Users";
 import Contacts from "./Components/Contacts";
 
@@ -53,6 +53,7 @@ function Page() {
               <span className="md:block hidden ml-2">{ad}</span>
             </div>
           ))}
+          <span onClick={()=>{localStorage.removeItem("accessToken");}} className="text-red-500 cursor-pointer"><LogOut /></span>
         </nav>
       </aside>
       <main className="flex-1 p-4">

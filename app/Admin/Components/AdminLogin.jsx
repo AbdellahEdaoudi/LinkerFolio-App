@@ -9,7 +9,7 @@ function AdminLogin() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [Loading, setLoading] = useState(false);
-  const { userDetails, EmailUser, SERVER_URL } = useContext(MyContext);
+  const { userDetails,EmailUser,SERVER_URL_V } = useContext(MyContext);
 
   const LOGIN = async (e) => {
     setLoading(true);
@@ -21,7 +21,7 @@ function AdminLogin() {
     }
 
     try {
-      const response = await axios.post(`${SERVER_URL}/login`, {
+      const response = await axios.post(`${SERVER_URL_V}/login`, {
         email,
         password,
       });
@@ -29,8 +29,6 @@ function AdminLogin() {
       setSuccess("Login successful");
       window.location.reload();
       setError("");
-
-      // احفظ الـ accessToken لاستخدامه لاحقًا
       const { accessToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
       setLoading(false);
