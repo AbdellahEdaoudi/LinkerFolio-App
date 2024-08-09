@@ -1,5 +1,4 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -9,13 +8,11 @@ import { useRouter } from "next/navigation";
 import { MyContext } from "../Context/MyContext";
 
 function UserListMobile({ selectedUser, setSelectedUser}) {
-  const { user } = useUser();
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
-  const {SERVER_URL,userDetails} = useContext(MyContext);
+  const {SERVER_URL_V,userDetails,EmailUser} = useContext(MyContext);
   const router = useRouter()
 
   //  search input change
@@ -40,14 +37,14 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/messages`);
+        const response = await axios.get(`${SERVER_URL_V}/messages`);
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
     };
     fetchData();
-  }, [SERVER_URL]);
+  }, [SERVER_URL_V]);
 
   return (
     <div>
@@ -140,17 +137,17 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                     </div>
                   ))}
                 {/* User ilya message */}
-                {userEmail &&
-                  userEmail.length > 0 &&
+                {EmailUser &&
+                  EmailUser.length > 0 &&
                   userDetails
                     .filter(
                       (userDetail) =>
-                        userDetail.email === userEmail ||
+                        userDetail.email === EmailUser ||
                         messages.some(
                           (msg) =>
-                            (msg.from === userEmail &&
+                            (msg.from === EmailUser &&
                               msg.to === userDetail.email) ||
-                            (msg.to === userEmail &&
+                            (msg.to === EmailUser &&
                               msg.from === userDetail.email)
                         )
                     )
