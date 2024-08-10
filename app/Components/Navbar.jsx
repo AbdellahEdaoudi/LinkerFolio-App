@@ -231,7 +231,7 @@ function Navbar() {
 
       return (
         <div
-        onClick={()=>{router.push(`/${nt.fromname}`)}}
+        onClick={()=>{router.push(`/message/to/${nt.fromname}`)}}
           key={i}
           className="flex cursor-pointer hover:scale-105 duration-300 items-center p-2 mb-2 bg-gray-700 rounded-md shadow-md"
         >
