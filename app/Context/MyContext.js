@@ -58,7 +58,7 @@ export const MyProvider = ({ children }) => {
     };
   }, [SERVER_URL, socket]);
 
-  // Fetch initial data
+  // Fetch users
   useEffect(() => {
     axios
       .get(`${SERVER_URL_V}/users`)
@@ -69,7 +69,7 @@ export const MyProvider = ({ children }) => {
         console.error("Error fetching user details:", error);
       });
   }, [SERVER_URL_V]);
-    
+  // getMessages
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -120,7 +120,7 @@ export const MyProvider = ({ children }) => {
         messages,
       }}
     >
-      <audio ref={audioRef} src="/notification2.mp3" preload="auto" />
+      <audio ref={audioRef} src="/notification3.mp3" preload="auto" />
       {children}
     </MyContext.Provider>
   );
