@@ -121,6 +121,17 @@ function ProfilePage() {
       )
     );
   };
+  const ListDisk = (data) => {
+    return (
+      <ul className="list-disc ml-6">
+        {data.split('\n').map((sp, i) => (
+          <li key={i}>{sp}</li>
+        ))}
+      </ul>
+    );
+  };
+  
+  
 
   return (
     <div className="">
@@ -344,8 +355,8 @@ function ProfilePage() {
                <AlertDialogContent>
                  <AlertDialogHeader>
                    <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
-                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 hover:scale-105 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
-                   {boldNumbers(dt.data)}
+                   <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4  rounded-sm border text-black whitespace-break-spaces text-start">
+                   {(ListDisk(dt.data))}
                    </AlertDialogDescription>
                  </AlertDialogHeader>
                  <AlertDialogFooter>
@@ -364,7 +375,7 @@ function ProfilePage() {
            <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-                {user.bio}
+                {ListDisk(user.bio)}
               </p>
            </div>
           )}
@@ -386,7 +397,7 @@ function ProfilePage() {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {boldNumbers(user.education)}
+            {ListDisk(user.education)}
           </p>
         </div>
              {/* Experience */}
@@ -395,7 +406,7 @@ function ProfilePage() {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {boldNumbers(user.experience)}
+            {ListDisk(user.experience)}
           </p>
         </div>
         
@@ -405,7 +416,7 @@ function ProfilePage() {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {user.skills}
+            {ListDisk(user.skills)}
           </p>
         </div>
         
@@ -415,7 +426,7 @@ function ProfilePage() {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
           <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
-            {user.languages}
+            {ListDisk(user.languages)}
           </p>
         </div>
             </div>

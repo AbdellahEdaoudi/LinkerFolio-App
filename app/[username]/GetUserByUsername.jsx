@@ -175,6 +175,15 @@ function GetUserByUsername({params}) {
       /\d+|:/.test(part) ? <span key={index} className="text-black font-bold">{part}</span> : part
     );
   };
+  const ListDisk = (data) => {
+    return (
+      <ul className="list-disc ml-6">
+        {data.split('\n').map((sp, i) => (
+          <li key={i}>{sp}</li>
+        ))}
+      </ul>
+    );
+  };
   const emailuser =userDetails.email
   return (
     <div className={` flex items-start justify-center   pt-4 pb-96 ${userDetails.bgcolorp}`}>
@@ -337,7 +346,7 @@ function GetUserByUsername({params}) {
                  <AlertDialogHeader>
                    <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">{dt.name}</AlertDialogTitle>
                    <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
-                   {boldNumbers(dt.data)}
+                   {ListDisk(dt.data)}
                    </AlertDialogDescription>
                  </AlertDialogHeader>
                  <AlertDialogFooter>
@@ -356,7 +365,7 @@ function GetUserByUsername({params}) {
         <div className="p-4 mt-4 bg-white rounded-lg shadow-md border duration-500 hover:scale-100">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-                {userDetails.bio}
+                {ListDisk(userDetails.bio)}
               </p>
         </div>
           )}
@@ -367,7 +376,7 @@ function GetUserByUsername({params}) {
             {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
             <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
             <p className="text-gray-800 overflow-y-auto whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {userDetails.services}
+              {ListDisk(userDetails.services)}
             </p>
           </div>
         )}
@@ -377,7 +386,7 @@ function GetUserByUsername({params}) {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {boldNumbers(userDetails.education)}
+            {ListDisk(userDetails.education)}
           </p>
         </div>
 
@@ -386,7 +395,7 @@ function GetUserByUsername({params}) {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {boldNumbers(userDetails.experience)}
+            {ListDisk(userDetails.experience)}
           </p>
         </div>
         
@@ -395,7 +404,7 @@ function GetUserByUsername({params}) {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {userDetails.skills}
+            {ListDisk(userDetails.skills)}
           </p>
         </div>
         
@@ -404,7 +413,7 @@ function GetUserByUsername({params}) {
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
           <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
-            {userDetails.languages}
+            {ListDisk(userDetails.languages)}
           </p>
         </div>
 
