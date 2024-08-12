@@ -24,14 +24,13 @@ import UserLinks from "../[username]/UserLinks";
 
 function ProfilePage() {
   const { user } = useUser();
-  const EmailUser = user?.emailAddresses[0]?.emailAddress ;
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,userDetails} = useContext(MyContext);
+  const {CLIENT_URL,userDetails,EmailUser} = useContext(MyContext);
   const [filtUser, setFiltUser] = useState(null);
   
   useEffect(() => {
-    const user = userDetails.find((fl) => fl.email === EmailUser);
-    setFiltUser(user);
+    const FindUser = userDetails.find((fl) => fl.email === EmailUser);
+    setFiltUser(FindUser);
   }, [userDetails, EmailUser]);
 
 
@@ -135,10 +134,10 @@ function ProfilePage() {
 
   return (
     <div className="">
-      {userDetails.filter((fl) => fl.email === EmailUser).map((user, i) => (
+      {userDetails.filter((fl) => fl.email === EmailUser).map((UserF, i) => (
           <div
             key={i}
-            className={`flex items-start  justify-center   pt-4 pb-96 ${user.bgcolorp}  `}
+            className={`flex items-start  justify-center   pt-4 pb-96 ${UserF.bgcolorp}  `}
           >
             <div
               className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`}
@@ -152,7 +151,7 @@ function ProfilePage() {
                    <Image
                      width={136}
                      height={0}
-                     src={user.urlimage}
+                     src={UserF.urlimage}
                      alt="Profile Image"
                      className="object-cover cursor-pointer"
                      />
@@ -164,7 +163,7 @@ function ProfilePage() {
                                 <Image
                              width={400}
                              height={400}
-                             src={user.urlimage}
+                             src={UserF.urlimage}
                              alt="Profile Image"
                              className="object-cover rounded-full cursor-pointer"
                            />
@@ -178,37 +177,37 @@ function ProfilePage() {
                 </AlertDialog>
                </div>
                <div className="text-center md:text-left">
-                 <h2 className="font-bold text-2xl text-gray-800">{user.fullname}</h2>
+                 <h2 className="font-bold text-2xl text-gray-800">{UserF.fullname}</h2>
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <span className="text-green-500"><MailCheck width={18} /></span> {user.email}
+                   <span className="text-green-500"><MailCheck width={18} /></span> {UserF.email}
                  </p>
                  <p className="text-gray-600 md:flex items-center justify-center md:justify-start  md:gap-2 mt-1">
-                   <span className="text-green-900">@ {user.username}</span>
-                   {user.country && 
-                   <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{user.country}</span>
+                   <span className="text-green-900">@ {UserF.username}</span>
+                   {UserF.country && 
+                   <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{UserF.country}</span>
                      }
                  </p>
-                 {user.phoneNumber &&
+                 {UserF.phoneNumber &&
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <Phone width={18} style={{ color: "blue" }} />{user.phoneNumber}
+                   <Phone width={18} style={{ color: "blue" }} />{UserF.phoneNumber}
                  </p>
                  }
                  
                  {/* Business Links */}
                  <p>
-                  <UserLinks emailuser={user.email} />
+                  <UserLinks emailuser={UserF.email} />
                 </p>
                 {/* datasocial */}
             <div className="my-1">
                 <ul className="flex flex-wrap gap-4 justify-center">
                   {datasocial.map(
                     (item, i) =>
-                      user[item.key] && (
+                      UserF[item.key] && (
                         <li key={i}>
                           <a
                            className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md border shadow-md transition duration-300"
 
-                            href={user[item.key]}
+                            href={UserF[item.key]}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -232,7 +231,7 @@ function ProfilePage() {
               <div className="absolute top-8 space-y-2 right-7 md:top-10  md:right-12">
                 {/* Link to Update */}
                <Link
-                 href={`/Profile/${user._id}`}
+                 href={`/Profile/${UserF._id}`}
                  className="flex items-center justify-center bg-gradient-to-r from-teal-400 to-green-500 hover:scale-105 duration-500 p-2 rounded-full shadow-lg border border-teal-600 text-white transform transition-transform"
                >
                  <PenOff className="w-6 h-6" />
@@ -251,7 +250,7 @@ function ProfilePage() {
                           <div className="border-2 rounded-md p-2">
                             <QRCode
                               id="qrcode"
-                              value={`${CLIENT_URL}/${user.username}`}
+                              value={`${CLIENT_URL}/${UserF.username}`}
                             />
                           </div>
                           <div className="flex gap-3">
@@ -281,7 +280,7 @@ function ProfilePage() {
               {/* Link Profile */}
               <div
                 className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400  "
-                href={`/${user.username}`}
+                href={`/${UserF.username}`}
               >
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
@@ -297,7 +296,7 @@ function ProfilePage() {
                           <button
                             className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                             onClick={() => {
-                              const url = `${CLIENT_URL}/${user.username}`;
+                              const url = `${CLIENT_URL}/${UserF.username}`;
 
                               if (navigator.share) {
                                 navigator
@@ -319,7 +318,7 @@ function ProfilePage() {
                         <button
                           className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
                           onClick={() => {
-                            const urlToCopy = `${CLIENT_URL}/${user.username}`;
+                            const urlToCopy = `${CLIENT_URL}/${UserF.username}`;
                             navigator.clipboard
                               .writeText(urlToCopy)
                               .then(() => {
@@ -343,7 +342,7 @@ function ProfilePage() {
               </div>
               {/* category */}
               <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
-                 {user.category}
+                 {UserF.category}
                </p>
                {/* Modul */}
          <div className="flex flex-wrap gap-2 mb-2 justify-center">
@@ -371,62 +370,62 @@ function ProfilePage() {
          </div>
          
               {/* Profile */}
-           {user.bio && (
+           {UserF.bio && (
            <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-                {ListDisk(user.bio)}
+                {ListDisk(UserF.bio)}
               </p>
            </div>
           )}
         {/* Services */}
-        {user.services && (
+        {UserF.services && (
           <div className=" border mt-3 p-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
             {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
             <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
             <p className="text-gray-800 overflow-y-auto md:max-h-max  max-h-[120px] whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {user.services}
+              {UserF.services}
             </p>
           </div>
         )}
               
 
               {/* Education */}
-        <div className={`${!user.education && "hidden"} mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 
+        <div className={`${!UserF.education && "hidden"} mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 
           hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(user.education)}
+            {ListDisk(UserF.education)}
           </p>
         </div>
              {/* Experience */}
-             <div className={`${!user.experience && "hidden"} border p-4 bg-white rounded-lg shadow-md 
+             <div className={`${!UserF.experience && "hidden"} border p-4 bg-white rounded-lg shadow-md 
               mb-6 hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(user.experience)}
+            {ListDisk(UserF.experience)}
           </p>
         </div>
         
         {/* Skills */}
-        <div className={`${!user.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6
+        <div className={`${!UserF.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6
            hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(user.skills)}
+            {ListDisk(UserF.skills)}
           </p>
         </div>
         
         {/* Languages */}
-        <div className={`${!user.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md 
+        <div className={`${!UserF.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md 
           hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
           <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
-            {ListDisk(user.languages)}
+            {ListDisk(UserF.languages)}
           </p>
         </div>
             </div>

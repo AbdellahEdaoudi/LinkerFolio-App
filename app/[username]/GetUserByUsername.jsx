@@ -26,7 +26,7 @@ function GetUserByUsername({params}) {
   const [userDetails, setUserDetails] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL,userLinks,EmailUser} = useContext(MyContext);
+  const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser} = useContext(MyContext);
   
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${userDetails.username}`;
@@ -40,7 +40,7 @@ function GetUserByUsername({params}) {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/user/${params.username}`);
+        const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`);
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -50,7 +50,7 @@ function GetUserByUsername({params}) {
       }
     };
       fetchUserDetails();
-  }, [SERVER_URL,params.username]);
+  }, [SERVER_URL_V,params.username]);
 
   if (error) {
     return (
