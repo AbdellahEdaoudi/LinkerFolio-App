@@ -164,7 +164,6 @@ function GetUserByUsername({params}) {
     {name : "💡 Skills" , data:userDetails.skills },
     {name : "🌍 Languages" , data:userDetails.languages },
   ]
-  
 
   const boldNumbers = (text) => {
     if (!text) {
