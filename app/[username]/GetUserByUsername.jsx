@@ -19,6 +19,7 @@ import QRCode from "qrcode.react";
 import download from "downloadjs";
 import { MyContext } from "../Context/MyContext";
 import UserLinks from "./UserLinks";
+import Loadingpage from "../Components/LoadingPage";
 
 function GetUserByUsername({params}) {
   const path = usePathname();
@@ -137,9 +138,12 @@ function GetUserByUsername({params}) {
 
   if (!userDetails) {
     return (
-      <p className="flex justify-center h-screen items-start py-32 text-8xl">
-        <i className="fa fa-spinner fa-spin "></i>
-      </p>
+      <div>
+        <Loadingpage />
+      </div>
+      // <p className="flex justify-center h-screen items-start py-32 text-8xl">
+      //   <i className="fa fa-spinner fa-spin "></i>
+      // </p>
     );
   }
   const datasocial = [
@@ -192,7 +196,16 @@ function GetUserByUsername({params}) {
                <div>
                  <AlertDialog>
                   <AlertDialogTrigger>
-                    <div className="border-4  border-green-600 shadow-lg  rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
+                    {!userDetails.urlimage ? (
+                      <div
+                      width={140}
+                      height={0}
+                      src={"/prifil Loading.png"}
+                      alt="Profile Image"
+                      className="object-cover bg-gray-300 animate-pulse w-32 h-32  cursor-pointer"
+                      />
+                    ):(
+                      <div className="border-4  border-green-600 shadow-lg  rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 duration-500">
                    <Image
                      width={136}
                      height={0}
@@ -201,6 +214,8 @@ function GetUserByUsername({params}) {
                      className="object-cover cursor-pointer"
                      />
                      </div>
+                    )}
+                    
                   </AlertDialogTrigger>
                   <AlertDialogContent >
                     <AlertDialogHeader>

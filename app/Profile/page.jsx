@@ -21,6 +21,7 @@ import { Button } from "@chakra-ui/react";
 import { toast } from "sonner";
 import { MyContext } from "../Context/MyContext";
 import UserLinks from "../[username]/UserLinks";
+import Loadingpage from "../Components/LoadingPage";
 
 function ProfilePage() {
   const { user } = useUser();
@@ -74,11 +75,9 @@ function ProfilePage() {
     );
   };
 
-  if (!userDetails) {
+  if (!filtUser) {
     return (
-      <p className="flex justify-center items-start h-screen py-32 text-8xl">
-        <i className="fa fa-spinner fa-spin "></i>
-      </p>
+      <Loadingpage />
     );
   }
   const datasocial = [
@@ -384,7 +383,7 @@ function ProfilePage() {
             {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
             <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
             <p className="text-gray-800 overflow-y-auto md:max-h-max  max-h-[120px] whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {UserF.services}
+            {ListDisk(UserF.services)}
             </p>
           </div>
         )}
