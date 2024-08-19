@@ -48,8 +48,8 @@ function Loadingpage() {
                 
                  {/* Social Media */}
                     <div className="flex flex-wrap gap-4 justify-center my-2 ">
-                      {[1,2,3,4,5,6].map((social, i) => (
-                          <div className='w-10 h-10 bg-gray-300 animate-pulse rounded-lg'>
+                      {[1,2,3,4,5,6].map((_,i) => (
+                          <div key={i} className='w-10 h-10 bg-gray-300 animate-pulse rounded-lg'>
 
                           </div>
                         ))}
@@ -66,9 +66,9 @@ function Loadingpage() {
            <div className='w-full h-10 bg-gray-300 animate-pulse rounded-lg'>
            </div>
            <div className='flex flex-wrap gap-2 justify-center'>
-            {[1,2,3,4,5].map(()=>{
+            {[1,2,3,4,5].map((_,i)=>{
                 return(
-                    <div className='w-32 h-10 bg-gray-300 animate-pulse rounded-lg my-3'>
+                    <div key={i} className='w-32 h-10 bg-gray-300 animate-pulse rounded-lg my-3'>
 
                     </div>
                 )
@@ -77,7 +77,7 @@ function Loadingpage() {
            <div className=''>
             {datamodul.map((dt,i)=>{
                 return(
-                    <div className='w-full  px-3 py-2  bg-gray-100 border border-gray-400 animate-puls rounded-lg my-3'>
+                    <div key={i} className='w-full  px-3 py-2  bg-gray-100 border border-gray-400 animate-puls rounded-lg my-3'>
                         <div className='text-indigo-500 font-bold text-xl'>{dt.name}</div>
                         <ul className='list-disc ml-6 mt-2'>
                             <li className='bg-gray-300 w-full h-6 mb-2 animate-pulse rounded-md'></li>
