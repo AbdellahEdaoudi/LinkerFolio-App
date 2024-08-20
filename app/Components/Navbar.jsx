@@ -250,7 +250,7 @@ function Navbar() {
             </p>
             </div>
             </nav>
-            <p className="text-sm text-gray-400 font-bold">{nt.message}</p>
+            <p className="text-sm text-gray-400 font-bold whitespace-pre-line overflow-y-auto max-h-16">{nt.message}</p>
             
           </div>
         </div>

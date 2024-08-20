@@ -25,7 +25,7 @@ import FriendRequest from "./FriendRequest";
 function GetUserByUsername({params}) {
   const path = usePathname();
   const router = useRouter();
-  const [userDetailsG, setUserDetails] = useState(null);
+  const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser} = useContext(MyContext);
@@ -46,7 +46,7 @@ function GetUserByUsername({params}) {
         if (!response.data) {
           throw new Error("User not found");
         }
-        setUserDetails(response.data);
+        setUserDetailsG(response.data);
       } catch (error) {
         setError(error.message);
       }

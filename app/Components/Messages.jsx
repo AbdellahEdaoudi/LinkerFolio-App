@@ -32,8 +32,22 @@ function Messages({ selectedUser }) {
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
   const {SERVER_URL,SERVER_URL_V,userDetails,EmailUser} = useContext(MyContext);
+  const [friendRequests, setFriendRequests] = useState([]);
   const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
   const router = useRouter();
+
+  const GetFriendRequest = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL_V}/friend`);
+      setFriendRequests(response.data.data);
+    } catch (error) {
+      console.error('Error fetching friend requests', error.response ? error.response.data : error.message);
+    }
+  };
+
+  useEffect(() => {
+    GetFriendRequest();
+  }, []);
 
 
   useEffect(() => {
@@ -187,13 +201,20 @@ function Messages({ selectedUser }) {
         fl.to === EmailUser)
     );
   })
+  const emailuser =selectedUser.email
+  const CheckFrirnd = friendRequests.find((f) =>
+    (f.from === EmailUser && f.to === emailuser) ||
+    (f.from === emailuser && f.to === EmailUser)
+  );
+  console.log('CheckFrirnd:', CheckFrirnd ? "Kayen" : "makayench");
+
   return (
     <div>
       {/* Message window on the right */}
       <div className={` flex flex-col justify-between md:w-auto w-screen`}>
         <div className="flex-1 p-2 ">
           {/* selectedUser */}
-          <h2 className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
+          <div className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
             {selectedUser ? (
               <div className="flex items-center justify-between gap-4">
                 <Link
@@ -228,9 +249,26 @@ function Messages({ selectedUser }) {
                 <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
               </div>
             )}
-          </h2>
+          </div>
           {/* Messages */}
-          <div
+          <div>
+            {CheckFrirnd && CheckFrirnd.status === "pending" ? (
+               <div className="flex items-start pt-16 justify-center h-[442px] rounded-md bg-yellow-100">
+               <div className="text-center border border-yellow-500 p-8 bg-white shadow-lg rounded-md">
+                 <h1 className="text-yellow-700 font-bold text-2xl mb-4">Pending Friend Request</h1>
+                 <p className="text-yellow-600 text-lg">The friend request has not been accepted yet.</p>
+               </div>
+             </div>
+            ): !CheckFrirnd && EmailUser !== emailuser ? (
+              <div className="flex items-start pt-16 justify-center h-[442px] rounded-md bg-red-100">
+        <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
+          <h1 className="text-red-700 font-bold text-2xl mb-4">Cannot Communicate</h1>
+          <p className="text-red-600 text-lg">You cannot communicate with someone who is not your friend.</p>
+        </div>
+      </div>
+            ):
+            <div>
+            <div
             className="bg-white p-4 rounded-lg shadow-lg h-[600px] duration-300  md:h-[350px] scrollbar-none
                overflow-y-auto"
             ref={messagesEndRef}
@@ -457,6 +495,9 @@ function Messages({ selectedUser }) {
                 <BsEmojiSmile />
               </div>
             </div>
+          </div>
+          </div>
+            }
           </div>
         </div>
         <div className={` absolute right-4 ${emoji ? "hidden" : "block"}`}>
