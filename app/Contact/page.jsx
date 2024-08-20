@@ -4,6 +4,8 @@ import axios from 'axios';
 import Image from 'next/image'; // If using Next.js
 import { useRouter } from 'next/navigation'; // If using Next.js
 import { MyContext } from '../Context/MyContext';
+import { toast } from 'react-toastify';
+import { CheckCheck } from 'lucide-react';
 
 const ContactForm = () => {
   const [email, setEmail] = useState('');
@@ -28,7 +30,10 @@ const ContactForm = () => {
     try {
       console.log('Data Send:', { iduser ,email, phoneNumber, message });
       await axios.post(`${SERVER_URL_V}/contacts`, {iduser, email, phoneNumber, message });
-      alert('Contact added successfully!');
+      toast(<p className='flex gap-3 items-center'><CheckCheck /> Sent successfully!</p>, {
+        position: "top-center",
+        autoClose: 2000,
+      });
       setMessage('');
     } catch (error) {
       console.error('Error adding contact:', error);

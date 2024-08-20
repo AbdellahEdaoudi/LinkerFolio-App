@@ -4,7 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "./Components/Navbar";
 import { Toaster } from "@/components/ui/sonner"
 import { MyProvider } from "./Context/MyContext";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
             {children}
         </MyProvider>
           <Toaster />
+          <ToastContainer />
         </body>
       </html>
     </ClerkProvider>

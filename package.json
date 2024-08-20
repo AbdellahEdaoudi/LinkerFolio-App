@@ -37,6 +37,7 @@
     "react-input-emoji": "^5.9.0",
     "react-swipeable": "^7.0.1",
     "react-syntax-highlighter": "^15.5.0",
+    "react-toastify": "^10.0.5",
     "save-svg-as-png": "^1.4.17",
     "socket.io-client": "^4.7.5",
     "sonner": "^1.5.0",

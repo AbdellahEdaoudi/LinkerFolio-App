@@ -20,17 +20,18 @@ import download from "downloadjs";
 import { MyContext } from "../Context/MyContext";
 import UserLinks from "./UserLinks";
 import Loadingpage from "../Components/LoadingPage";
+import FriendRequest from "./FriendRequest";
 
 function GetUserByUsername({params}) {
   const path = usePathname();
   const router = useRouter();
-  const [userDetails, setUserDetails] = useState(null);
+  const [userDetailsG, setUserDetails] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser} = useContext(MyContext);
   
   const CopyLinkProfil = () => {
-    const urlToCopy = `${CLIENT_URL}/${userDetails.username}`;
+    const urlToCopy = `${CLIENT_URL}/${userDetailsG.username}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
       setCopied(true);
       toast("Copied successfully");
@@ -84,7 +85,7 @@ function GetUserByUsername({params}) {
     const qrCodeDataURL = document
       .getElementById("qrcode")
       .toDataURL("image/png");
-    download(qrCodeDataURL, `${userDetails.username}-QrCode-Profile.png`, "image/png");
+    download(qrCodeDataURL, `${userDetailsG.username}-QrCode-Profile.png`, "image/png");
   };
 
   const ShareQRCode = () => {
@@ -107,7 +108,7 @@ function GetUserByUsername({params}) {
         if (navigator.share) {
           navigator
             .share({
-              title: `${userDetails.fullname}'s QR Code`,
+              title: `${userDetailsG.fullname}'s QR Code`,
               files: [file],
             })
             .then(() => console.log("Successful share"))
@@ -122,7 +123,7 @@ function GetUserByUsername({params}) {
   };
 
   const ShareLink = () => {
-    const url = `${CLIENT_URL}/${userDetails.username}`;
+    const url = `${CLIENT_URL}/${userDetailsG.username}`;
 
     if (navigator.share) {
       navigator
@@ -136,7 +137,7 @@ function GetUserByUsername({params}) {
     }
   };
 
-  if (!userDetails) {
+  if (!userDetailsG) {
     return (
       <div>
         <Loadingpage />
@@ -147,26 +148,26 @@ function GetUserByUsername({params}) {
     );
   }
   const datasocial = [
-    { id: 1, icon: '/Icons/wts.svg', alt: 'WhatsApp', link: userDetails.whatsapp },
-    { id: 8, icon: '/Icons/link.svg', alt: 'LinkedIn', link: userDetails.Linkedin },
-    { id: 9, icon: '/Icons/github.svg', alt: 'GitHub', link: userDetails.github },
-    { id: 11, icon: '/Icons/tele.svg', alt: 'Telegram', link: userDetails.Telegram },
-    { id: 2, icon: '/Icons/messenger.svg', alt: 'Messenger', link: userDetails.messenger },
-    { id: 6, icon: '/Icons/ins.svg', alt: 'Instagram', link: userDetails.instagram },
-    { id: 7, icon: '/Icons/twit.svg', alt: 'Twitter', link: userDetails.Twitter },
-    { id: 10, icon: '/Icons/yt.svg', alt: 'YouTube', link: userDetails.Youtube },
-    { id: 3, icon: '/Icons/reddit.svg', alt: 'Reddit', link: userDetails.reddit },
-    { id: 4, icon: '/Icons/twitch.svg', alt: 'Twitch', link: userDetails.twitch },
-    { id: 5, icon: '/Icons/fb.svg', alt: 'Facebook', link: userDetails.fb },
-    { id: 12, icon: '/Icons/snap.svg', alt: 'Snapchat', link: userDetails.snapchat },
+    { id: 1, icon: '/Icons/wts.svg', alt: 'WhatsApp', link: userDetailsG.whatsapp },
+    { id: 8, icon: '/Icons/link.svg', alt: 'LinkedIn', link: userDetailsG.Linkedin },
+    { id: 9, icon: '/Icons/github.svg', alt: 'GitHub', link: userDetailsG.github },
+    { id: 11, icon: '/Icons/tele.svg', alt: 'Telegram', link: userDetailsG.Telegram },
+    { id: 2, icon: '/Icons/messenger.svg', alt: 'Messenger', link: userDetailsG.messenger },
+    { id: 6, icon: '/Icons/ins.svg', alt: 'Instagram', link: userDetailsG.instagram },
+    { id: 7, icon: '/Icons/twit.svg', alt: 'Twitter', link: userDetailsG.Twitter },
+    { id: 10, icon: '/Icons/yt.svg', alt: 'YouTube', link: userDetailsG.Youtube },
+    { id: 3, icon: '/Icons/reddit.svg', alt: 'Reddit', link: userDetailsG.reddit },
+    { id: 4, icon: '/Icons/twitch.svg', alt: 'Twitch', link: userDetailsG.twitch },
+    { id: 5, icon: '/Icons/fb.svg', alt: 'Facebook', link: userDetailsG.fb },
+    { id: 12, icon: '/Icons/snap.svg', alt: 'Snapchat', link: userDetailsG.snapchat },
   ];
   const datamodul = [
-    {name : "🔷 Profile" , data:userDetails.bio },
-    {name : "💼 Services" , data:userDetails.services },
-    {name : "🎓 Education" , data:userDetails.education },
-    {name : "⭐ Experience" , data:userDetails.experience },
-    {name : "💡 Skills" , data:userDetails.skills },
-    {name : "🌍 Languages" , data:userDetails.languages },
+    {name : "🔷 Profile" , data:userDetailsG.bio },
+    {name : "💼 Services" , data:userDetailsG.services },
+    {name : "🎓 Education" , data:userDetailsG.education },
+    {name : "⭐ Experience" , data:userDetailsG.experience },
+    {name : "💡 Skills" , data:userDetailsG.skills },
+    {name : "🌍 Languages" , data:userDetailsG.languages },
   ]
 
   const boldNumbers = (text) => {
@@ -187,16 +188,16 @@ function GetUserByUsername({params}) {
       </ul>
     );
   };
-  const emailuser =userDetails.email
+  const emailuser =userDetailsG.email
   return (
-    <div className={` flex items-start justify-center   pt-4 pb-96 ${userDetails.bgcolorp}`}>
+    <div className={` flex items-start justify-center   pt-4 pb-96 ${userDetailsG.bgcolorp}`}>
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
            {/* Image Profile and info user */}
            <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
                <div>
                  <AlertDialog>
                   <AlertDialogTrigger>
-                    {!userDetails.urlimage ? (
+                    {!userDetailsG.urlimage ? (
                       <div
                       width={140}
                       height={0}
@@ -209,7 +210,7 @@ function GetUserByUsername({params}) {
                    <Image
                      width={136}
                      height={0}
-                     src={userDetails.urlimage}
+                     src={userDetailsG.urlimage}
                      alt="Profile Image"
                      className="object-cover cursor-pointer"
                      />
@@ -223,7 +224,7 @@ function GetUserByUsername({params}) {
                                 <Image
                              width={400}
                              height={400}
-                             src={userDetails.urlimage}
+                             src={userDetailsG.urlimage}
                              alt="Profile Image"
                              className="object-cover rounded-full cursor-pointer"
                            />
@@ -238,20 +239,20 @@ function GetUserByUsername({params}) {
                </div>
                <div className="text-center md:text-left">
                  <h2 className="font-bold text-2xl text-gray-800">
-                  {userDetails.fullname}
+                  {userDetailsG.fullname}
                  </h2>
                  <p className="hidden text-gray-600 fle items-center justify-center md:justify-start gap-2 mt-1">
-                   <span className="text-green-500"><MailCheck width={18} /></span> {userDetails.email}
+                   <span className="text-green-500"><MailCheck width={18} /></span> {userDetailsG.email}
                  </p>
                  <p className="text-gray-600 md:flex items-center md:justify-start justify-center   md:gap-2 mt-1">
-                   <span className="text-green-900">@ {userDetails.username}</span>
-                   {userDetails.country &&
-                  <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{userDetails.country}</span>
+                   <span className="text-green-900">@ {userDetailsG.username}</span>
+                   {userDetailsG.country &&
+                  <span className="flex gap-1 justify-center"><MapPin  width={18} style={{ color: "red" }} />{userDetailsG.country}</span>
                    }
                  </p>
-                 {userDetails.phoneNumber &&
+                 {userDetailsG.phoneNumber &&
                  <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                   <Phone width={18} style={{ color: "green" }} />{userDetails.phoneNumber}
+                   <Phone width={18} style={{ color: "green" }} />{userDetailsG.phoneNumber}
                  </p>
                  }
                  
@@ -303,7 +304,7 @@ function GetUserByUsername({params}) {
                             <div className="border-2 rounded-md p-2">
                               <QRCode
                                 id="qrcode"
-                                value={`${CLIENT_URL}/${userDetails.username}`}
+                                value={`${CLIENT_URL}/${userDetailsG.username}`}
                               />
                             </div>
                             <div className="flex flex-row gap-3">
@@ -337,17 +338,15 @@ function GetUserByUsername({params}) {
                   </AlertDialog>
                  {/* Email User */}
                  <span className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  "> 
-                 <a className="hover:scale-105 duration-500 hover:text-green-700" href={`mailto:${userDetails.email}`}><Mail width={23} /></a>
+                 <a className="hover:scale-105 duration-500 hover:text-green-700" href={`mailto:${userDetailsG.email}`}><Mail width={23} /></a>
 
                  </span>
                  {/* messageTo */}
-                 <button className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200  "
-                    onClick={() => {router.push(`/message/to/${path}`);}}><MessageCircleMore />
-                 </button>
+                 <FriendRequest userDetailsG={userDetailsG} emailuser={emailuser} path={path} />
               </nav>
         {/* Category */}
         <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
-                 {userDetails.category}
+                 {userDetailsG.category}
          </p>
          {/* Modul */}
          <div className="flex flex-wrap gap-2 mb-2 justify-center">
@@ -375,59 +374,59 @@ function GetUserByUsername({params}) {
          </div>
          
         {/* Profile */}
-          {userDetails.bio && (
+          {userDetailsG.bio && (
         <div className="p-4 mt-4 bg-white rounded-lg shadow-md border duration-500 hover:scale-100">
               <h3 className="text-xl font-semibold text-indigo-500 mb-2">🔷 Profile</h3>
               <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-                {ListDisk(userDetails.bio)}
+                {ListDisk(userDetailsG.bio)}
               </p>
         </div>
           )}
         
         {/* Services */}
-        {userDetails.services && (
+        {userDetailsG.services && (
           <div className="mt-3 p-4 bg-white rounded-lg border shadow-md duration-500 hover:scale-100">
             {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
             <h3 className="text-xl font-semibold text-indigo-500 mb-2">💼 Services</h3>
             <p className="text-gray-800 overflow-y-auto whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {ListDisk(userDetails.services)}
+              {ListDisk(userDetailsG.services)}
             </p>
           </div>
         )}
 
         {/* Education */}
-        <div className={`${!userDetails.education && "hidden"} mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
+        <div className={`${!userDetailsG.education && "hidden"} mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetails.education)}
+            {ListDisk(userDetailsG.education)}
           </p>
         </div>
 
         {/* Experience */}
-        <div className={`${!userDetails.experience && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
+        <div className={`${!userDetailsG.experience && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">⭐ Experience</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetails.experience)}
+            {ListDisk(userDetailsG.experience)}
           </p>
         </div>
         
         {/* Skills */}
-        <div className={`${!userDetails.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
+        <div className={`${!userDetailsG.skills && "hidden"} border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">💡 Skills</h3>
           <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetails.skills)}
+            {ListDisk(userDetailsG.skills)}
           </p>
         </div>
         
         {/* Languages */}
-        <div className={`${!userDetails.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md hover:scale-100 duration-500`}>
+        <div className={`${!userDetailsG.languages && "hidden"} border p-4 bg-white rounded-lg shadow-md hover:scale-100 duration-500`}>
           {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
           <h3 className="text-xl font-semibold text-indigo-600 mb-2">🌍 Languages</h3>
           <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetails.languages)}
+            {ListDisk(userDetailsG.languages)}
           </p>
         </div>
 
