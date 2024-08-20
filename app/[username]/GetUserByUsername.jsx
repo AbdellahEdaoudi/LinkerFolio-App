@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Link, Mail, MailCheck, MapPin, MessageCircleMore, Phone, Pin, QrCode } from "lucide-react";
+import { Link, Mail, MailCheck, MapPin, MessageCircleMore, Phone, Pin, QrCode, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -21,6 +21,8 @@ import { MyContext } from "../Context/MyContext";
 import UserLinks from "./UserLinks";
 import Loadingpage from "../Components/LoadingPage";
 import FriendRequest from "./FriendRequest";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import SignInComponents from "../Components/SignInComponents";
 
 function GetUserByUsername({params}) {
   const path = usePathname();
@@ -342,7 +344,12 @@ function GetUserByUsername({params}) {
 
                  </span>
                  {/* messageTo */}
+                 <SignedIn >
                  <FriendRequest userDetailsG={userDetailsG} emailuser={emailuser} path={path} />
+                 </SignedIn>
+                 <SignedOut>
+                 <SignInComponents />
+                 </SignedOut>
               </nav>
         {/* Category */}
         <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
