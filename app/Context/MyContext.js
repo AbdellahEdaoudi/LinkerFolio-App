@@ -13,6 +13,12 @@ export const MyProvider = ({ children }) => {
   const { user } = useUser();
   const EmailUser = user?.emailAddresses[0].emailAddress;
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
+  const [FriendsReq, setFriendsReq] = useState([]);
+  const [FriendsReqC, setFriendsReqC] = useState(0);
+  console.log('====================================');
+  console.log(FriendsReq);
+  console.log('====================================');
+
 
   // const CLIENT_URL = "http://localhost:3000";
   // const SERVER_URL = "http://localhost:9999" ;
@@ -28,7 +34,8 @@ export const MyProvider = ({ children }) => {
   });
 
   const audioRef = useRef(null);
-
+  
+  // socket
   useEffect(() => {
     // Connect to Socket.io
     socket.connect();
@@ -94,6 +101,37 @@ export const MyProvider = ({ children }) => {
       });
   }, [SERVER_URL_V]);
 
+  useEffect(() => {
+    const fetchFriendRequests = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL_V}/friend`);
+        const allRequests = response.data.data;
+  
+        console.log('All Requests:', allRequests);
+        console.log('EmailUser:', EmailUser);
+  
+        const FilterFriendsReq = allRequests.filter(
+          (f) => {
+            console.log('Request to:', f.to, 'EmailUser:', EmailUser);
+            return f.status === 'pending' && f.to.trim().toLowerCase() === EmailUser.trim().toLowerCase();
+          }
+        );
+  
+        console.log('Filtered Requests:', FilterFriendsReq);
+  
+        setFriendsReq(FilterFriendsReq);
+        setFriendsReqC(FilterFriendsReq.length);
+      } catch (error) {
+        console.error('Error fetching friend requests:', error.message);
+      }
+    };
+  
+    fetchFriendRequests();
+  }, [EmailUser, SERVER_URL_V]);
+  
+
+  
+
   const Notification = messages.filter(
     (fl) => fl.to === EmailUser && fl.from !== EmailUser
   );
@@ -118,6 +156,7 @@ export const MyProvider = ({ children }) => {
         Notification,
         SERVER_URL_V,
         messages,
+        FriendsReqC,
       }}
     >
       {/* <audio ref={audioRef} src="/notification3.mp3" preload="auto" /> */}

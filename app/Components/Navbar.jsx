@@ -19,11 +19,10 @@ function Navbar() {
   const { user } = useUser();
   const [setting, setSetting] = useState(true);
   const [notification, setNotification] = useState(true);
-  const [FriendsReq, setFriendsReq] = useState(true);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [Adminfind, setAdminfind] = useState(false);
-  const {userDetails,Notification,EmailUser} = useContext(MyContext);
+  const {userDetails,Notification,EmailUser,FriendsReqC,FriendsReq} = useContext(MyContext);
 
   useEffect(() => {
     const User = userDetails.find(user => user.email === EmailUser);
@@ -104,7 +103,7 @@ function Navbar() {
                         setNotification(!notification);
                         setSetting(true)
                       }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {Notification.length}
+                       {Notification.length ? Notification.length : Notification.length === 0 ? "0" : "..."}
                       </div>
                       </div>
                        {/* Icon FriendReq */}
@@ -121,7 +120,7 @@ function Navbar() {
                         setSetting(true),
                         setNotification(true)
                       }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {Notification.length}
+                       {FriendsReqC ? FriendsReqC : "..."}
                       </div>
                       </div>
                       {/* Icon Settings */}
