@@ -7,7 +7,7 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import {Bell, MessagesSquare, Settings } from "lucide-react";
+import {Bell, MessagesSquare, Settings, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ function Navbar() {
   const { user } = useUser();
   const [setting, setSetting] = useState(true);
   const [notification, setNotification] = useState(true);
+  const [FriendsReq, setFriendsReq] = useState(true);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [Adminfind, setAdminfind] = useState(false);
@@ -102,6 +103,23 @@ function Navbar() {
                       <div onClick={() => {
                         setNotification(!notification);
                         setSetting(true)
+                      }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
+                       {Notification.length}
+                      </div>
+                      </div>
+                       {/* Icon FriendReq */}
+                       <div  onClick={() => {
+                          router.push('/Friendrequests');
+                          setSetting(true),
+                          setNotification(true)
+                        }} className="relative flex items-center">
+                      <span 
+                      className="text-black cursor-pointer ml-2 relative">
+                      <Users />
+                      </span>
+                      <div onClick={() => {
+                        setSetting(true),
+                        setNotification(true)
                       }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
                        {Notification.length}
                       </div>
