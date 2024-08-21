@@ -120,7 +120,7 @@ function Navbar() {
                         setSetting(true),
                         setNotification(true)
                       }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {FriendsReqC ? FriendsReqC : "..."} 
+                       {FriendsReqC ? FriendsReqC : FriendsReqC === 0 ? "0" : "..."} 
                       </div>
                       </div>
                       {/* Icon Settings */}
