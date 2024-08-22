@@ -35,7 +35,8 @@ function Messages({ selectedUser }) {
   const [friendRequests, setFriendRequests] = useState([]);
   const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
   const router = useRouter();
-
+  
+  useEffect(() => {
   const GetFriendRequest = async () => {
     try {
       const response = await axios.get(`${SERVER_URL_V}/friend`);
@@ -44,10 +45,8 @@ function Messages({ selectedUser }) {
       console.error('Error fetching friend requests', error.response ? error.response.data : error.message);
     }
   };
-
-  useEffect(() => {
     GetFriendRequest();
-  }, []);
+  }, [SERVER_URL_V]);
 
 
   useEffect(() => {

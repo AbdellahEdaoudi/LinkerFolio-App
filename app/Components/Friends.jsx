@@ -47,7 +47,7 @@ function Friends() {
       socket.off('receiveUpdatedFriendRequest');
       socket.off('receiveDeletedFriendRequest');
     };
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     const fetchFriendRequests = async () => {

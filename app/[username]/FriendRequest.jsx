@@ -51,7 +51,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
         console.log("User not found in friendRequests");
       }
     }
-  }, [friendRequests,EmailUser]);
+  }, [friendRequests,EmailUser,emailuser]);
 
   useEffect(() => {
     const socket = io(SERVER_URL);
@@ -79,7 +79,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
       socket.off('receiveUpdatedFriendRequest');
       socket.off('receiveDeletedFriendRequest');
     };
-  }, []);
+  }, [SERVER_URL]);
 
   // GetFriendRequest
   useEffect(() => {
@@ -92,7 +92,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
       }
     };
     GetFriendRequest();
-  }, []);
+  }, [SERVER_URL_V]);
   // SendFriendRequest
 const SendFriendRequest = async () => {
   setLoading(true);
@@ -174,7 +174,7 @@ const SendFriendRequest = async () => {
             </form>
             <div className="flex flex-col items-center justify-center">
               <div className="text-white text-2xl my-2">Friend requests</div>
-              <Image className="rounded-md" src={userDetailsG.urlimage} width={150} height={100} />
+              <Image className="rounded-md" src={userDetailsG.urlimage} width={150} alt="Image Profile" height={100} />
               <div className="text-white text-3xl mt-4">{userDetailsG.fullname}</div>
               <div className="space-x-4 my-4">
                 <button onClick={UpdateFriendRequest} className="px-2 py-1 bg-green-500 rounded-md ">

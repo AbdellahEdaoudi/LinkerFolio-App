@@ -39,6 +39,7 @@ function UserProfile({ params }) {
   const router = useRouter();
 
   
+  useEffect(() => {
   const GetFriendRequest = async () => {
     try {
       const response = await axios.get(`${SERVER_URL_V}/friend`);
@@ -48,9 +49,8 @@ function UserProfile({ params }) {
     }
   };
 
-  useEffect(() => {
     GetFriendRequest();
-  }, []);
+  }, [SERVER_URL_V]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
