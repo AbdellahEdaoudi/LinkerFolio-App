@@ -1,6 +1,7 @@
 // "use client";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
+import he from 'he';
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -245,7 +246,7 @@ function Messages({ selectedUser }) {
                      className="object-cover"
                    />
                    </div>
-                  <p className="font-bold">{selectedUser.fullname.replace(/'/g, '&#39;')}</p>
+                  <p className="font-bold">{he.encode(selectedUser.fullname)}</p>
                 </Link>
                 <p className="font-bold md:block hidden">
                   {selectedUser.email}

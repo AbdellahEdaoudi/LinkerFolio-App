@@ -241,12 +241,14 @@ function NameUser({ params }) {
     const capitalizeWords = (str) => {
       return str
         .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase());
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+        .replace(/\s+/g, ' '); // تحويل المسافات المتعددة إلى مسافة واحدة
     };
     setFullname(capitalizeWords(e.target.value));
   }}
   className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
 />
+
 
       </div>
       <div>
