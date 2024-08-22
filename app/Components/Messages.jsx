@@ -245,7 +245,7 @@ function Messages({ selectedUser }) {
                      className="object-cover"
                    />
                    </div>
-                  <p className="font-bold">{selectedUser.fullname}</p>
+                  <p className="font-bold">{selectedUser.fullname.replace(/'/g, '&#39;')}</p>
                 </Link>
                 <p className="font-bold md:block hidden">
                   {selectedUser.email}

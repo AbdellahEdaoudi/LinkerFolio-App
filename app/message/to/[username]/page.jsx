@@ -246,7 +246,7 @@ function UserProfile({ params }) {
                     width={48}
                     height={48}
                   />
-                  <p className="font-bold">{userDname.fullname}</p>
+                  <p className="font-bold">{userDname.fullname.replace(/'/g, '&#39;')}</p>
                 </Link>
                 <p className="font-bold md:block hidden">
                   {userDname.email}
