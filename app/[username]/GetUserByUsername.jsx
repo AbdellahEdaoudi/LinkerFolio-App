@@ -23,6 +23,7 @@ import Loadingpage from "../Components/LoadingPage";
 import FriendRequest from "./FriendRequest";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import SignInComponents from "../Components/SignInComponents";
+import QrcodeProfile from "./QrcodeProfile";
 
 function GetUserByUsername({params}) {
   const path = usePathname();
@@ -292,52 +293,7 @@ function GetUserByUsername({params}) {
                   {copied ? <p className="text-[14px]">Copied!</p> : <Link />} <br />
                  </button>
                  {/* Modal Qr and Link */}
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                    <span  className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  ">
-                      <QrCode />
-                    </span>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>QR Code Profile</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          <div className="flex flex-col justify-center items-center ">
-                            <div className="border-2 rounded-md p-2">
-                              <QRCode
-                                id="qrcode"
-                                value={`${CLIENT_URL}/${userDetailsG.username}`}
-                              />
-                            </div>
-                            <div className="flex flex-row gap-3">
-                              <button
-                                className="p-2 bg-blue-300 rounded-md my-2 text-black font-medium"
-                                onClick={DownloadQRCode}
-                              >
-                                Download QrCode
-                              </button>
-                              <button
-                                className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
-                                onClick={ShareQRCode}
-                              >
-                                Share Qrcode
-                              </button>
-                              <button
-                                className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
-                                onClick={ShareLink}
-                              >
-                                Share Link
-                              </button>
-                            </div>
-                          </div>
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        {/* <AlertDialogAction>Continue</AlertDialogAction> */}
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <QrcodeProfile userDetailsG={userDetailsG} />
                  {/* Email User */}
                  <span className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  "> 
                  <a className="hover:scale-105 duration-500 hover:text-green-700" href={`mailto:${userDetailsG.email}`}><Mail width={23} /></a>

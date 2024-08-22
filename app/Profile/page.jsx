@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { MyContext } from "../Context/MyContext";
 import UserLinks from "../[username]/UserLinks";
 import Loadingpage from "../Components/LoadingPage";
+import QrcodeProfile from "./QrcodeProfile";
 
 function ProfilePage() {
   const { user } = useUser();
@@ -236,46 +237,7 @@ function ProfilePage() {
                  <PenOff className="w-6 h-6" />
                </Link>
               {/* QrCode Profile */}
-              <span className="border p-2 rounded-full  flex gap-2 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  ">
-                <AlertDialog>
-                  <AlertDialogTrigger>
-                    <QrCode />
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>QR Code Profile</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        <div className="flex flex-col justify-center items-center ">
-                          <div className="border-2 rounded-md p-2">
-                            <QRCode
-                              id="qrcode"
-                              value={`${CLIENT_URL}/${UserF.username}`}
-                            />
-                          </div>
-                          <div className="flex gap-3">
-                            <button
-                              className="p-2 bg-blue-300 rounded-md my-2 text-black font-medium"
-                              onClick={DownloadQRCode}
-                            >
-                              Download
-                            </button>
-                            <button
-                              className="p-2 bg-green-300 rounded-md my-2 text-black font-medium"
-                              onClick={ShareQRCode}
-                            >
-                              Share
-                            </button>
-                          </div>
-                        </div>
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      {/* <AlertDialogAction>Continue</AlertDialogAction> */}
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </span>
+              <QrcodeProfile UserF={UserF} />
               {/* Link Profile */}
               <div
                 className="flex gap-2 hover:scale-105 duration-300 hover:text-sky-400  "
