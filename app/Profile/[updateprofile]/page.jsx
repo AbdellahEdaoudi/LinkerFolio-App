@@ -242,7 +242,7 @@ function NameUser({ params }) {
       return str
         .toLowerCase()
         .replace(/\b\w/g, (char) => char.toUpperCase())
-        .replace(/\s+/g, ' '); // تحويل المسافات المتعددة إلى مسافة واحدة
+        .replace(/\s+/g, ' '); 
     };
     setFullname(capitalizeWords(e.target.value));
   }}
