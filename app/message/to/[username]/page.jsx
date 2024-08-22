@@ -65,7 +65,6 @@ function UserProfile({ params }) {
     socket.on("receiveMessage", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
-  
     socket.on("receiveUpdatedMessage", (updatedMessage) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
@@ -73,10 +72,27 @@ function UserProfile({ params }) {
         )
       );
     });
-  
     socket.on("receiveDeletedMessage", (deletedMessageId) => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg._id !== deletedMessageId)
+      );
+    });
+
+    socket.on('receiveFriendRequest', (newRequest) => {
+      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+    });
+
+    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.map(request =>
+          request._id === updatedRequest._id ? updatedRequest : request
+        )
+      );
+    });
+
+    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.filter(request => request._id !== deletedRequestId)
       );
     });
   
@@ -273,30 +289,16 @@ function UserProfile({ params }) {
             ref={messagesEndRef}
           >
             {messages.length === 0 ? (
-              <div className="md:flex md:justify-around">
-                <div className="space-y-3">
-                  {lod.map((l, i) => (
-                    <div key={i} className="flex items-center space-x-4">
-                      <Skeleton className="h-12 w-12 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="space-y-3 md:block hidden">
-                  {lod.map((l, i) => (
-                    <div key={i} className="flex items-center space-x-4">
-                      <Skeleton className="h-12 w-12 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex items-center justify-center h-64  rounded-lg">
+              <div className="text-center p-4">
+                <h2 className="text-xl font-semibold text-gray-700 mb-2">
+                  No Messages
+                </h2>
+                <p className="text-gray-500">
+                  You don't have any messages yet.
+                </p>
               </div>
+            </div>
             ) : (
               messages
                 .filter((fl) => {

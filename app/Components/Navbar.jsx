@@ -22,7 +22,7 @@ function Navbar() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [Adminfind, setAdminfind] = useState(false);
-  const {userDetails,Notification,EmailUser,FriendsReqC,FriendsReq} = useContext(MyContext);
+  const {userDetails,Notification,EmailUser,Requests} = useContext(MyContext);
 
   useEffect(() => {
     const User = userDetails.find(user => user.email === EmailUser);
@@ -120,7 +120,7 @@ function Navbar() {
                         setSetting(true),
                         setNotification(true)
                       }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {FriendsReqC ? FriendsReqC : FriendsReqC === 0 ? "0" : "..."} 
+                       {Requests ? Requests.length : Requests.length === 0 ? "0" : "..."} 
                       </div>
                       </div>
                       {/* Icon Settings */}
@@ -180,6 +180,15 @@ function Navbar() {
                 className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
                Business Links
+              </Link>
+              <Link
+                href={"/Friends"}
+                onClick={() => {
+                  setSetting(!setting);
+                }}
+                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+              >
+               Friends
               </Link>
               {Adminfind &&
               <Link

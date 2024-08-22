@@ -83,7 +83,6 @@ function Messages({ selectedUser }) {
     socket.on("receiveMessage", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
-
     socket.on("receiveUpdatedMessage", (updatedMessage) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
@@ -91,10 +90,27 @@ function Messages({ selectedUser }) {
         )
       );
     });
-
     socket.on("receiveDeletedMessage", (deletedMessageId) => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg._id !== deletedMessageId)
+      );
+    });
+
+    socket.on('receiveFriendRequest', (newRequest) => {
+      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+    });
+
+    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.map(request =>
+          request._id === updatedRequest._id ? updatedRequest : request
+        )
+      );
+    });
+
+    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.filter(request => request._id !== deletedRequestId)
       );
     });
 
@@ -269,35 +285,21 @@ function Messages({ selectedUser }) {
             ):
             <div>
             <div
-            className="bg-white p-4 rounded-lg shadow-lg h-[600px] duration-300  md:h-[350px] scrollbar-none
+            className="bg-gray-100 p-4 rounded-lg  shadow-lg h-[600px] duration-300  md:h-[350px] scrollbar-none
                overflow-y-auto"
             ref={messagesEndRef}
           >
             {messages.length === 0 ? (
-              <div className="flex justify-around">
-                <div className="space-y-3">
-                  {lod.map((l, i) => (
-                    <div key={i} className="flex items-center space-x-4">
-                      <Skeleton className="h-12 w-12 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="space-y-3">
-                  {lod.map((l, i) => (
-                    <div key={i} className="flex items-center space-x-4">
-                      <Skeleton className="h-12 w-12 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex items-center justify-center h-64   rounded-lg">
+              <div className="text-center p-4">
+                <h2 className="text-xl font-semibold text-gray-700 mb-2">
+                  No Messages
+                </h2>
+                <p className="text-gray-500">
+                  You don't have any messages yet.
+                </p>
               </div>
+            </div>
             ) : (
               FilterMessages
                 .map((msg, i) => {

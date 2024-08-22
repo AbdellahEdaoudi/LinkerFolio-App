@@ -13,19 +13,16 @@ export const MyProvider = ({ children }) => {
   const { user } = useUser();
   const EmailUser = user?.emailAddresses[0].emailAddress;
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
-  const [FriendsReq, setFriendsReq] = useState([]);
-  const [FriendsReqC, setFriendsReqC] = useState(0);
-  console.log('====================================');
-  console.log(FriendsReq);
-  console.log('====================================');
+  const [previousfriendRequests, setPreviousfriendRequests] = useState(0);
+  const [friendRequests, setFriendRequests] = useState([]);
 
 
-  // const CLIENT_URL = "http://localhost:3000";
-  // const SERVER_URL = "http://localhost:9999" ;
-  // const SERVER_URL_V = "http://localhost:9999" ;
-   const CLIENT_URL = "https://linkerfolio.vercel.app";
-   const SERVER_URL = "https://socketserver-muhp.onrender.com";
-   const SERVER_URL_V = "https://saas-app-api.vercel.app";
+  const CLIENT_URL = "http://localhost:3000";
+  const SERVER_URL = "http://localhost:9999" ;
+  const SERVER_URL_V = "http://localhost:9999" ;
+  //  const CLIENT_URL = "https://linkerfolio.vercel.app";
+  //  const SERVER_URL = "https://socketserver-muhp.onrender.com";
+  //  const SERVER_URL_V = "https://saas-app-api.vercel.app";
 
   // Initialize Socket.io
   const socket = io(SERVER_URL, {
@@ -35,16 +32,15 @@ export const MyProvider = ({ children }) => {
 
   const audioRef = useRef(null);
   
-  // socket
+  // socket.io
   useEffect(() => {
     // Connect to Socket.io
     socket.connect();
-
-    // Listen for incoming messages
+    
+    // Messages
     socket.on('receiveMessage', (data) => {
       setMessages((prevMessages) => [data, ...prevMessages]);
     });
-
     socket.on('receiveUpdatedMessage', (data) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
@@ -52,10 +48,25 @@ export const MyProvider = ({ children }) => {
         )
       );
     });
-
     socket.on('receiveDeletedMessage', (id) => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg._id !== id)
+      );
+    });
+    // FriendRequest
+    socket.on('receiveFriendRequest', (newRequest) => {
+      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+    });
+    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.map(request =>
+          request._id === updatedRequest._id ? updatedRequest : request
+        )
+      );
+    });
+    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.filter(request => request._id !== deletedRequestId)
       );
     });
 
@@ -101,33 +112,20 @@ export const MyProvider = ({ children }) => {
       });
   }, [SERVER_URL_V]);
 
+  // GetFriendRequest
   useEffect(() => {
-    const fetchFriendRequests = async () => {
+    const GetFriendRequest = async () => {
       try {
         const response = await axios.get(`${SERVER_URL_V}/friend`);
-        const allRequests = response.data.data;
-  
-        console.log('All Requests:', allRequests);
-        console.log('EmailUser:', EmailUser);
-  
-        const FilterFriendsReq = allRequests.filter(
-          (f) => {
-            console.log('Request to:', f.to, 'EmailUser:', EmailUser);
-            return f.status === 'pending' && f.to.trim().toLowerCase() === EmailUser.trim().toLowerCase();
-          }
-        );
-  
-        console.log('Filtered Requests:', FilterFriendsReq);
-  
-        setFriendsReq(FilterFriendsReq);
-        setFriendsReqC(FilterFriendsReq.length);
+        setFriendRequests(response.data.data);
       } catch (error) {
-        console.error('Error fetching friend requests:', error.message);
+        console.error('Error fetching friend requests', error.response ? error.response.data : error.message);
       }
     };
-  
-    fetchFriendRequests();
-  }, [EmailUser, SERVER_URL_V]);
+    GetFriendRequest();
+  }, []);
+
+
   
 
   
@@ -135,6 +133,9 @@ export const MyProvider = ({ children }) => {
   const Notification = messages.filter(
     (fl) => fl.to === EmailUser && fl.from !== EmailUser
   );
+  const Requests  = friendRequests.filter(
+    (fl)=> fl.status === "pending" && fl.to === EmailUser
+  )
   useEffect(() => {
     if (Notification.length > previousNotificationCount) {
       if (audioRef.current) {
@@ -143,6 +144,15 @@ export const MyProvider = ({ children }) => {
     }
     setPreviousNotificationCount(Notification.length);
   }, [Notification.length, previousNotificationCount]);
+  
+  useEffect(() => {
+    if (Requests.length > previousfriendRequests) {
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+    }
+    setPreviousfriendRequests(Requests.length);
+  }, [Requests.length, previousfriendRequests]);
 
   return (
     <MyContext.Provider
@@ -156,10 +166,10 @@ export const MyProvider = ({ children }) => {
         Notification,
         SERVER_URL_V,
         messages,
-        FriendsReqC,
+        Requests,
       }}
     >
-      {/* <audio ref={audioRef} src="/notification3.mp3" preload="auto" /> */}
+      <audio ref={audioRef} src="/notification3.mp3" preload="auto" />
       {children}
     </MyContext.Provider>
   );

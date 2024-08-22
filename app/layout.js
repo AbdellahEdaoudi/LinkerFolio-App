@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       </head>
         <body className={`${prompt.className} scrollbar-none bg-gradient-to-r from-blue-500 to-purple-500`}>
         <MyProvider>
-        <div className="sticky top-0 z-50">
+        <div className="sticky top-0 z-50 ">
           <Navbar />
           </div>
             {children}
