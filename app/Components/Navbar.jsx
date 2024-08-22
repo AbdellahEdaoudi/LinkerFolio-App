@@ -160,8 +160,8 @@ function Navbar() {
           onClick={() => {
             setSetting(!setting);
           }}
-          className={`overflow-hidden transition-all duration-500 text-white bg-gray-800 rounded-md w-60 right-2 container absolute flex flex-col  ${
-            setting ? " max-h-0" : "max-h-60 p-4"
+          className={`overflow-hidden transition-all duration-500 text-white bg-gray-800 rounded-md w-60 right-3 container absolute flex flex-col  ${
+            setting ? " max-h-0" : "max-h-80 p-4"
           }`}>
               <Link
                 href={"/Profile"}
