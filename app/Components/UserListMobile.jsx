@@ -62,7 +62,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
           {searchQuery === "" ? "Friends" : "Users List"}
         </div>
         <div className=" overflow-y-auto  scrollbar-none ">
-          {userDetails.length === 0 ? (
+          {!userDetails ? (
             <div className="space-y-4">
               {lodd.map((l, i) => (
                 <div key={i} className="flex items-center space-x-4 ">
@@ -151,8 +151,16 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                               msg.from === userDetail.email)
                         )
                     )
-                    .map((User, i) => (
-                      <div
+                    .map((User, i) => {
+                      // Find the last message between EmailUser and the current User
+                       const lastMessage = messages
+                       .filter(msg => 
+                         (msg.from === EmailUser && msg.to === User.email) || 
+                         (msg.to === EmailUser && msg.from === User.email)
+                       )
+                       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]; 
+                      return(
+                        <div
                         key={i}
                         onClick={() => {
                           setSelectedUser(User);
@@ -180,7 +188,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                             : ""
                         }`}
                       >
-                        <Link href={`/${User.username}`}  className="relative w-12 h-12">
+                        <Link href={`/${User.username}`}  className="flex-shrink-0 relative w-12 h-12">
                           <Image
                             src={User.urlimage}
                             alt="Profile"
@@ -190,12 +198,16 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                         </Link>
                         <div onClick={()=>router.push(`/message/to/${User.username}`)} className="flex flex-col">
                           <p className="text-lg">{User.fullname}</p>
-                          <p className="text-[10px] text-gray-500">
+                          {/* <p className="text-[10px] text-gray-500">
                             {User.email}
+                          </p> */}
+                          <p className="text-[14px] text-gray-500 line-clamp-1">
+                            {lastMessage ? lastMessage.message : "No messages yet"}
                           </p>
                         </div>
                       </div>
-                    ))}
+                      )
+              })}
               </div>
             </div>
           )}
