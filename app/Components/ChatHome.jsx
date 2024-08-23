@@ -18,9 +18,7 @@ function ChatHome() {
   }, []);
 
   if (!userDetails && !EmailUser) {
-    return <p className="flex bg-white justify-center items-start h-screen py-32 text-8xl">
-    <i className="fa fa-spinner fa-spin "></i> 
-    </p> ;
+    return <div></div> ;
   }
 
     const filt = userDetails.find(

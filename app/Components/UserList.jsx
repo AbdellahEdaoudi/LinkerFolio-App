@@ -9,11 +9,10 @@ import { MyContext } from '../Context/MyContext';
 
 function UserList({selectedUser,setSelectedUser}) {
   const [userByEmail, setuserByEmail] = useState("");
-  const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {EmailUser,SERVER_URL_V,userDetails} = useContext(MyContext);
+  const {EmailUser,SERVER_URL_V,userDetails,messages} = useContext(MyContext);
 
   
   //  search input change
@@ -49,18 +48,6 @@ function UserList({selectedUser,setSelectedUser}) {
     }
   }, [SERVER_URL_V,EmailUser]);
 
-  // Get Messages
-  useEffect(() => {
-    const GetMessages = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/messages`);
-        setMessages(response.data);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    };
-    GetMessages();
-  },[SERVER_URL_V]);
   
   
   return (
@@ -138,61 +125,76 @@ function UserList({selectedUser,setSelectedUser}) {
                       </div>
                       </div>
                  ))}
-                 {/* User ilya message */}
                  {EmailUser && EmailUser.length > 0 && 
-                   userDetails.filter((userDetail) =>
-                     userDetail.email === EmailUser || 
-                     messages.some((msg) => 
-                       (msg.from === EmailUser && msg.to === userDetail.email) || 
-                       (msg.to === EmailUser && msg.from === userDetail.email)
-                     )
-                   ).map((User, i) => {
-                    // Find the last message between EmailUser and the current User
-                       const lastMessage = messages
-                       .filter(msg => 
-                         (msg.from === EmailUser && msg.to === User.email) || 
-                         (msg.to === EmailUser && msg.from === User.email)
-                       )
-                       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]; 
-                     return(
+                  userDetails
+                    .filter((userDetail) =>
+                      userDetail.email === EmailUser || 
+                      messages.some((msg) => 
+                        (msg.from === EmailUser && msg.to === userDetail.email) || 
+                        (msg.to === EmailUser && msg.from === userDetail.email)
+                      )
+                    )
+                    .map((User) => {
+                      const lastMessage = messages
+                        .filter(msg => 
+                          (msg.from === EmailUser && msg.to === User.email) || 
+                          (msg.to === EmailUser && msg.from === User.email)
+                        )
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+                      
+                      return { User, lastMessage };
+                    })
+                    .sort((a, b) => new Date(b.lastMessage?.createdAt) - new Date(a.lastMessage?.createdAt)) // Sort by last message date
+                    .map(({ User, lastMessage }, i) => (
                       <div
-                       key={i}
-                       onClick={() => {
-                         setSelectedUser(User);
-                         localStorage.setItem("SelectedUser", JSON.stringify(User));
-                         const scrollMessagesToEnd = () => {
-                           if (messagesEndRef.current) {
-                             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-                           }
-                         };
-                         const timeout = setTimeout(() => {
-                           scrollMessagesToEnd();
-                         }, 1);
-                         return () => clearTimeout(timeout);
-                       }}
-                       className={`${searchQuery === "" ? "" : "hidden"} flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
-                         selectedUser && selectedUser.email === User.email ? 'bg-gray-700' : ''
-                       }`}
-                     >       
-                       <div className="relative flex-shrink-0 w-12 h-12">
-                         <Image
-                           src={User.urlimage}
-                           alt="Profile"
-                           className="rounded-full "
-                           layout="fill"
-                         />
-                       </div>
-                       <div className='flex flex-col'>
-                         <p className="text-lg">{User.fullname}</p>
-                         {/* <p className="text-[10px] text-gray-500">{User.email}</p> */}
-                         <p className="text-[12px] text-gray-500 line-clamp-1">
-                           {lastMessage ? lastMessage.message : "No messages yet"}
+                        key={i}
+                        onClick={() => {
+                          setSelectedUser(User);
+                          localStorage.setItem("SelectedUser", JSON.stringify(User));
+                          const scrollMessagesToEnd = () => {
+                            if (messagesEndRef.current) {
+                              messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+                            }
+                          };
+                          const timeout = setTimeout(() => {
+                            scrollMessagesToEnd();
+                          }, 1);
+                          return () => clearTimeout(timeout);
+                        }}
+                        className={`${searchQuery === "" ? "" : "hidden"} flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                          selectedUser && selectedUser.email === User.email ? 'bg-gray-700' : ''
+                        }`}
+                      >
+                        <div className="relative flex-shrink-0 w-12 h-12">
+                          <Image
+                            src={User.urlimage}
+                            alt="Profile"
+                            className="rounded-full"
+                            layout="fill"
+                          />
+                        </div>
+                        <div className='flex flex-col'>
+                          <p className="text-lg">{User.fullname}</p>
+                          <p className="text-[12px] text-gray-500 line-clamp-1">
+                          <p className="text-[14px] text-gray-500 line-clamp-1">
+                           {lastMessage ? (
+                             lastMessage.from === EmailUser ? (
+                               `you: ${lastMessage.message}`
+                             ) : (
+                               <>
+                                 {lastMessage.to.slice(0, 3)}: <span className="text-gray-400">{lastMessage.message}</span>
+                               </>
+                             )
+                           ) : (
+                             "No messages yet"
+                           )}
                          </p>
-                       </div>
-                     </div>
-                     )
-                   })
-                 }
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                }
+
                 </div>       
                 </div>
               )}

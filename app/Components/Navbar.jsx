@@ -89,7 +89,7 @@ function Navbar() {
                         {userr.fullname}
                       </span>
                       {/* Icons Navbar */}
-                      <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-3">
                         {/* Icon Notification */}
                       <div onClick={() => {
                         setNotification(!notification);

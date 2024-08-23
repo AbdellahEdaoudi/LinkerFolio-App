@@ -8,11 +8,10 @@ import { useRouter } from "next/navigation";
 import { MyContext } from "../Context/MyContext";
 
 function UserListMobile({ selectedUser, setSelectedUser}) {
-  const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
-  const {SERVER_URL_V,userDetails,EmailUser} = useContext(MyContext);
+  const {SERVER_URL_V,userDetails,EmailUser,messages} = useContext(MyContext);
   const router = useRouter()
 
   //  search input change
@@ -33,18 +32,6 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
     return () => clearTimeout(timeout);
   }, [messages]);
   
-  // Get Messages
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/messages`);
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-    fetchData();
-  }, [SERVER_URL_V]);
 
   return (
     <div>
@@ -136,78 +123,87 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                       </div>
                     </div>
                   ))}
-                {/* User ilya message */}
                 {EmailUser &&
-                  EmailUser.length > 0 &&
-                  userDetails
-                    .filter(
-                      (userDetail) =>
-                        userDetail.email === EmailUser ||
-                        messages.some(
-                          (msg) =>
-                            (msg.from === EmailUser &&
-                              msg.to === userDetail.email) ||
-                            (msg.to === EmailUser &&
-                              msg.from === userDetail.email)
-                        )
-                    )
-                    .map((User, i) => {
-                      // Find the last message between EmailUser and the current User
-                       const lastMessage = messages
-                       .filter(msg => 
-                         (msg.from === EmailUser && msg.to === User.email) || 
+               EmailUser.length > 0 &&
+               userDetails
+                 .filter(
+                   (userDetail) =>
+                     userDetail.email === EmailUser ||
+                     messages.some(
+                       (msg) =>
+                         (msg.from === EmailUser && msg.to === userDetail.email) ||
+                         (msg.to === EmailUser && msg.from === userDetail.email)
+                     )
+                 )
+                 .map((User) => {
+                   // Find the last message between EmailUser and the current User
+                   const lastMessage = messages
+                     .filter(
+                       (msg) =>
+                         (msg.from === EmailUser && msg.to === User.email) ||
                          (msg.to === EmailUser && msg.from === User.email)
-                       )
-                       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]; 
-                      return(
-                        <div
-                        key={i}
-                        onClick={() => {
-                          setSelectedUser(User);
-                          // router.push(`/message/to/${selectedUser.username}`)
-                          localStorage.setItem(
-                            "SelectedUser",
-                            JSON.stringify(User)
-                          );
-                          const scrollMessagesToEnd = () => {
-                            if (messagesEndRef.current) {
-                              messagesEndRef.current.scrollTop =
-                                messagesEndRef.current.scrollHeight;
-                            }
-                          };
-                          const timeout = setTimeout(() => {
-                            scrollMessagesToEnd();
-                          }, 1);
-                          return () => clearTimeout(timeout);
-                        }}
-                        className={`${
-                          searchQuery === "" ? "" : "hidden"
-                        } flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
-                          selectedUser && selectedUser.email === User.email
-                            ? "bg-gray-700"
-                            : ""
-                        }`}
-                      >
-                        <Link href={`/${User.username}`}  className="flex-shrink-0 relative w-12 h-12">
-                          <Image
-                            src={User.urlimage}
-                            alt="Profile"
-                            className="rounded-full"
-                            layout="fill"
-                          />
-                        </Link>
-                        <div onClick={()=>router.push(`/message/to/${User.username}`)} className="flex flex-col">
-                          <p className="text-lg">{User.fullname}</p>
-                          {/* <p className="text-[10px] text-gray-500">
-                            {User.email}
-                          </p> */}
-                          <p className="text-[14px] text-gray-500 line-clamp-1">
-                            {lastMessage ? lastMessage.message : "No messages yet"}
-                          </p>
-                        </div>
-                      </div>
-                      )
-              })}
+                     )
+                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+             
+                   return { User, lastMessage }; // Return both User and lastMessage
+                 })
+                 .sort((a, b) => new Date(b.lastMessage?.createdAt) - new Date(a.lastMessage?.createdAt)) // Sort by last message date
+                 .map(({ User, lastMessage }, i) => (
+                   <div
+                     key={i}
+                     onClick={() => {
+                       setSelectedUser(User);
+                       localStorage.setItem("SelectedUser", JSON.stringify(User));
+                       const scrollMessagesToEnd = () => {
+                         if (messagesEndRef.current) {
+                           messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+                         }
+                       };
+                       const timeout = setTimeout(() => {
+                         scrollMessagesToEnd();
+                       }, 1);
+                       return () => clearTimeout(timeout);
+                     }}
+                     className={`${
+                       searchQuery === "" ? "" : "hidden"
+                     } flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                       selectedUser && selectedUser.email === User.email
+                         ? "bg-gray-700"
+                         : ""
+                     }`}
+                   >
+                     <Link href={`/${User.username}`} className="flex-shrink-0 relative w-12 h-12">
+                       <Image
+                         src={User.urlimage}
+                         alt="Profile"
+                         className="rounded-full"
+                         layout="fill"
+                       />
+                     </Link>
+                     <div
+                       onClick={() => router.push(`/message/to/${User.username}`)}
+                       className="flex flex-col"
+                     >
+                       <p className="text-lg">{User.fullname}</p>
+                       <div className="text-[14px] text-gray-500 line-clamp-1">
+                       <p className="text-[14px] text-gray-500 line-clamp-1">
+                          {lastMessage ? (
+                            lastMessage.from === EmailUser ? (
+                              `you: ${lastMessage.message}`
+                            ) : (
+                              <>
+                                {lastMessage.to.slice(0, 3)}: <span className="text-gray-400">{lastMessage.message}</span>
+                              </>
+                            )
+                          ) : (
+                            "No messages yet"
+                          )}
+                        </p>
+                       </div>
+                     </div>
+                   </div>
+                 ))}
+
               </div>
             </div>
           )}
