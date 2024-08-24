@@ -15,6 +15,7 @@ import { EllipsisVertical} from "lucide-react";
 import Linkify from "linkify-react";
 import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
+import { CustomLinkify } from "./CustomLinkify";
 
 function Messages({ selectedUser }) {
   const { toast } = useToast();
@@ -129,7 +130,6 @@ function Messages({ selectedUser }) {
     }
   };
 
-
   const sendMessage = async () => {
     setLoading(true);
     
@@ -141,6 +141,7 @@ function Messages({ selectedUser }) {
         to: selectedUser.email,
         toimg: selectedUser.urlimage,
         message: messageInput,
+        readorno : false
       };
       const response = await axios.post(`${SERVER_URL}/messages`, data);
       socket.emit("sendMessage", response.data);
@@ -153,7 +154,6 @@ function Messages({ selectedUser }) {
       setLoading(false);
     }
   };
-
   const deleteMsg = async () => {
     setLoadingd(true);
     try {
@@ -174,7 +174,6 @@ function Messages({ selectedUser }) {
       setLoadingd(false);
     }
   };
-
   const updateMsg = async () => {
     setLoadingu(true);
     try {
@@ -186,6 +185,7 @@ function Messages({ selectedUser }) {
         toimg: MsgUpdat.toimg,
         message: umessage,
         updated: "edited",
+        readorno : false
       };
       const response = await axios.put(
         `${SERVER_URL}/messages/${idMsg}`,
@@ -358,7 +358,8 @@ function Messages({ selectedUser }) {
                                 : "bg-green-500"
                             } p-2  rounded-md `}
                           >
-                            <Linkify>{msg.message}</Linkify>
+                            <CustomLinkify message={msg.message} />
+                            
                           </div>
                           {/* Icon 3 point */}
                           <p

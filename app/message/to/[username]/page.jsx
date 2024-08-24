@@ -16,6 +16,7 @@ import { MyContext } from "@/app/Context/MyContext";
 import Linkify from "linkify-react";
 import { useRouter } from "next/navigation";
 import LoadingMessage from "@/app/Components/LoadingMessage";
+import { CustomLinkify } from "@/app/Components/CustomLinkify";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
@@ -136,6 +137,7 @@ function UserProfile({ params }) {
         to: userDname.email,
         toimg: userDname.urlimage,
         message: messageInput,
+        readorno:false
       };
       const response = await axios.post(`${SERVER_URL}/messages`, data);
       socket.emit("sendMessage", response.data);
@@ -181,6 +183,7 @@ function UserProfile({ params }) {
         toimg: MsgUpdat.toimg,
         message: umessage,
         updated: "edited",
+        readorno : false
       };
       const response = await axios.put(
         `${SERVER_URL}/messages/${idMsg}`,
@@ -364,7 +367,7 @@ function UserProfile({ params }) {
                                 : "bg-green-500"
                             } p-2  rounded-md`}
                           >
-                            <Linkify>{msg.message}</Linkify>
+                            <CustomLinkify message={msg.message} />
                           </p>
                           <p
                             onClick={() => {

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Skeleton } from "@/components/ui/skeleton"
 import { MyContext } from '../Context/MyContext';
+import io from "socket.io-client";
 
 
 function UserList({selectedUser,setSelectedUser}) {
@@ -12,7 +13,88 @@ function UserList({selectedUser,setSelectedUser}) {
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {EmailUser,SERVER_URL_V,userDetails,messages} = useContext(MyContext);
+  const {EmailUser,SERVER_URL_V,SERVER_URL,userDetails,messages,setMessages} = useContext(MyContext);
+  const [socket, setSocket] = useState(null);
+  
+  useEffect(() => {
+    const socket = io(SERVER_URL);
+    setSocket(socket);
+
+    socket.on("receiveMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+    socket.on("receiveUpdatedMessage", (updatedMessage) => {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg._id === updatedMessage._id ? updatedMessage : msg
+        )
+      );
+    });
+    socket.on("receiveDeletedMessage", (deletedMessageId) => {
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg._id !== deletedMessageId)
+      );
+    });
+
+    socket.on('receiveFriendRequest', (newRequest) => {
+      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+    });
+
+    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.map(request =>
+          request._id === updatedRequest._id ? updatedRequest : request
+        )
+      );
+    });
+
+    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.filter(request => request._id !== deletedRequestId)
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [SERVER_URL]);
+
+  const ReadOrNo  = async (id) =>{
+    try {
+      const response = await axios.put(`${SERVER_URL_V}/readorno/${id}`)
+      console.log('Update successful:', response.data);
+      socket.emit("updateMessage", response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating readorno:', error.response ? error.response.data : error.message);
+      throw error;
+    }
+  };
+  // Define the function to handle user clicks
+const UserClick = async (User, lastMessage) => {
+  setSelectedUser(User);
+  if (lastMessage && lastMessage._id) {
+    try {
+      await ReadOrNo(lastMessage._id);
+    } catch (error) {
+      console.error('Error updating readorno:', error);
+    }
+  } else {
+    console.warn('lastMessage or _id is undefined');
+  }
+  // Store selected user in localStorage
+  localStorage.setItem("SelectedUser", JSON.stringify(User));
+  // Scroll messages to the end
+  const scrollMessagesToEnd = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  };
+  const timeout = setTimeout(() => {
+    scrollMessagesToEnd();
+  }, 1);
+  return () => clearTimeout(timeout);
+};
 
   
   //  search input change
@@ -66,7 +148,7 @@ function UserList({selectedUser,setSelectedUser}) {
               {searchQuery === "" ? "Friends" : "Users List"}
             </div>
             <div className=" overflow-y-auto max-h-[400px] scrollbar-none ">
-              {userDetails.length === 0 ? (
+              {!userDetails  ? (
                 <div className="space-y-2">
                   {lodd.map((l, i) => (
                     <div key={i} className="flex items-center space-x-4">
@@ -149,19 +231,9 @@ function UserList({selectedUser,setSelectedUser}) {
                       <div
                         key={i}
                         onClick={() => {
-                          setSelectedUser(User);
-                          localStorage.setItem("SelectedUser", JSON.stringify(User));
-                          const scrollMessagesToEnd = () => {
-                            if (messagesEndRef.current) {
-                              messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-                            }
-                          };
-                          const timeout = setTimeout(() => {
-                            scrollMessagesToEnd();
-                          }, 1);
-                          return () => clearTimeout(timeout);
+                          UserClick(User, lastMessage);
                         }}
-                        className={`${searchQuery === "" ? "" : "hidden"} flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                        className={`${searchQuery === "" ? "" : "hidden"} mt-1 flex relative items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
                           selectedUser && selectedUser.email === User.email ? 'bg-gray-700' : ''
                         }`}
                       >
@@ -175,23 +247,27 @@ function UserList({selectedUser,setSelectedUser}) {
                         </div>
                         <div className='flex flex-col'>
                           <p className="text-lg">{User.fullname}</p>
-                          <p className="text-[12px] text-gray-500 line-clamp-1">
                           <p className="text-[14px] text-gray-500 line-clamp-1">
                            {lastMessage ? (
                              lastMessage.from === EmailUser ? (
                                `you: ${lastMessage.message}`
                              ) : (
-                               <>
-                                 {lastMessage.to.slice(0, 3)}: <span className="text-gray-400">{lastMessage.message}</span>
-                               </>
+                               `${lastMessage.message}`
                              )
                            ) : (
                              "No messages yet"
                            )}
                          </p>
-                          </p>
                         </div>
-                      </div>
+                        {lastMessage && (
+                       <p className={` 
+                         ${(lastMessage.from === EmailUser && lastMessage.to === EmailUser) && "hidden"}
+                         ${(lastMessage.from === EmailUser) && "hidden"}
+                         ${lastMessage.readorno && "hidden"} absolute right-3 top-1/2 -translate-y-1/2 bg-sky-800 rounded-full px-1  text-[10px]`}>
+                         new
+                       </p>
+                     )}                      
+                     </div>
                     ))
                 }
 

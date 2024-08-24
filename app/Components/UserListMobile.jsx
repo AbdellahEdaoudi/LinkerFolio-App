@@ -6,13 +6,95 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MyContext } from "../Context/MyContext";
+import io from "socket.io-client";
+
 
 function UserListMobile({ selectedUser, setSelectedUser}) {
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
   const lodd = Array.from({ length: 20 }, (_, index) => index + 1);
-  const {SERVER_URL_V,userDetails,EmailUser,messages} = useContext(MyContext);
-  const router = useRouter()
+  const {SERVER_URL_V,SERVER_URL,setMessages,userDetails,EmailUser,messages} = useContext(MyContext);
+  const router = useRouter();
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socket = io(SERVER_URL);
+    setSocket(socket);
+
+    socket.on("receiveMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+    socket.on("receiveUpdatedMessage", (updatedMessage) => {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg._id === updatedMessage._id ? updatedMessage : msg
+        )
+      );
+    });
+    socket.on("receiveDeletedMessage", (deletedMessageId) => {
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg._id !== deletedMessageId)
+      );
+    });
+
+    socket.on('receiveFriendRequest', (newRequest) => {
+      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+    });
+
+    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.map(request =>
+          request._id === updatedRequest._id ? updatedRequest : request
+        )
+      );
+    });
+
+    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
+      setFriendRequests(prevRequests =>
+        prevRequests.filter(request => request._id !== deletedRequestId)
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [SERVER_URL]);
+
+
+  const ReadOrNo  = async (id) =>{
+    try {
+      const response = await axios.put(`${SERVER_URL_V}/readorno/${id}`)
+      console.log('Update successful:', response.data);
+      socket.emit("updateMessage", response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating readorno:', error.response ? error.response.data : error.message);
+      throw error;
+    }
+  };
+  const UserClick = async (User,lastMessage) => {
+    setSelectedUser(User);
+    if (lastMessage && lastMessage._id) {
+      try {
+        await ReadOrNo(lastMessage._id);
+      } catch (error) {
+        console.error('Error updating readorno:', error);
+      }
+    } else {
+      console.warn('lastMessage or _id is undefined');
+    }
+    localStorage.setItem("SelectedUser", JSON.stringify(User));
+    const scrollMessagesToEnd = () => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+      }
+    };
+    const timeout = setTimeout(() => {
+      scrollMessagesToEnd();
+    }, 1);
+    return () => clearTimeout(timeout);
+  };
+  
 
   //  search input change
   const SearchChange = (e) => {
@@ -123,8 +205,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                       </div>
                     </div>
                   ))}
-                {EmailUser &&
-               EmailUser.length > 0 &&
+                {EmailUser  &&
                userDetails
                  .filter(
                    (userDetail) =>
@@ -152,21 +233,11 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                    <div
                      key={i}
                      onClick={() => {
-                       setSelectedUser(User);
-                       localStorage.setItem("SelectedUser", JSON.stringify(User));
-                       const scrollMessagesToEnd = () => {
-                         if (messagesEndRef.current) {
-                           messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-                         }
-                       };
-                       const timeout = setTimeout(() => {
-                         scrollMessagesToEnd();
-                       }, 1);
-                       return () => clearTimeout(timeout);
-                     }}
+                      UserClick(User, lastMessage);
+                    }}
                      className={`${
                        searchQuery === "" ? "" : "hidden"
-                     } flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                     } flex relative items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
                        selectedUser && selectedUser.email === User.email
                          ? "bg-gray-700"
                          : ""
@@ -191,9 +262,7 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                             lastMessage.from === EmailUser ? (
                               `you: ${lastMessage.message}`
                             ) : (
-                              <>
-                                {lastMessage.to.slice(0, 3)}: <span className="text-gray-400">{lastMessage.message}</span>
-                              </>
+                              `${lastMessage.message}`
                             )
                           ) : (
                             "No messages yet"
@@ -201,6 +270,14 @@ function UserListMobile({ selectedUser, setSelectedUser}) {
                         </p>
                        </div>
                      </div>
+                     {lastMessage && (
+                       <p className={` 
+                        ${(lastMessage.from === EmailUser && lastMessage.to === EmailUser) && "hidden"}
+                        ${(lastMessage.from === EmailUser) && "hidden"}
+                        ${lastMessage.readorno && "hidden"} absolute right-3 top-1/2 -translate-y-1/2 bg-sky-800 rounded-full px-1  text-[10px]`}>
+                        new
+                      </p>
+                     )} 
                    </div>
                  ))}
 

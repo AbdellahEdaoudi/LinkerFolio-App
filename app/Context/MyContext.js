@@ -167,6 +167,7 @@ export const MyProvider = ({ children }) => {
         SERVER_URL_V,
         messages,
         Requests,
+        setMessages,
       }}
     >
       <audio ref={audioRef} src="/notification3.mp3" preload="auto" />
