@@ -14,13 +14,13 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MyContext } from "../Context/MyContext";
+import SignInnavbar from "./SignIn/SignInnavbar";
 
 function Navbar() {
   const { user } = useUser();
   const [setting, setSetting] = useState(true);
   const [notification, setNotification] = useState(true);
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const [Adminfind, setAdminfind] = useState(false);
   const {userDetails,Notification,EmailUser,Requests} = useContext(MyContext);
 
@@ -31,18 +31,11 @@ function Navbar() {
     }
   }, [userDetails, EmailUser]);
 
-  
-
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 0);
-    return () => clearTimeout(timer); 
-  }, []);
 
   const filt = userDetails.filter(
+    (fl) => fl.email === EmailUser
+  );
+  const Filt = userDetails.find(
     (fl) => fl.email === EmailUser
   );
 
@@ -57,9 +50,9 @@ function Navbar() {
                 router.push("/");
                 setSetting(true);
               }}
-              src="/Logop.png"
+              src="/favicon.png"
               alt="Logo"
-              width={30}
+              width={45}
               height={15}
             />
             <Image
@@ -78,7 +71,7 @@ function Navbar() {
                 filt.map((userr, i) => (
                     <div key={i} className="flex items-center gap-1">
                       <UserButton  />
-                      <span
+                      <div
                         onClick={() => {
                           setSetting(true);
                           setNotification(true)
@@ -87,7 +80,7 @@ function Navbar() {
                         className="font-medium hidden  md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                       >
                         {userr.fullname}
-                      </span>
+                      </div>
                       {/* Icons Navbar */}
                       <div className="flex items-center gap-3">
                         {/* Icon Notification */}
@@ -137,20 +130,17 @@ function Navbar() {
                     </div>
                   ))
               ) : (
-                <div className="flex items-center space-x-4">
-                  <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="flex items-center gap-2">
+                  <div className="w-11 h-11 bg-gray-300 rounded-full"></div>
+                  <div>
+                  <div className="md:w-40 w-20 h-4 bg-gray-300 rounded-md mb-1"></div>
+                  <div className="md:w-32 w-16 h-4 bg-gray-300 rounded-md"></div>
+                  </div>
                 </div>
               )}
             </SignedIn>
             <SignedOut>
-              {loading ? (
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[90px] md:w-[250px]" />
-                  <Skeleton className="h-4 w-[90px] md:w-[200px]" />
-                </div>
-              ) : (
-                <SignInButton className="bg-green-400 text-black py-2 px-3 hover:bg-green-500 hover:scale-105 transition duration-300 rounded-md" />
-              )}
+            <SignInnavbar />
             </SignedOut>
           </div>
         </section>

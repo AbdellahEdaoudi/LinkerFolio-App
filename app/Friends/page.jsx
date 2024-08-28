@@ -1,12 +1,12 @@
-import React from 'react'
-import Friends from '../Components/Friends'
+import React from "react";
+import Friends from "../Components/Friends/Friends";
 
 function page() {
   return (
     <div>
-        <Friends />
+      <Friends />
     </div>
-  )
+  );
 }
 
-export default page
+export default page;

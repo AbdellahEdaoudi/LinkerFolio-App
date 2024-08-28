@@ -2,14 +2,14 @@ import { SignIn } from '@clerk/clerk-react'
 import { UserPlus } from 'lucide-react'
 import React from 'react'
 
-function SignInComponents() {
+function SignInnavbar() {
   return (
     <div>
         <div className="">
         <button  onClick={()=>document.getElementById('my_modal_3').showModal()}>
-        <button  className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200">
-          <UserPlus />
-        </button>
+        <div className='p-2 rounded-md border text-black bg-green-500 hover:bg-green-400 '>
+          Sign In
+        </div>
         </button>
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box">
@@ -26,4 +26,4 @@ function SignInComponents() {
   )
 }
 
-export default SignInComponents
+export default SignInnavbar

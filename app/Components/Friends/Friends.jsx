@@ -1,12 +1,12 @@
-"use client"
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
-import { MyContext } from '../Context/MyContext';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import io from 'socket.io-client';
-import { toast } from 'react-toastify';
-import { UserX } from 'lucide-react';
+"use client";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { MyContext } from "../../Context/MyContext";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import io from "socket.io-client";
+import { toast } from "react-toastify";
+import { UserX } from "lucide-react";
 
 function Friends() {
   const { SERVER_URL_V, SERVER_URL, EmailUser } = useContext(MyContext);
@@ -15,20 +15,20 @@ function Friends() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loadingStatus, setLoadingStatus] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const socket = io(SERVER_URL, {
-    transports: ['websocket'],
+    transports: ["websocket"],
     reconnection: true,
   });
 
   useEffect(() => {
     socket.connect();
-    socket.on('receiveFriendRequest', (newRequest) => {
+    socket.on("receiveFriendRequest", (newRequest) => {
       setAcceptedFriends((prevRequests) => [...prevRequests, newRequest]);
     });
 
-    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
+    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
       setAcceptedFriends((prevRequests) =>
         prevRequests.map((request) =>
           request._id === updatedRequest._id ? updatedRequest : request
@@ -36,16 +36,16 @@ function Friends() {
       );
     });
 
-    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
+    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
       setAcceptedFriends((prevRequests) =>
         prevRequests.filter((request) => request._id !== deletedRequestId)
       );
     });
 
     return () => {
-      socket.off('receiveFriendRequest');
-      socket.off('receiveUpdatedFriendRequest');
-      socket.off('receiveDeletedFriendRequest');
+      socket.off("receiveFriendRequest");
+      socket.off("receiveUpdatedFriendRequest");
+      socket.off("receiveDeletedFriendRequest");
     };
   }, [socket]);
 
@@ -56,7 +56,9 @@ function Friends() {
         const allRequests = response.data.data;
 
         const FriendsReq = allRequests.filter(
-          (f) => f.status === 'accept' && (f.to === EmailUser || f.from === EmailUser)
+          (f) =>
+            f.status === "accept" &&
+            (f.to === EmailUser || f.from === EmailUser)
         );
 
         setAcceptedFriends(FriendsReq);
@@ -81,8 +83,8 @@ function Friends() {
 
             setUsersData(users);
           } catch (error) {
-            console.error('Error fetching users data:', error.message);
-            setError('Failed to fetch user data');
+            console.error("Error fetching users data:", error.message);
+            setError("Failed to fetch user data");
           } finally {
             setLoading(false);
           }
@@ -90,8 +92,8 @@ function Friends() {
 
         fetchUsersData();
       } catch (error) {
-        console.error('Error fetching friend requests:', error.message);
-        setError('Failed to fetch friend requests');
+        console.error("Error fetching friend requests:", error.message);
+        setError("Failed to fetch friend requests");
         setLoading(false);
       }
     };
@@ -99,10 +101,9 @@ function Friends() {
     fetchFriendRequests();
   }, [EmailUser, SERVER_URL_V]);
 
-
   const DeleteRequest = async (friendId) => {
     const confirmUpdate = window.confirm(
-      'Are you sure you want to delete this friend request?'
+      "Are you sure you want to delete this friend request?"
     );
 
     if (!confirmUpdate) {
@@ -117,10 +118,10 @@ function Friends() {
       setAcceptedFriends((prev) =>
         prev.filter((request) => request._id !== friendId)
       );
-      socket.emit('deleteFriendRequest', friendId);
+      socket.emit("deleteFriendRequest", friendId);
     } catch (error) {
-      console.error('Error deleting friend request:', error.message);
-      setError('Failed to delete friend request');
+      console.error("Error deleting friend request:", error.message);
+      setError("Failed to delete friend request");
     } finally {
       setLoadingStatus((prev) => ({
         ...prev,
@@ -131,13 +132,12 @@ function Friends() {
 
   const highlightText = (text) => {
     if (!searchTerm.trim()) return text;
-    const regex = new RegExp(`(${searchTerm.trim()})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
+    const regex = new RegExp(`(${searchTerm.trim()})`, "gi");
+    return text.replace(regex, "<mark>$1</mark>");
   };
 
   const filteredFriends = acceptedFriends.filter((request) => {
-    const friendEmail =
-      request.from === EmailUser ? request.to : request.from;
+    const friendEmail = request.from === EmailUser ? request.to : request.from;
     const user = usersData[friendEmail];
     return (
       user?.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -181,8 +181,10 @@ function Friends() {
             const friendEmail =
               request.from === EmailUser ? request.to : request.from;
             const user = usersData[friendEmail];
-            const isLoading =
-              loadingStatus[request._id] || { confirm: false, delete: false };
+            const isLoading = loadingStatus[request._id] || {
+              confirm: false,
+              delete: false,
+            };
 
             return (
               <div
@@ -212,20 +214,21 @@ function Friends() {
                   ></span>
                 </div>
                 <div className="flex gap-4 w-full px-4 pb-4">
-                <button
-  onClick={() => DeleteRequest(request._id)}
-  className="flex-1 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors duration-200"
->
-  {isLoading.delete ? (
-    <i className="fa fa-spinner fa-spin"></i>
-  ) : (
-    <div className='flex items-center gap-3 justify-center'>
-      <span><UserX /></span>
-      <span>Unfriend</span>
-    </div>
-  )}
-</button>
-
+                  <button
+                    onClick={() => DeleteRequest(request._id)}
+                    className="flex-1 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors duration-200"
+                  >
+                    {isLoading.delete ? (
+                      <i className="fa fa-spinner fa-spin"></i>
+                    ) : (
+                      <div className="flex items-center gap-3 justify-center">
+                        <span>
+                          <UserX />
+                        </span>
+                        <span>Unfriend</span>
+                      </div>
+                    )}
+                  </button>
                 </div>
               </div>
             );

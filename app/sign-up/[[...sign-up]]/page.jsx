@@ -14,14 +14,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex justify-center py-20 ">
-      {loading ? (
-        <p className="flex justify-center items-center py-20 text-8xl">
-          <i className="fa fa-spinner fa-spin"></i>
-        </p>
-      ) : (
+    <div className="flex justify-center py-20  min-h-screen bg-gray-800">
         <SignUp />
-      )}
     </div>
   );
 }

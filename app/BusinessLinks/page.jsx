@@ -109,12 +109,12 @@ function EditUserLinks() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 pt-4 pb-96 flex justify-center`}>
+    <div className={`min-h-screen bg-gray-800 g-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 pt-4 pb-96 flex justify-center`}>
       {/* UserLinks */}
       <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800'>
         <div className='flex items-center justify-around mb-4'>
           <p className='text-3xl font-semibold text-gray-900'>Links</p>
-          <p onClick={() => setAdd(!Add)} className='border p-2 rounded-full cursor-pointer bg-gradient-to-r from-teal-500 to-teal-700 text-white'>
+          <p onClick={() => setAdd(!Add)} className='border p-2 rounded-full cursor-pointer bg-gray-700 hover:bg-gray-800 duration-300 g-gradient-to-r from-teal-500 to-teal-700 text-white'>
             {Add ? <CirclePlus /> : <X />}
           </p>
         </div>
@@ -144,7 +144,7 @@ function EditUserLinks() {
             <button
               disabled={loadingt}
               type="submit"
-              className="w-full bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition duration-300"
+              className="w-full bg-teal-5 bg-sky-700 text-white px-4 py-2 rounded hover:bg-teal-600 transition duration-300"
             >
               {loadingt ? <><i className="fa fa-spinner fa-spin"></i></> : editLinkId ? "Update" : "Add Link"}
             </button>
