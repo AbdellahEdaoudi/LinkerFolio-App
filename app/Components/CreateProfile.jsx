@@ -72,7 +72,7 @@ const CreateProfile = ({userDetails}) => {
   }
 
   return (
-    <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 p-6">
+    <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen  bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 p-6">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
       <div className="flex items-center justify-around mb-6">
               {user?.imageUrl ? <Image width={100} height={100}

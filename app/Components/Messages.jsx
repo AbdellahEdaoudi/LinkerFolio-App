@@ -16,6 +16,7 @@ import Linkify from "linkify-react";
 import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
 import { CustomLinkify } from "./CustomLinkify";
+import InputLoadMessages from "./Loading/InputLoadMessages";
 
 function Messages({ selectedUser }) {
   const { toast } = useToast();
@@ -268,19 +269,25 @@ function Messages({ selectedUser }) {
           {/* Messages */}
           <div>
             {CheckFrirnd && CheckFrirnd.status === "pending" ? (
-               <div className="flex items-start pt-16 justify-center h-[442px] rounded-md bg-yellow-100">
+               <div>
+                <div className="flex items-start pt-16 justify-center h-[350px] rounded-md bg-yellow-100">
                <div className="text-center border border-yellow-500 p-8 bg-white shadow-lg rounded-md">
                  <h1 className="text-yellow-700 font-bold text-2xl mb-4">Pending Friend Request</h1>
                  <p className="text-yellow-600 text-lg">The friend request has not been accepted yet.</p>
                </div>
              </div>
+             <InputLoadMessages />
+               </div>
             ): !CheckFrirnd && EmailUser !== emailuser ? (
-              <div className="flex items-start pt-16 justify-center h-[442px] rounded-md bg-red-100">
-        <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
-          <h1 className="text-red-700 font-bold text-2xl mb-4">Cannot Communicate</h1>
-          <p className="text-red-600 text-lg">You cannot communicate with someone who is not your friend.</p>
-        </div>
-      </div>
+              <div>
+                <div className="flex items-start pt-16 justify-center h-[350px] rounded-md bg-red-100">
+                  <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
+                    <h1 className="text-red-700 font-bold text-2xl mb-4">Cannot Communicate</h1>
+                    <p className="text-red-600 text-lg">You cannot communicate with someone who is not your friend.</p>
+                  </div>
+                </div>
+                <InputLoadMessages />
+              </div>
             ):
             <div>
             <div

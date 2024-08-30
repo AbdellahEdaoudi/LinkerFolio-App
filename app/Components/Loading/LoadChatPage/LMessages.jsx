@@ -5,12 +5,13 @@ import Picker from "@emoji-mart/react";
 import { EllipsisVertical } from 'lucide-react';
 import React, { useState } from 'react'
 import { BsEmojiSmile } from 'react-icons/bs';
+import InputLoadMessages from '../InputLoadMessages';
 
 function LMessages() {
   const [emoji, setEmoji] = useState(true);
   const [loading, setLoading] = useState(true);
   return (
-    <section className='p-2'>
+    <section className='p-2 bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600'>
       <div className='w-full bg-sky-50 h-14 mb-2 rounded-lg flex items-center justify-between px-4'>
         {/* 1 */}
         <div className='flex animate-pulse items-center'>
@@ -58,38 +59,9 @@ function LMessages() {
         })}
       </div>
       {/* 3 */}
-      <div
-            className={`bg-gray-200 p-2 mt-2 rounded-md`}
-          >
-            <div className="flex items-center gap-4 pr-2 ">
-              <textarea
-                type="text"
-                placeholder="Enter your message here..."
-                className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
-              />
-              <Button
-                onClick={() => {
-                  sendMessage();
-                  setEmoji(emoji);
-                }}
-                disabled={loading || messageInput === ""}
-                className="bg-indigo-600  text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300"
-              >
-                Send
-              </Button>
-              <div
-                onClick={() => {
-                  setEmoji(!emoji);
-                }}
-                className="cursor-pointer text-2xl"
-              >
-                <BsEmojiSmile />
-              </div>
-            </div>
-          </div>
-          <div className={` absolute top-16 right-4 ${emoji ? "hidden" : "block"}`}>
-          <Picker data={data}   />
-        </div>
+      <div>
+        <InputLoadMessages />
+      </div>
         
     </section>
   )

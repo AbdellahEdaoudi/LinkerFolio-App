@@ -109,7 +109,7 @@ function EditUserLinks() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-800 g-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 pt-4 pb-96 flex justify-center`}>
+    <div className={`min-h-screen bg-gray-80 bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 pt-4 pb-96 flex justify-center`}>
       {/* UserLinks */}
       <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800'>
         <div className='flex items-center justify-around mb-4'>

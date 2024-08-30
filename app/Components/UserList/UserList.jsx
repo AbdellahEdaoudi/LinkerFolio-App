@@ -150,7 +150,7 @@ function UserList({ selectedUser, setSelectedUser }) {
 
   return (
     <div>
-      <div className="bg-gray-800 rounded-lg text-white scrollbar-none mt-1  p-4 overflow-y-auto max-h-[516px] min-h-[516px]">
+      <div className="bg-gray-800 rounded-b-sm text-white scrollbar-none   p-4 overflow-y-auto max-h-[516px] min-h-[525px]">
         {/* Search input */}
         <input
           type="search"

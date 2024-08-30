@@ -15,8 +15,9 @@ import { EllipsisVertical } from "lucide-react";
 import { MyContext } from "@/app/Context/MyContext";
 import Linkify from "linkify-react";
 import { useRouter } from "next/navigation";
-import LoadingMessage from "@/app/Components/Loading/LoadingMessage";
 import { CustomLinkify } from "@/app/Components/CustomLinkify";
+import LMessages from "@/app/Components/Loading/LoadChatPage/LMessages";
+import InputLoadMessages from "@/app/Components/Loading/InputLoadMessages";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
@@ -229,12 +230,12 @@ function UserProfile({ params }) {
       (f.from === emailuser && f.to === EmailUser)
   );
   if (!userDname) {
-    return <LoadingMessage />;
+    return <LMessages />;
   }
 
   return (
     <div>
-      <div className="bg-gray-800">
+      <div className="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600">
         {/* Message window on the right */}
         <div className={` flex flex-col justify-between md:w-auto w-screen`}>
           <div className="flex-1 p-2 ">
@@ -272,8 +273,9 @@ function UserProfile({ params }) {
               )}
             </h2>
             {CheckFrirnd && CheckFrirnd.status === "pending" ? (
-              <div className="flex items-start pt-16 justify-center pb-72 bg-yellow-100">
-                <div className="text-center border border-yellow-500 p-8 bg-white shadow-lg rounded-md">
+              <div>
+                <div className="flex items-start pt-16 justify-center md:pb-36 pb-96 bg-yellow-100">
+                <div className="text-center border border-yellow-500 p-8 mx-5 bg-white shadow-lg rounded-md">
                   <h1 className="text-yellow-700 font-bold text-2xl mb-4">
                     Pending Friend Request
                   </h1>
@@ -282,9 +284,12 @@ function UserProfile({ params }) {
                   </p>
                 </div>
               </div>
+              <InputLoadMessages />
+              </div>
             ) : !CheckFrirnd && EmailUser !== emailuser ? (
-              <div className="flex items-start pt-16 justify-center pb-72 bg-red-100">
-                <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
+              <div>
+                <div className="flex items-start rounded-md pt-16 justify-center md:pb-36 pb-96 bg-red-100">
+                <div className="text-center border border-red-500 p-8 mx-5 bg-white shadow-lg rounded-md">
                   <h1 className="text-red-700 font-bold text-2xl mb-4">
                     Cannot Communicate
                   </h1>
@@ -292,6 +297,8 @@ function UserProfile({ params }) {
                     You cannot communicate with someone who is not your friend.
                   </p>
                 </div>
+              </div>
+                <InputLoadMessages />
               </div>
             ) : (
               <div>
