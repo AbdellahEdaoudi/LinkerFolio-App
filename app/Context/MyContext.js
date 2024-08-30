@@ -10,6 +10,7 @@ export const MyProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState([]);
   const [userLinks, setUserLinks] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [socket, setSocket] = useState(null);
   const { user } = useUser();
   const EmailUser = user?.emailAddresses[0].emailAddress;
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
@@ -23,23 +24,22 @@ export const MyProvider = ({ children }) => {
    const CLIENT_URL = "https://linkerfolio.vercel.app";
    const SERVER_URL = "https://socketserver-muhp.onrender.com";
    const SERVER_URL_V = "https://saas-app-api.vercel.app";
-
-  // Initialize Socket.io
-  const socket = io(SERVER_URL, {
-    transports: ['websocket'],
-    reconnection: true,
-  });
-
-  const audioRef = useRef(null);
+   
+   const audioRef = useRef(null);
   
+   
   // socket.io
   useEffect(() => {
-    // Connect to Socket.io
-    socket.connect();
-    
+    const socket = io(SERVER_URL);
+    setSocket(socket);
     // Messages
     socket.on('receiveMessage', (data) => {
-      setMessages((prevMessages) => [data, ...prevMessages]);
+      setMessages((prevMessages) => {
+        if (prevMessages.some(msg => msg._id === data._id)) {
+          return prevMessages;
+        }
+        return [data, ...prevMessages];
+      });
     });
     socket.on('receiveUpdatedMessage', (data) => {
       setMessages((prevMessages) =>
@@ -53,6 +53,7 @@ export const MyProvider = ({ children }) => {
         prevMessages.filter((msg) => msg._id !== id)
       );
     });
+  
     // FriendRequest
     socket.on('receiveFriendRequest', (newRequest) => {
       setFriendRequests(prevRequests => [...prevRequests, newRequest]);
@@ -69,12 +70,19 @@ export const MyProvider = ({ children }) => {
         prevRequests.filter(request => request._id !== deletedRequestId)
       );
     });
-
+  
     // Clean up on unmount
     return () => {
+      socket.off('receiveMessage');
+      socket.off('receiveUpdatedMessage');
+      socket.off('receiveDeletedMessage');
+      socket.off('receiveFriendRequest');
+      socket.off('receiveUpdatedFriendRequest');
+      socket.off('receiveDeletedFriendRequest');
       socket.disconnect();
     };
-  }, [SERVER_URL, socket]);
+  }, [SERVER_URL]);
+  
 
   // Fetch users
   useEffect(() => {
@@ -130,9 +138,19 @@ export const MyProvider = ({ children }) => {
 
   
 
-  const Notification = messages.filter(
-    (fl) => fl.to === EmailUser && fl.from !== EmailUser
+  const NotificationCount = messages.filter(
+    (fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false
   );
+  const latestNotifications = messages
+  .filter((fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false)
+  .reduce((acc, msg) => {
+    if (!acc[msg.from] || new Date(acc[msg.from].createdAt) < new Date(msg.createdAt)) {
+      acc[msg.from] = msg;
+    }
+    return acc;
+  }, {});
+
+const Notification = Object.values(latestNotifications);
   const Requests  = friendRequests.filter(
     (fl)=> fl.status === "pending" && fl.to === EmailUser
   )
@@ -166,7 +184,9 @@ export const MyProvider = ({ children }) => {
         Notification,
         SERVER_URL_V,
         messages,
+        socket,
         Requests,
+        NotificationCount,
         setMessages,
       }}
     >

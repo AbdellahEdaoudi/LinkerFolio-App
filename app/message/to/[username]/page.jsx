@@ -25,8 +25,6 @@ function UserProfile({ params }) {
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const [umessage, setUMessage] = useState("");
   const [emoji, setEmoji] = useState(true);
@@ -34,7 +32,7 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {SERVER_URL,SERVER_URL_V,userDetails,EmailUser} = useContext(MyContext);
+  const {SERVER_URL,SERVER_URL_V,socket,messages,userDetails,EmailUser} = useContext(MyContext);
   const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
   const [friendRequests, setFriendRequests] = useState([]);
   const router = useRouter();
@@ -59,48 +57,6 @@ function UserProfile({ params }) {
     }
   }, [messages]);
 
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-    setSocket(socket);
-  
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-    socket.on("receiveUpdatedMessage", (updatedMessage) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === updatedMessage._id ? updatedMessage : msg
-        )
-      );
-    });
-    socket.on("receiveDeletedMessage", (deletedMessageId) => {
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== deletedMessageId)
-      );
-    });
-
-    socket.on('receiveFriendRequest', (newRequest) => {
-      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
-    });
-
-    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
-      setFriendRequests(prevRequests =>
-        prevRequests.map(request =>
-          request._id === updatedRequest._id ? updatedRequest : request
-        )
-      );
-    });
-
-    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
-      setFriendRequests(prevRequests =>
-        prevRequests.filter(request => request._id !== deletedRequestId)
-      );
-    });
-  
-    return () => {
-      socket.disconnect();
-    };
-  }, [SERVER_URL]); 
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
@@ -113,19 +69,6 @@ function UserProfile({ params }) {
     }
   };
 
-  // Get Messages
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL}/messages`);
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-
-    getMessages();
-  }, [SERVER_URL]);
 
   const sendMessage = async () => {
     setLoading(true);

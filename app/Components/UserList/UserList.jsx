@@ -64,10 +64,12 @@ function UserList({ selectedUser, setSelectedUser }) {
     };
   }, [SERVER_URL]);
 
-  const ReadOrNo = async (id) => {
+  const ReadOrNo = async (fromEmail,toEmail) => {
     try {
-      const response = await axios.put(`${SERVER_URL_V}/readorno/${id}`);
-      console.log("Update successful:", response.data);
+      const response = await axios.put(`${SERVER_URL_V}/readorno`, {
+        fromEmail,
+        toEmail,
+      });
       socket.emit("updateMessage", response.data);
       return response.data;
     } catch (error) {
@@ -81,28 +83,38 @@ function UserList({ selectedUser, setSelectedUser }) {
   // Define the function to handle user clicks
   const UserClick = async (User, lastMessage) => {
     setSelectedUser(User);
-    if (lastMessage && lastMessage._id) {
-      try {
-        await ReadOrNo(lastMessage._id);
-      } catch (error) {
-        console.error("Error updating readorno:", error);
+
+    if (lastMessage && lastMessage.from && lastMessage.to) {
+      // Check if lastMessage.readorno is false
+      if (lastMessage.readorno === false) {
+          try {
+              await ReadOrNo(lastMessage.from, lastMessage.to);
+              console.log("successful");
+          } catch (error) {
+              console.error("Error updating readorno:", error);
+          }
       }
-    } else {
-      console.warn("lastMessage or _id is undefined");
-    }
+  } else {
+      console.warn("lastMessage or its properties are undefined");
+  }
+
     // Store selected user in localStorage
     localStorage.setItem("SelectedUser", JSON.stringify(User));
+    
     // Scroll messages to the end
     const scrollMessagesToEnd = () => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-      }
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+        }
     };
+    
     const timeout = setTimeout(() => {
-      scrollMessagesToEnd();
+        scrollMessagesToEnd();
     }, 1);
+    
     return () => clearTimeout(timeout);
-  };
+};
+
 
   //  search input change
   const SearchChange = (e) => {

@@ -22,7 +22,7 @@ function Navbar() {
   const [notification, setNotification] = useState(true);
   const router = useRouter();
   const [Adminfind, setAdminfind] = useState(false);
-  const {userDetails,Notification,EmailUser,Requests} = useContext(MyContext);
+  const {userDetails,Notification,EmailUser,Requests,NotificationCount} = useContext(MyContext);
 
   useEffect(() => {
     const User = userDetails.find(user => user.email === EmailUser);
@@ -266,7 +266,10 @@ function Navbar() {
             </p>
             </div>
             </nav>
-            <p className="text-sm text-gray-400 font-bold whitespace-pre-line overflow-y-auto max-h-16">{nt.message}</p>
+            <div className="flex items-center gap-1 text-sm">
+              <p className="text-sm text-gray-400 font-bold line-clamp-1">{nt.message}</p>
+              <p className="text-gray-400">{`${NotificationCount.length === 1 ? "" : `(${NotificationCount.length})`}`}</p>
+            </div>
             
           </div>
         </div>
