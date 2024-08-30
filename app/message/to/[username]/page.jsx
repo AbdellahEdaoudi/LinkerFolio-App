@@ -16,7 +16,7 @@ import { MyContext } from "@/app/Context/MyContext";
 import Linkify from "linkify-react";
 import { useRouter } from "next/navigation";
 import LoadingMessage from "@/app/Components/Loading/LoadingMessage";
-import { CustomLinkify } from "@/app/Components/CustomLinkifyUser";
+import { CustomLinkify } from "@/app/Components/CustomLinkify";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
