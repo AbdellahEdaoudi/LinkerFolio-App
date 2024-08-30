@@ -150,7 +150,7 @@ function UserList({ selectedUser, setSelectedUser }) {
 
   return (
     <div>
-      <div className="bg-gray-800 rounded-lg text-white scrollbar-none mt-1  p-4 overflow-y-auto max-h-[516px]">
+      <div className="bg-gray-800 rounded-lg text-white scrollbar-none mt-1  p-4 overflow-y-auto max-h-[516px] min-h-[516px]">
         {/* Search input */}
         <input
           type="search"
@@ -273,8 +273,18 @@ function UserList({ selectedUser, setSelectedUser }) {
                         new Date(b.lastMessage?.createdAt) -
                         new Date(a.lastMessage?.createdAt)
                     ) // Sort by last message date
-                    .map(({ User, lastMessage }, i) => (
-                      <div
+                    .map(({ User, lastMessage }, i) => {
+                      const MessgesLength = Array.from(
+                        new Map(
+                          messages
+                            .filter(
+                              (fl) => fl.to === EmailUser && fl.from === lastMessage?.from  && fl.readorno === false
+                            )
+                            .map((item) => [item.message, item])
+                        ).values()
+                      );
+                      return (
+                        <div
                         key={i}
                         onClick={() => {
                           UserClick(User, lastMessage);
@@ -297,13 +307,19 @@ function UserList({ selectedUser, setSelectedUser }) {
                         </div>
                         <div className="flex flex-col">
                           <p className="text-lg">{User.fullname}</p>
-                          <p className="text-[14px] text-gray-500 line-clamp-1">
+                          <div className="flex items-center gap-1">
+                            <p className="text-[14px] text-gray-500 line-clamp-1">
                             {lastMessage
                               ? lastMessage.from === EmailUser
-                                ? `you: ${lastMessage.message}`
+                                ? `you: ${lastMessage.message} `
                                 : `${lastMessage.message}`
                               : "No messages yet"}
                           </p>
+                          <p className={`${User.email === EmailUser && 'hidden'} text-sm text-gray-500`}>
+                          {MessgesLength.length > 0 ? `(${MessgesLength.length})` : MessgesLength.length === 0 ? "" : ""}
+                          </p>
+                          </div>
+                          
                         </div>
                         {lastMessage && (
                           <p
@@ -322,7 +338,8 @@ function UserList({ selectedUser, setSelectedUser }) {
                           </p>
                         )}
                       </div>
-                    ))}
+                      )
+})}
               </div>
             </div>
           )}

@@ -113,13 +113,16 @@ function EditUserLinks() {
       {/* UserLinks */}
       <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800'>
         <div className='flex items-center justify-around mb-4'>
-          <p className='text-3xl font-semibold text-gray-900'>Links</p>
-          <p onClick={() => setAdd(!Add)} className='border p-2 rounded-full cursor-pointer bg-gray-700 hover:bg-gray-800 duration-300 g-gradient-to-r from-teal-500 to-teal-700 text-white'>
-            {Add ? <CirclePlus /> : <X />}
+          <p className='text-3xl font-semibold text-gray-900'>Business Links</p>
+          <p onClick={() => {setEditLinkId(false)
+            setNamelink("")
+            setLink("")
+          }} className='border p-2 rounded-full cursor-pointer bg-gray-700 hover:bg-gray-800 duration-300 g-gradient-to-r from-teal-500 to-teal-700 text-white'>
+            <X />
           </p>
         </div>
         {/* Add or Update Links */}
-        <div className={`${Add ? "opacity-0 max-h-0" : "max-h-48"} overflow-hidden transition-all duration-500 max-w-md mx-auto p-4 bg-white rounded-lg `}>
+        <div className={` max-w-md mx-auto p-4 bg-white rounded-lg `}>
           <form onSubmit={editLinkId ? UpdateLink : AddLink} className="space-y-4">
             <div>
               <input
@@ -152,10 +155,16 @@ function EditUserLinks() {
         </div>
         {/* Links */}
         <div className='p-2 space-y-3 grid grid-cols-1'>
-          {loading ? (
-            <p className="flex justify-center py-24 items-start text-8xl">
-              <i className="fa fa-spinner fa-spin"></i>
-            </p>
+          {!userLinks ? (
+            <div className='space-y-3 mt-3'>
+              {[1,2,3,4].map((mp,i)=>{
+                return(
+                  <div key={i} className='w-full h-16 bg-gray-400 animate-pulse rounded-lg'>
+
+                  </div>
+                )
+              })}
+            </div>
           ) :
             userLinks
               .filter(fl => fl.useremail === EmailUser)

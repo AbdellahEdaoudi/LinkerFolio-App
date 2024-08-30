@@ -36,16 +36,6 @@ function Navbar() {
   const filt = userDetails.filter(
     (fl) => fl.email === EmailUser
   );
-  const NotificationCount = Array.from(
-    new Map(
-      messages
-        .filter(
-          (fl) =>
-            fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false
-        )
-        .map((item) => [item.message, item])
-    ).values()
-  );
   const ReadOrNo = async (fromEmail,toEmail) => {
     try {
       const response = await axios.put(`${SERVER_URL_V}/readorno`, {
@@ -297,7 +287,29 @@ function Navbar() {
             </nav>
             <div className="flex items-center gap-1 text-sm">
               <p className="text-sm text-gray-400 font-bold line-clamp-1">{nt.message}</p>
-              <p className="text-gray-400">{`${NotificationCount.length === 1 ? "" : `(${NotificationCount.length})`}`}</p>
+              {/* <p className="text-gray-400">{`${NotificationCount.length === 1 ? "" : `(${NotificationCount.length})`}`}</p> */}
+              <p className="text-gray-400">
+                {
+                  Array.from(
+                    new Map(
+                      messages
+                        .filter(
+                          (fl) => fl.to === EmailUser && fl.from === nt.from && fl.readorno === false
+                        )
+                        .map((item) => [item.message, item])
+                    ).values()
+                  ).length === 1 ? "" : 
+                  `(${Array.from(
+                    new Map(
+                      messages
+                        .filter(
+                          (fl) => fl.to === EmailUser && fl.from === nt.from && fl.readorno === false
+                        )
+                        .map((item) => [item.message, item])
+                    ).values()
+                  ).length})`
+                }
+              </p>
             </div>
             
           </div>

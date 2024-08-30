@@ -45,7 +45,7 @@ function ChatHome() {
           </div>
           {/* MOBILE */}
           <div className="md:hidden block">
-            <div className="w-full">
+            <div className="w-1/6">
               <UserListMobile
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}

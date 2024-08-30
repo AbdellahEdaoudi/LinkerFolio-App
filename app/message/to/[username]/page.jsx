@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
@@ -10,13 +10,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { BsEmojiSmile } from "react-icons/bs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import { EllipsisVertical } from "lucide-react";
 import { MyContext } from "@/app/Context/MyContext";
 import Linkify from "linkify-react";
 import { useRouter } from "next/navigation";
 import LoadingMessage from "@/app/Components/Loading/LoadingMessage";
-import { CustomLinkify } from "@/app/Components/CustomLinkify";
+import { CustomLinkify } from "@/app/Components/CustomLinkifyUser";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
@@ -34,21 +34,24 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {SERVER_URL,SERVER_URL_V,userDetails,EmailUser} = useContext(MyContext);
-  const filtUser = userDetails.find((fl)=>fl.email === EmailUser)
+  const { SERVER_URL, SERVER_URL_V, userDetails, EmailUser } =
+    useContext(MyContext);
+  const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const [friendRequests, setFriendRequests] = useState([]);
   const router = useRouter();
 
-  
   useEffect(() => {
-  const GetFriendRequest = async () => {
-    try {
-      const response = await axios.get(`${SERVER_URL_V}/friend`);
-      setFriendRequests(response.data.data);
-    } catch (error) {
-      console.error('Error fetching friend requests', error.response ? error.response.data : error.message);
-    }
-  };
+    const GetFriendRequest = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL_V}/friend`);
+        setFriendRequests(response.data.data);
+      } catch (error) {
+        console.error(
+          "Error fetching friend requests",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
 
     GetFriendRequest();
   }, [SERVER_URL_V]);
@@ -62,7 +65,7 @@ function UserProfile({ params }) {
   useEffect(() => {
     const socket = io(SERVER_URL);
     setSocket(socket);
-  
+
     socket.on("receiveMessage", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
@@ -79,32 +82,32 @@ function UserProfile({ params }) {
       );
     });
 
-    socket.on('receiveFriendRequest', (newRequest) => {
-      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+    socket.on("receiveFriendRequest", (newRequest) => {
+      setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
     });
 
-    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
-      setFriendRequests(prevRequests =>
-        prevRequests.map(request =>
+    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
+      setFriendRequests((prevRequests) =>
+        prevRequests.map((request) =>
           request._id === updatedRequest._id ? updatedRequest : request
         )
       );
     });
 
-    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
-      setFriendRequests(prevRequests =>
-        prevRequests.filter(request => request._id !== deletedRequestId)
+    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
+      setFriendRequests((prevRequests) =>
+        prevRequests.filter((request) => request._id !== deletedRequestId)
       );
     });
-  
+
     return () => {
       socket.disconnect();
     };
-  }, [SERVER_URL]); 
+  }, [SERVER_URL]);
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
-    const codeArray = sym.map(el => "0x" + el);
+    const codeArray = sym.map((el) => "0x" + el);
     const emoji = String.fromCodePoint(...codeArray);
     if (putdelete) {
       setMessageInput(messageInput + emoji);
@@ -133,11 +136,11 @@ function UserProfile({ params }) {
       const data = {
         from: EmailUser,
         fromimg: filtUser.urlimage,
-        fromname:filtUser.username,
+        fromname: filtUser.username,
         to: userDname.email,
         toimg: userDname.urlimage,
         message: messageInput,
-        readorno:false
+        readorno: false,
       };
       const response = await axios.post(`${SERVER_URL}/messages`, data);
       socket.emit("sendMessage", response.data);
@@ -183,7 +186,7 @@ function UserProfile({ params }) {
         toimg: MsgUpdat.toimg,
         message: umessage,
         updated: "edited",
-        readorno : false
+        readorno: false,
       };
       const response = await axios.put(
         `${SERVER_URL}/messages/${idMsg}`,
@@ -203,11 +206,12 @@ function UserProfile({ params }) {
     }
   };
 
-
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/user/${params.username}`);
+        const response = await axios.get(
+          `${SERVER_URL}/user/${params.username}`
+        );
         if (!response.data) {
           throw new Error("User not found");
         }
@@ -216,304 +220,341 @@ function UserProfile({ params }) {
         console.error("Error fetching user details:", error);
       }
     };
- fetchUserDetails();
-  },[SERVER_URL,params.id,params.username]);
-  const emailuser =userDname.email
-  const CheckFrirnd = friendRequests.find((f) =>
-    (f.from === EmailUser && f.to === emailuser) ||
-    (f.from === emailuser && f.to === EmailUser)
+    fetchUserDetails();
+  }, [SERVER_URL, params.id, params.username]);
+  const emailuser = userDname.email;
+  const CheckFrirnd = friendRequests.find(
+    (f) =>
+      (f.from === EmailUser && f.to === emailuser) ||
+      (f.from === emailuser && f.to === EmailUser)
   );
-   if (!userDname) {
-   return <LoadingMessage />
-   }
-  
+  if (!userDname) {
+    return <LoadingMessage />;
+  }
+
   return (
     <div>
-       <div className="bg-gray-800">
-      {/* Message window on the right */}
-      <div className={` flex flex-col justify-between md:w-auto w-screen`}>
-        <div className="flex-1 p-2 ">
-          {/* userDname */}
-          <h2 className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
-            {userDname ? (
-              <div className="flex items-center justify-between gap-4">
-                <Link
-                  href={`/${userDname.username}`}
-                  className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
-                >
-                  <Image
-                    src={userDname.urlimage}
-                    alt="Profile"
-                    className="rounded-full"
-                    width={48}
-                    height={48}
-                  />
-                  <p className="font-bold">{userDname.fullname}</p>
-                </Link>
-                <p className="font-bold md:block hidden">
-                  {userDname.email}
-                </p>
-                <p className="font-bold md:block hidden">
-                  {userDname.phoneNumber}
-                </p>
-              </div>
-            ) : (
-              <div className="flex gap-2 items-center justify-between ">
-                <div className=" flex justify-around items-center">
-                  <div className="w-12 h-12 rounded-full bg-gray-500 animate-pulse ml-2"></div>
+      <div className="bg-gray-800">
+        {/* Message window on the right */}
+        <div className={` flex flex-col justify-between md:w-auto w-screen`}>
+          <div className="flex-1 p-2 ">
+            {/* userDname */}
+            <h2 className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
+              {userDname ? (
+                <div className="flex items-center justify-between gap-4">
+                  <Link
+                    href={`/${userDname.username}`}
+                    className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
+                  >
+                    <Image
+                      src={userDname.urlimage}
+                      alt="Profile"
+                      className="rounded-full"
+                      width={48}
+                      height={48}
+                    />
+                    <p className="font-bold">{userDname.fullname}</p>
+                  </Link>
+                  <p className="font-bold md:block hidden">{userDname.email}</p>
+                  <p className="font-bold md:block hidden">
+                    {userDname.phoneNumber}
+                  </p>
+                </div>
+              ) : (
+                <div className="flex gap-2 items-center justify-between ">
+                  <div className=" flex justify-around items-center">
+                    <div className="w-12 h-12 rounded-full bg-gray-500 animate-pulse ml-2"></div>
+                    <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
+                  </div>
+                  <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
                   <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
                 </div>
-                <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
-                <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
+              )}
+            </h2>
+            {CheckFrirnd && CheckFrirnd.status === "pending" ? (
+              <div className="flex items-start pt-16 justify-center pb-72 bg-yellow-100">
+                <div className="text-center border border-yellow-500 p-8 bg-white shadow-lg rounded-md">
+                  <h1 className="text-yellow-700 font-bold text-2xl mb-4">
+                    Pending Friend Request
+                  </h1>
+                  <p className="text-yellow-600 text-lg">
+                    The friend request has not been accepted yet.
+                  </p>
+                </div>
               </div>
-            )}
-          </h2>
-          {CheckFrirnd && CheckFrirnd.status === "pending" ? (
-            <div className="flex items-start pt-16 justify-center pb-72 bg-yellow-100">
-              <div className="text-center border border-yellow-500 p-8 bg-white shadow-lg rounded-md">
-                <h1 className="text-yellow-700 font-bold text-2xl mb-4">Pending Friend Request</h1>
-                <p className="text-yellow-600 text-lg">The friend request has not been accepted yet.</p>
+            ) : !CheckFrirnd && EmailUser !== emailuser ? (
+              <div className="flex items-start pt-16 justify-center pb-72 bg-red-100">
+                <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
+                  <h1 className="text-red-700 font-bold text-2xl mb-4">
+                    Cannot Communicate
+                  </h1>
+                  <p className="text-red-600 text-lg">
+                    You cannot communicate with someone who is not your friend.
+                  </p>
+                </div>
               </div>
-            </div>
-          ) : !CheckFrirnd && EmailUser !== emailuser ?(
-            <div className="flex items-start pt-16 justify-center pb-72 bg-red-100">
-              <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
-                <h1 className="text-red-700 font-bold text-2xl mb-4">Cannot Communicate</h1>
-                <p className="text-red-600 text-lg">You cannot communicate with someone who is not your friend.</p>
-              </div>
-            </div>
-          ) : 
-          <div>
-            {/* Messages */}
-          <div
-            className="bg-white p-4 rounded-lg shadow-lg h-[580px] md:h-[350px] scrollbar-none
-               overflow-y-auto"
-            ref={messagesEndRef}
-          >
-            {messages.length === 0 ? (
-              <div className="flex items-center justify-center h-64  rounded-lg">
-              <div className="text-center p-4">
-                <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                  No Messages
-                </h2>
-                <p className="text-gray-500">
-                  You don't have any messages yet.
-                </p>
-              </div>
-            </div>
             ) : (
-              messages
-                .filter((fl) => {
-                  return (
-                    (fl.from === EmailUser &&
-                      fl.to === userDname.email) ||
-                    (fl.from === userDname.email &&
-                      fl.to === EmailUser)
-                  );
-                })
-                .map((msg, i) => {
-                  const DateMsg = new Date(msg.createdAt);
-                  const DateUpdMsg = new Date(msg.updatedAt);
-                  const DateToday = new Date();
-                  const filtUser = userDetails.find(
-                    (fl) => fl.email === msg.from
-                  );
-                  // Date Message
-                  const year = DateMsg.getFullYear();
-                  const month = String(DateMsg.getMonth() + 1).padStart(2, "0"); 
-                  const day = String(DateMsg.getDate()).padStart(2, "0");
-                  const DateAll = `${year}/${month}/${day}`;
-                  // Date Today
-                  const yeart = DateToday.getFullYear();
-                  const montht = String(DateToday.getMonth() + 1).padStart(2, "0"); 
-                  const dayt = String(DateToday.getDate()).padStart(2, "0");
-                  const TodayDate = `${yeart}/${montht}/${dayt}`;
-                  // Date Yesterday
-                  const yeary = DateToday.getFullYear();
-                  const monthy = String(DateToday.getMonth() + 1).padStart(2, "0"); 
-                  const dayy = String(DateToday.getDate() -1).padStart(2, "0");
-                  const YesterdayDate  = `${yeary}/${monthy}/${dayy}`;
+              <div>
+                {/* Messages */}
+                <div
+                  className="bg-white p-4 rounded-lg shadow-lg h-[580px] md:h-[350px] scrollbar-none
+               overflow-y-auto"
+                  ref={messagesEndRef}
+                >
+                  {messages.length === 0 ? (
+                    <div className="flex items-center justify-center h-64  rounded-lg">
+                      <div className="text-center p-4">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-2">
+                          No Messages
+                        </h2>
+                        <p className="text-gray-500">
+                          You don't have any messages yet.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    messages
+                      .filter((fl) => {
+                        return (
+                          (fl.from === EmailUser &&
+                            fl.to === userDname.email) ||
+                          (fl.from === userDname.email && fl.to === EmailUser)
+                        );
+                      })
+                      .map((msg, i) => {
+                        const DateMsg = new Date(msg.createdAt);
+                        const DateUpdMsg = new Date(msg.updatedAt);
+                        const DateToday = new Date();
+                        const filtUser = userDetails.find(
+                          (fl) => fl.email === msg.from
+                        );
+                        // Date Message
+                        const year = DateMsg.getFullYear();
+                        const month = String(DateMsg.getMonth() + 1).padStart(
+                          2,
+                          "0"
+                        );
+                        const day = String(DateMsg.getDate()).padStart(2, "0");
+                        const DateAll = `${year}/${month}/${day}`;
+                        // Date Today
+                        const yeart = DateToday.getFullYear();
+                        const montht = String(
+                          DateToday.getMonth() + 1
+                        ).padStart(2, "0");
+                        const dayt = String(DateToday.getDate()).padStart(
+                          2,
+                          "0"
+                        );
+                        const TodayDate = `${yeart}/${montht}/${dayt}`;
+                        // Date Yesterday
+                        const yeary = DateToday.getFullYear();
+                        const monthy = String(
+                          DateToday.getMonth() + 1
+                        ).padStart(2, "0");
+                        const dayy = String(DateToday.getDate() - 1).padStart(
+                          2,
+                          "0"
+                        );
+                        const YesterdayDate = `${yeary}/${monthy}/${dayy}`;
 
-                  // UPDATED MESSAGE DATE
-                  const yearu = DateUpdMsg.getFullYear();
-                  const monthu = String(DateUpdMsg.getMonth() + 1).padStart(2, "0"); 
-                  const dayu = String(DateUpdMsg.getDate()).padStart(2, "0");
-                  const UpdateDate = `${yearu}/${monthu}/${dayu}`;
+                        // UPDATED MESSAGE DATE
+                        const yearu = DateUpdMsg.getFullYear();
+                        const monthu = String(
+                          DateUpdMsg.getMonth() + 1
+                        ).padStart(2, "0");
+                        const dayu = String(DateUpdMsg.getDate()).padStart(
+                          2,
+                          "0"
+                        );
+                        const UpdateDate = `${yearu}/${monthu}/${dayu}`;
 
-                  return (
-                    <div key={i}>
-                        <div
-                          className={`${
-                            (msg.from || msg.to) === EmailUser
-                              ? "flex items-center flex-row-reverse gap-2"
-                              : "flex items-center  gap-2"
-                          }`}
-                        >
-                          <div
-                            onClick={()=>router.push(`/${filtUser?.username}`)}
-                            className="flex-shrink-0"
-                          >
-                            <Image alt="Logo"
-                              src={msg.fromimg}
-                              width={40} height={40}
-                              className="hover:scale-105 cursor-pointer duration-300 rounded-full"
-                            />
-                          </div>
-                          <p
-                            className={`whitespace-pre-wrap break-all  ${
-                              (msg.from || msg.to) === EmailUser
-                                ? "bg-sky-500"
-                                : "bg-green-500"
-                            } p-2  rounded-md`}
-                          >
-                            <CustomLinkify message={msg.message} />
-                          </p>
-                          <p
-                            onClick={() => {
-                              setUMessage(msg.message);
-                              setputdelete(!putdelete);
-                              setIdMsg(msg._id);
-                            }}
-                            className={`cursor-pointer
+                        return (
+                          <div key={i}>
+                            <div
+                              className={`${
+                                (msg.from || msg.to) === EmailUser
+                                  ? "flex items-center flex-row-reverse gap-2"
+                                  : "flex items-center  gap-2"
+                              }`}
+                            >
+                              <div
+                                onClick={() =>
+                                  router.push(`/${filtUser?.username}`)
+                                }
+                                className="flex-shrink-0"
+                              >
+                                <Image
+                                  alt="Logo"
+                                  src={msg.fromimg}
+                                  width={40}
+                                  height={40}
+                                  className="hover:scale-105 cursor-pointer duration-300 rounded-full"
+                                />
+                              </div>
+                              <p
+                                className={`whitespace-pre-wrap break-all  ${
+                                  (msg.from || msg.to) === EmailUser
+                                    ? "bg-sky-500"
+                                    : "bg-green-500"
+                                } p-2  rounded-md`}
+                              >
+                                <CustomLinkify message={msg.message} />
+                              </p>
+                              <p
+                                onClick={() => {
+                                  setUMessage(msg.message);
+                                  setputdelete(!putdelete);
+                                  setIdMsg(msg._id);
+                                }}
+                                className={`cursor-pointer
                           ${
                             (msg.from || msg.to) === EmailUser
                               ? "block"
                               : "hidden"
                           }`}
-                          >
-                            <EllipsisVertical width={18} />
-                          </p>
-                        </div>
-                      <span
-                        className={`
+                              >
+                                <EllipsisVertical width={18} />
+                              </p>
+                            </div>
+                            <span
+                              className={`
                           ${
                             (msg.from || msg.to) === EmailUser
                               ? "text-right text-[10px] flex justify-end mr-14"
                               : "text-left  text-[10px] flex justify-start ml-14"
                           }`}
-                      >
-                        {msg.updated}
-                        {/* {msg.updated && `,${msg.updated && UpdateDate},${DateUpdMsg.toLocaleTimeString()}`} */}
-                      </span>
-                      <span
-                        className={` flex gap-2 mb-1  ${
-                          (msg.from || msg.to) === EmailUser
-                            ? "justify-end mr-14 "
-                            : " ml-14"
-                        }  text-sm`}
-                      >
-                        <p className=" text-gray-700">{`${DateAll === TodayDate ? "Today," : DateAll === YesterdayDate  ? "Yesterday," : DateAll }`}</p>
-                        <p className=" text-gray-900">
-                          {DateMsg.toLocaleTimeString()}
-                        </p>
-                      </span>
+                            >
+                              {msg.updated}
+                              {/* {msg.updated && `,${msg.updated && UpdateDate},${DateUpdMsg.toLocaleTimeString()}`} */}
+                            </span>
+                            <span
+                              className={` flex gap-2 mb-1  ${
+                                (msg.from || msg.to) === EmailUser
+                                  ? "justify-end mr-14 "
+                                  : " ml-14"
+                              }  text-sm`}
+                            >
+                              <p className=" text-gray-700">{`${
+                                DateAll === TodayDate
+                                  ? "Today,"
+                                  : DateAll === YesterdayDate
+                                  ? "Yesterday,"
+                                  : DateAll
+                              }`}</p>
+                              <p className=" text-gray-900">
+                                {DateMsg.toLocaleTimeString()}
+                              </p>
+                            </span>
+                          </div>
+                        );
+                      })
+                  )}
+                </div>
+                {/* Input Messgage */}
+                <div
+                  className={`bg-gray-200 p-2 mt-2 rounded-md
+                ${putdelete ? "block" : "hidden"}`}
+                >
+                  <div className="flex items-center gap-4 pr-2 ">
+                    <textarea
+                      type="text"
+                      placeholder="Enter your message here..."
+                      value={messageInput}
+                      onChange={(e) => {
+                        setMessageInput(e.target.value);
+                      }}
+                      className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
+                    />
+                    <Button
+                      onClick={() => {
+                        sendMessage();
+                        setEmoji(emoji);
+                      }}
+                      disabled={loading || messageInput === ""}
+                      className="bg-indigo-600  text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300"
+                    >
+                      {loading ? (
+                        <i className="fa fa-spinner fa-spin"></i>
+                      ) : (
+                        "Send"
+                      )}
+                    </Button>
+                    <div
+                      onClick={() => {
+                        setEmoji(!emoji);
+                      }}
+                      className="cursor-pointer text-2xl"
+                    >
+                      <BsEmojiSmile />
                     </div>
-                  );
-                })
+                  </div>
+                </div>
+                {/* Input Messgage update Or Delete */}
+                <div
+                  className={`bg-gray-200 p-2 mt-2 rounded-md
+                ${putdelete ? "hidden" : "block"}`}
+                >
+                  <div className="flex items-center gap-4 pr-2 ">
+                    <textarea
+                      type="text"
+                      placeholder="Enter your message here..."
+                      value={umessage}
+                      // onChange={(e) => {
+                      //   const words = e.target.value
+                      //     .split(/\s+/)
+                      //     .filter((word) => word.length > 0);
+                      //   if (words.length <= 200) {
+                      //     setUMessage(e.target.value)
+                      //   }
+                      // }}
+                      onChange={(e) => {
+                        setUMessage(e.target.value);
+                      }}
+                      className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
+                    />
+                    <button
+                      onClick={updateMsg}
+                      className="bg-green-600 p-2 rounded-md  text-white hover:bg-green-600 hover:scale-105 duration-500"
+                    >
+                      <>
+                        {loadingu ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          "Update"
+                        )}
+                      </>
+                    </button>
+                    <button
+                      onClick={deleteMsg}
+                      className="bg-red-600 p-2 rounded-md  text-white hover:bg-red-600 hover:scale-105 duration-500"
+                    >
+                      <>
+                        {loadingd ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          "Delete"
+                        )}
+                      </>
+                    </button>
+                    <div
+                      onClick={() => {
+                        setEmoji(!emoji);
+                      }}
+                      className="cursor-pointer text-2xl"
+                    >
+                      <BsEmojiSmile />
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
-          {/* Input Messgage */}
-          <div
-            className={`bg-gray-200 p-2 mt-2 rounded-md
-                ${putdelete ? "block" : "hidden"}`}
-          >
-            <div className="flex items-center gap-4 pr-2 ">
-              <textarea
-                type="text"
-                placeholder="Enter your message here..."
-                value={messageInput}
-                onChange={(e) => {
-                  setMessageInput(e.target.value);
-                }}
-                className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
-              />
-              <Button
-                onClick={() => {
-                  sendMessage();
-                  setEmoji(emoji);
-                }}
-                disabled={loading || messageInput === ""}
-                className="bg-indigo-600  text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300"
-              >
-                {loading ? <i className="fa fa-spinner fa-spin"></i> : "Send"}
-              </Button>
-              <div
-                onClick={() => {
-                  setEmoji(!emoji);
-                }}
-                className="cursor-pointer text-2xl"
-              >
-                <BsEmojiSmile />
-              </div>
-            </div>
+          <div className={` absolute right-4 ${emoji ? "hidden" : "block"}`}>
+            <Picker data={data} onEmojiSelect={addEmoji} maxFrequentRows={0} />
           </div>
-          {/* Input Messgage update Or Delete */}
-          <div
-            className={`bg-gray-200 p-2 mt-2 rounded-md
-                ${putdelete ? "hidden" : "block"}`}
-          >
-            <div className="flex items-center gap-4 pr-2 ">
-              <textarea
-                type="text"
-                placeholder="Enter your message here..."
-                value={umessage}
-                // onChange={(e) => {
-                //   const words = e.target.value
-                //     .split(/\s+/)
-                //     .filter((word) => word.length > 0);
-                //   if (words.length <= 200) {
-                //     setUMessage(e.target.value)
-                //   }
-                // }}
-                onChange={(e) => {
-                  setUMessage(e.target.value);
-                }}
-                className="flex-1 border-2 bg-white  border-gray-300 rounded-lg p-2  focus:outline-none transition duration-300"
-              />
-              <button
-                onClick={updateMsg}
-                className="bg-green-600 p-2 rounded-md  text-white hover:bg-green-600 hover:scale-105 duration-500"
-              >
-                <>
-                  {loadingu ? (
-                    <i className="fa fa-spinner fa-spin"></i>
-                  ) : (
-                    "Update"
-                  )}
-                </>
-              </button>
-              <button
-                onClick={deleteMsg}
-                className="bg-red-600 p-2 rounded-md  text-white hover:bg-red-600 hover:scale-105 duration-500"
-              >
-                <>
-                  {loadingd ? (
-                    <i className="fa fa-spinner fa-spin"></i>
-                  ) : (
-                    "Delete"
-                  )}
-                </>
-              </button>
-              <div
-                onClick={() => {
-                  setEmoji(!emoji);
-                }}
-                className="cursor-pointer text-2xl"
-              >
-                <BsEmojiSmile />
-              </div>
-            </div>
-          </div>
-          </div>}
-        </div>
-        <div className={` absolute right-4 ${emoji ? "hidden" : "block"}`}>
-          <Picker data={data} onEmojiSelect={addEmoji} maxFrequentRows={0} />
         </div>
       </div>
-    </div> 
-
     </div>
-    
   );
 }
 

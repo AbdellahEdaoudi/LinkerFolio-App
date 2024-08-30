@@ -212,12 +212,12 @@ function Messages({ selectedUser }) {
   const FilterMessages = messages.filter((fl) => {
     return (
       (fl.from === EmailUser &&
-        fl.to === selectedUser.email) ||
-      (fl.from === selectedUser.email &&
+        fl.to === selectedUser?.email) ||
+      (fl.from === selectedUser?.email &&
         fl.to === EmailUser)
     );
   })
-  const emailuser =selectedUser.email
+  const emailuser =selectedUser?.email
   const CheckFrirnd = friendRequests.find((f) =>
     (f.from === EmailUser && f.to === emailuser) ||
     (f.from === emailuser && f.to === EmailUser)
@@ -226,7 +226,7 @@ function Messages({ selectedUser }) {
   return (
     <div>
       {/* Message window on the right */}
-      <div className={` flex flex-col justify-between md:w-auto w-screen`}>
+      <div className={` flex flex-col justify-between md:w-auto w-screen `}>
         <div className="flex-1 p-2 ">
           {/* selectedUser */}
           <div className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
@@ -354,8 +354,8 @@ function Messages({ selectedUser }) {
                           <div
                             className={`whitespace-pre-wrap break-all  ${
                               (msg.from || msg.to) === EmailUser
-                                ? "bg-sky-500"
-                                : "bg-green-500"
+                                ? "bg-gradient-to-r from-sky-400 to-blue-500"
+                                : "bg-gradient-to-r from-green-400 to-teal-500"
                             } p-2  rounded-md `}
                           >
                             <CustomLinkify message={msg.message} />
@@ -416,6 +416,7 @@ function Messages({ selectedUser }) {
                 type="text"
                 placeholder="Enter your message here..."
                 value={messageInput}
+                maxLength={999}
                 onChange={(e) => {
                   setMessageInput(e.target.value);
                 }}
@@ -451,14 +452,7 @@ function Messages({ selectedUser }) {
                 type="text"
                 placeholder="Enter your message here..."
                 value={umessage}
-                // onChange={(e) => {
-                //   const words = e.target.value
-                //     .split(/\s+/)
-                //     .filter((word) => word.length > 0);
-                //   if (words.length <= 200) {
-                //     setUMessage(e.target.value)
-                //   }
-                // }}
+                maxLength={999}
                 onChange={(e) => {
                   setUMessage(e.target.value);
                 }}

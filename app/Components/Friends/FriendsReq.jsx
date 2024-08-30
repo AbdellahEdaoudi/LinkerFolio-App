@@ -180,12 +180,28 @@ function FriendsReq() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-start pt-20 justify-center bg-gray-900">
-        <div className="text-center">
-          <div className="spinner-border animate-spin inline-block w-12 h-12 border-4 rounded-full text-blue-500"></div>
-          <p className="mt-4 text-white text-lg">Loading...</p>
+      <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white p-6">
+      <h1 className="text-3xl font-bold mb-6">Friend Requests</h1>
+
+      <input
+        type="text"
+        placeholder="Search for friends..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="mb-6 px-4 py-2 rounded-lg w-full max-w-md bg-gray-800 text-white placeholder-gray-500"
+      />
+        <div className='flex flex-wrap justify- items-center gap-6 '>
+          {[1,2,3,4].map((mp,i)=>{
+            return(
+              <div key={i} className='bg-gray-800  rounded-lg flex flex-col items-center space-y-4 p-10'>
+                <div className='w-28 h-28 bg-gray-500 rounded-full animate-pulse'></div>
+                <div className='w-44 h-6 rounded-lg bg-gray-500 animate-pulse'></div>
+                <div className='w-44 h-6 rounded-lg bg-gray-500 animate-pulse'></div>
+              </div>
+            )
+          })}
         </div>
-      </div>
+    </div>
     );
   }
 

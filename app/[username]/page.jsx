@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
     const user = await response.json();
 
     return {
-      title: `${user.fullname}`,
+      title: `${user.fullname} | LinkerFolio`,
       description: user.bio,
       // icons: {
       //   icon: user.urlimage,
