@@ -137,10 +137,6 @@ export const MyProvider = ({ children }) => {
   
 
   
-
-  const NotificationCount = messages.filter(
-    (fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false
-  );
   const latestNotifications = messages
   .filter((fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false)
   .reduce((acc, msg) => {
@@ -186,7 +182,6 @@ const Notification = Object.values(latestNotifications);
         messages,
         socket,
         Requests,
-        NotificationCount,
         setMessages,
       }}
     >

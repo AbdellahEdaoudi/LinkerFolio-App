@@ -15,6 +15,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MyContext } from "../Context/MyContext";
 import SignInnavbar from "./SignIn/SignInnavbar";
+import axios from "axios";
 
 function Navbar() {
   const { user } = useUser();
@@ -22,7 +23,7 @@ function Navbar() {
   const [notification, setNotification] = useState(true);
   const router = useRouter();
   const [Adminfind, setAdminfind] = useState(false);
-  const {userDetails,Notification,EmailUser,Requests,NotificationCount} = useContext(MyContext);
+  const {userDetails,Notification,EmailUser,Requests,messages,SERVER_URL_V} = useContext(MyContext);
 
   useEffect(() => {
     const User = userDetails.find(user => user.email === EmailUser);
@@ -35,9 +36,32 @@ function Navbar() {
   const filt = userDetails.filter(
     (fl) => fl.email === EmailUser
   );
-  const Filt = userDetails.find(
-    (fl) => fl.email === EmailUser
+  const NotificationCount = Array.from(
+    new Map(
+      messages
+        .filter(
+          (fl) =>
+            fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false
+        )
+        .map((item) => [item.message, item])
+    ).values()
   );
+  const ReadOrNo = async (fromEmail,toEmail) => {
+    try {
+      const response = await axios.put(`${SERVER_URL_V}/readorno`, {
+        fromEmail,
+        toEmail,
+      });
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error updating readorno:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  };
+  
 
   return (
     <div>
@@ -247,7 +271,12 @@ function Navbar() {
 
       return (
         <div
-        onClick={()=>{router.push(`/message/to/${nt.fromname}`)}}
+        onClick={ ()=>{
+          router.push(`/message/to/${nt.fromname}`)
+          if (Notification.length > 0 && Notification[0].readorno === false){
+            ReadOrNo(nt.from,nt.to)  
+          }
+        }}
           key={i}
           className="flex cursor-pointer hover:scale-105 duration-300 items-center p-2 mb-2 bg-gray-700 rounded-md shadow-md"
         >
@@ -279,8 +308,6 @@ function Navbar() {
     <p className="text-center text-sm text-gray-400">No notifications</p>
   )}
 </nav>
-
-
     </div>
   );
 }
