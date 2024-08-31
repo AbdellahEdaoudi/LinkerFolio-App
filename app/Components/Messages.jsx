@@ -17,9 +17,10 @@ import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
 import { CustomLinkify } from "./CustomLinkify";
 import InputLoadMessages from "./Loading/InputLoadMessages";
+import { toast, ToastContainer } from "react-toastify";
 
 function Messages({ selectedUser }) {
-  const { toast } = useToast();
+  const {Toast } = useToast();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
@@ -147,7 +148,7 @@ function Messages({ selectedUser }) {
       };
       const response = await axios.post(`${SERVER_URL}/messages`, data);
       socket.emit("sendMessage", response.data);
-      toast({ description: "Your message has been sent." });
+      Toast({ description: "Your message has been sent." });
       setMessageInput("");
       setEmoji(true);
     } catch (error) {
@@ -168,7 +169,7 @@ function Messages({ selectedUser }) {
       setEmoji(true);
     } catch (error) {
       console.error("Error deleting message:", error);
-      toast({
+      Toast({
         description: "Error deleting message. Please try again later.",
         status: "error",
       });
@@ -198,7 +199,7 @@ function Messages({ selectedUser }) {
       setEmoji(true);
     } catch (error) {
       console.error("Error updating message:", error);
-      toast({
+      Toast({
         description: "Error updating message. Please try again later.",
         status: "error",
       });
@@ -223,6 +224,12 @@ function Messages({ selectedUser }) {
     (f.from === EmailUser && f.to === emailuser) ||
     (f.from === emailuser && f.to === EmailUser)
   );
+  const handleLongPress = (e,message) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(message).then(() => {
+      toast("Message copied!"); 
+    });
+  };
 
   return (
     <div>
@@ -359,6 +366,7 @@ function Messages({ selectedUser }) {
                           </div>
                           {/* Msg */}
                           <div
+                           onContextMenu={(e) => handleLongPress(e, msg.message)}
                             className={`whitespace-pre-wrap break-all overflow-y-auto max-h-44  ${
                               (msg.from || msg.to) === EmailUser
                                 ? "bg-gradient-to-r from-sky-400 to-blue-500"
