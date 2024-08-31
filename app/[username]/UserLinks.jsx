@@ -53,7 +53,7 @@ function UserLinks({emailuser}) {
                         <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
                           <Link />
                         </p>
-                        <p className='text-sm'>{lnk.namelink}</p>
+                        <p className='text-sm break-all'>{lnk.namelink}</p>
                       </a>
                     ))
                 ) : (

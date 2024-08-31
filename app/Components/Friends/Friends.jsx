@@ -158,13 +158,13 @@ function Friends() {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mb-6 px-4 py-2 rounded-lg w-full max-w-md bg-gray-800 text-white placeholder-gray-500"
       />
-        <div className='flex flex-wrap justify- items-center gap-6 '>
+        <div className='grid sm:grid-cols-2 grid-cols-1 md:grid-cols-4 gap-6 '>
           {[1,2,3,4].map((mp,i)=>{
             return(
-              <div key={i} className='bg-gray-800  rounded-lg flex flex-col items-center space-y-4 p-10'>
+              <div key={i} className='bg-gray-800 w-full  rounded-lg flex flex-col items-center space-y-4 p-10'>
                 <div className='w-28 h-28 bg-gray-500 rounded-full animate-pulse'></div>
-                <div className='w-44 h-6 rounded-lg bg-gray-500 animate-pulse'></div>
-                <div className='w-44 h-6 rounded-lg bg-gray-500 animate-pulse'></div>
+                <div className='w-36 h-6 rounded-lg bg-gray-500 animate-pulse'></div>
+                <div className='w-36 h-6 rounded-lg bg-gray-500 animate-pulse'></div>
               </div>
             )
           })}
@@ -190,7 +190,7 @@ function Friends() {
       />
 
       {filteredFriends.length === 0 ? (
-        <p className="text-lg">No friends </p>
+        <p className="text-lg">You don't have any friend</p>
       ) : (
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredFriends.map((request) => {

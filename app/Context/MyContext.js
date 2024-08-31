@@ -180,9 +180,10 @@ const Notification = Object.values(latestNotifications);
         Notification,
         SERVER_URL_V,
         messages,
+        setMessages,
         socket,
         Requests,
-        setMessages,
+        friendRequests, setFriendRequests
       }}
     >
       <audio ref={audioRef} src="/notification3.mp3" preload="auto" />

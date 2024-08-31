@@ -7,7 +7,7 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import {Bell, MessagesSquare, Settings, Users } from "lucide-react";
+import {Bell, BookUser, LogOut, MessageSquare, MessagesSquare, NotebookText, Settings, Shield, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -56,9 +56,9 @@ function Navbar() {
   return (
     <div>
       <nav className=" border-b drop-shadow-2xl bg-white ">
-        <section className="container mx-auto py-3">
+        <section className="md:container md:mx-auto ml-3 mr-6 py-3">
           <div className="flex justify-between items-center text-white">
-          <div className="flex items-center gap-1 hover:scale-105 duration-300 cursor-pointer">
+          <div className="flex items-center  md:w-auto  hover:scale-105 duration-300 cursor-pointer">
           <Image
               onClick={() => {
                 router.push("/");
@@ -84,26 +84,25 @@ function Navbar() {
               {user ? (
                 filt.map((userr, i) => (
                     <div key={i} className="flex items-center gap-1">
-                      <UserButton  />
                       <div
                         onClick={() => {
                           setSetting(true);
                           setNotification(true)
                           router.push(`/${userr.username}`);
                         }}
-                        className="font-medium hidden  md:block text-black cursor-pointer hover:scale-105 transition duration-300"
+                        className="font-medium  hidden mr-4 md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                       >
-                        {userr.fullname}
+                        <div className="flex items-center gap-2"><UserButton  />{userr.fullname}</div>
                       </div>
                       {/* Icons Navbar */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-4">
                         {/* Icon Notification */}
                       <div onClick={() => {
                         setNotification(!notification);
                         setSetting(true)
                       }} className="relative flex items-center">
                       <span 
-                      className="text-black cursor-pointer ml-2 relative">
+                      className="text-black cursor-pointer  relative">
                       <MessagesSquare />
                       </span>
                       <div onClick={() => {
@@ -120,7 +119,7 @@ function Navbar() {
                           setNotification(true)
                         }} className="relative flex items-center">
                       <span 
-                      className="text-black cursor-pointer ml-2 relative">
+                      className="text-black cursor-pointer relative">
                       <Users />
                       </span>
                       <div onClick={() => {
@@ -144,11 +143,11 @@ function Navbar() {
                     </div>
                   ))
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex flex-row-reverse items-center gap-2">
                   <div className="w-11 h-11 bg-gray-300 rounded-full"></div>
                   <div>
-                  <div className="md:w-40 w-20 h-4 bg-gray-300 rounded-md mb-1"></div>
-                  <div className="md:w-32 w-16 h-4 bg-gray-300 rounded-md"></div>
+                  <div className="md:w-40 w-16 h-4 bg-gray-300 rounded-md mb-1"></div>
+                  <div className="md:w-32 w-12 h-4 bg-gray-300 rounded-md"></div>
                   </div>
                 </div>
               )}
@@ -160,11 +159,11 @@ function Navbar() {
         </section>
       </nav>
       {/* SETTING */}
-      <nav
+         <nav
           onClick={() => {
             setSetting(!setting);
           }}
-          className={`overflow-hidden transition-all duration-500 text-white bg-gray-800 rounded-md w-60 right-3 container absolute flex flex-col  ${
+          className={`overflow-hidden ${!setting && "ring-2"} transition-all duration-500 text-white bg-gray-800 rounded-md w-60 right-3 container absolute flex flex-col  ${
             setting ? " max-h-0" : "max-h-80 p-4"
           }`}>
               <Link
@@ -172,27 +171,27 @@ function Navbar() {
                 onClick={() => {
                   setSetting(!setting);
                 }}
-                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+                className="bg-gray-700 py-2 border-b flex items-center justify-center border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
-                Profile Details
+                <div className="flex items-center gap-1"><BookUser /> Profile Details</div>
               </Link>
               <Link
                 href={"/BusinessLinks"}
                 onClick={() => {
                   setSetting(!setting);
                 }}
-                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+                className="bg-gray-700 py-2 border-b flex items-center justify-center border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
-               Business Links
+                <div className="flex items-center gap-1"><NotebookText /> Business Links</div>
               </Link>
               <Link
                 href={"/Friends"}
                 onClick={() => {
                   setSetting(!setting);
                 }}
-                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+                className="bg-gray-700 py-2 border-b flex items-center justify-center border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
-               Friends
+            <div className="flex items-center gap-1"><Users /> Friends</div>
               </Link>
               {Adminfind &&
               <Link
@@ -200,9 +199,9 @@ function Navbar() {
                 onClick={() => {
                   setSetting(!setting);
                 }}
-                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+                className="bg-gray-700 py-2 flex items-center justify-center border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
-               Admin
+               <div className="flex items-center gap-1"><Shield />Admin</div>
               </Link>
               }
               
@@ -211,18 +210,20 @@ function Navbar() {
                 onClick={() => {
                   setSetting(!setting);
                 }}
-                className="bg-gray-700 py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+                className="bg-gray-700 flex items-center justify-center py-2 border-b border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
-               Contact Us
+          <div className="flex items-center gap-1"><MessageSquare /> Contact Us</div>
               </Link>
-              <SignOutButton  className="bg-red-500 py-2 border-b border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" />
-      </nav>
+          <div className="bg-red-500 py-2 border-b cursor-pointer border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" >
+          <LogOut /><SignOutButton />  
+          </div>      
+          </nav>
       {/* notification */}
 <nav
   onClick={() => {
     setNotification(!notification);
   }}
-  className={`overflow-hidden transition-all overflow-y-auto duration-500 text-white bg-gray-800 rounded-md w-96 right-2 container absolute flex flex-col ${
+  className={`overflow-hidden ${!notification && "ring-2"} transition-all overflow-y-auto duration-500 text-white bg-gray-800 rounded-md md:w-96  shadow-lg  md:mx-auto   md:right-2 container absolute flex flex-col ${
     notification ? "max-h-0" : "max-h-60 p-4"
   }`}
 >

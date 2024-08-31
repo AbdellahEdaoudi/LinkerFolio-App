@@ -359,7 +359,7 @@ function Messages({ selectedUser }) {
                           </div>
                           {/* Msg */}
                           <div
-                            className={`whitespace-pre-wrap break-all  ${
+                            className={`whitespace-pre-wrap break-all overflow-y-auto max-h-44  ${
                               (msg.from || msg.to) === EmailUser
                                 ? "bg-gradient-to-r from-sky-400 to-blue-500"
                                 : "bg-gradient-to-r from-green-400 to-teal-500"

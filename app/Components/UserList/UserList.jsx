@@ -17,7 +17,7 @@ function UserList({ selectedUser, setSelectedUser }) {
     SERVER_URL,
     userDetails,
     messages,
-    setMessages,
+    setMessages,friendRequests, setFriendRequests
   } = useContext(MyContext);
   const [socket, setSocket] = useState(null);
 
@@ -316,7 +316,7 @@ function UserList({ selectedUser, setSelectedUser }) {
                               : "No messages yet"}
                           </p>
                           <p className={`${User.email === EmailUser && 'hidden'} text-sm text-gray-500`}>
-                          {MessgesLength.length > 0 ? `(${MessgesLength.length})` : MessgesLength.length === 0 ? "" : ""}
+                          {MessgesLength.length > 1 ? `(${MessgesLength.length})` : MessgesLength.length === 1 ? "" : ""}
                           </p>
                           </div>
                           

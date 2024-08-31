@@ -130,6 +130,7 @@ function EditUserLinks() {
                 value={namelink}
                 onChange={(e) => setNamelink(e.target.value)}
                 required
+                maxLength={50}
                 placeholder='URL Name'
                 className="mt-1 w-full px-3 py-2 border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               />
@@ -174,7 +175,7 @@ function EditUserLinks() {
                   <p className='p-2 border border-gray-300 rounded-full text-teal-600'>
                      <Link />
                    </p>
-                   <p className='text-sm'>{lnk.namelink}</p>
+                   <p className='text-xs md:text-sm break-all mr-3'>{lnk.namelink}</p>
                   </div>
                   <div className=' flex space-x-3'>
                    <button onClick={() =>{EditLink(lnk);window.scrollTo(0, 0);}} 

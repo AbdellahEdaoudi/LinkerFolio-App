@@ -18,7 +18,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
     setMessages,
     userDetails,
     EmailUser,
-    messages,
+    messages,friendRequests, setFriendRequests  
   } = useContext(MyContext);
   const router = useRouter();
   const [socket, setSocket] = useState(null);
@@ -269,11 +269,22 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         new Date(b.lastMessage?.createdAt) -
                         new Date(a.lastMessage?.createdAt)
                     ) // Sort by last message date
-                    .map(({ User, lastMessage }, i) => (
-                      <div
+                    .map(({ User, lastMessage }, i) =>{
+                      const MessgesLength = Array.from(
+                        new Map(
+                          messages
+                            .filter(
+                              (fl) => fl.to === EmailUser && fl.from === lastMessage?.from  && fl.readorno === false
+                            )
+                            .map((item) => [item.message, item])
+                        ).values()
+                      );
+                      return (
+                        <div
                         key={i}
                         onClick={() => {
                           UserClick(User, lastMessage);
+                          router.push(`/message/to/${User.username}`)
                         }}
                         className={`${
                           searchQuery === "" ? "" : "hidden"
@@ -294,21 +305,19 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                             layout="fill"
                           />
                         </Link>
-                        <div
-                          onClick={() =>
-                            router.push(`/message/to/${User.username}`)
-                          }
-                          className="flex flex-col"
-                        >
+                        <div className="flex flex-col">
                           <p className="text-lg">{User.fullname}</p>
-                          <div className="text-[14px] text-gray-500 line-clamp-1">
+                          <div className="flex items-center gap-1">
                             <p className="text-[14px] text-gray-500 line-clamp-1">
-                              {lastMessage
-                                ? lastMessage.from === EmailUser
-                                  ? `you: ${lastMessage.message}`
-                                  : `${lastMessage.message}`
-                                : "No messages yet"}
-                            </p>
+                            {lastMessage
+                              ? lastMessage.from === EmailUser
+                                ? `you: ${lastMessage.message} `
+                                : `${lastMessage.message}`
+                              : "No messages yet"}
+                          </p>
+                          <p className={`${User.email === EmailUser && 'hidden'} text-sm text-gray-500`}>
+                          {MessgesLength.length > 1 ? `(${MessgesLength.length})` : MessgesLength.length === 1 ? "" : ""}
+                          </p>
                           </div>
                         </div>
                         {lastMessage && (
@@ -328,7 +337,8 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                           </p>
                         )}
                       </div>
-                    ))}
+                      )
+                    })}
               </div>
             </div>
           )}
