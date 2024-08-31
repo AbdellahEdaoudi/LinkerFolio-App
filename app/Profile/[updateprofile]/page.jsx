@@ -17,6 +17,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { bgcolorOptions } from "@/app/data/bgcolorOptions";
 import { MyContext } from "@/app/Context/MyContext";
+import UpdatePLoading from "@/app/Components/Loading/UpdatePLoading";
 function NameUser({ params }) {
   const { user } = useUser();
   const [loading, setLoading] = useState(true); // Initialize loading state
@@ -175,9 +176,7 @@ function NameUser({ params }) {
   };
 
   if (!user || !email || !EmailUser) {
-    return <p className="flex justify-center items-start h-screen duration-500  py-20 text-8xl">
-          <i className="fa fa-spinner fa-spin"></i>
-        </p>
+    return <UpdatePLoading />
   }
   
   if (email !== EmailUser) {
@@ -260,7 +259,7 @@ function NameUser({ params }) {
             const newValue = e.target.value.replace(/[/\s]/g, "").toLowerCase();
             setUsername(newValue);
           }}
-          className="w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="w-full px-4 py-2 border bg-gray-100  border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Enter your username" required
         />
       </div>

@@ -143,7 +143,7 @@ function Navbar() {
                     </div>
                   ))
               ) : (
-                <div className="flex flex-row-reverse items-center gap-2">
+                <div className="flex md:flex-row flex-row-reverse items-center gap-2">
                   <div className="w-11 h-11 bg-gray-300 rounded-full"></div>
                   <div>
                   <div className="md:w-40 w-16 h-4 bg-gray-300 rounded-md mb-1"></div>
