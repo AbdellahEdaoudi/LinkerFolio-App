@@ -1,5 +1,5 @@
 import React from "react";
-import Friends from "../Components/Friends/Friends";
+import Friends from "../Components/Private/Friends";
 
 function page() {
   return (

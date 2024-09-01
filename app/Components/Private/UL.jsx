@@ -47,9 +47,6 @@ function UserList({ selectedUser, setSelectedUser }) {
       socket.disconnect();
     };
   }, [SERVER_URL]);
-  const LiseMessages = messages.filter((message, index, self) =>
-    index === self.findIndex((m) => m.from === message.from)
-  );
 
 
 
@@ -87,7 +84,7 @@ function UserList({ selectedUser, setSelectedUser }) {
     } else {
       console.warn("lastMessage or its properties are undefined");
     }
-
+    // Store selected user in localStorage
     // Scroll messages to the end
     const scrollMessagesToEnd = () => {
         if (messagesEndRef.current) {
@@ -98,32 +95,19 @@ function UserList({ selectedUser, setSelectedUser }) {
         scrollMessagesToEnd();
     }, 1);
     return () => clearTimeout(timeout);
+  };
+  // Scroll To End
+  useEffect(() => {
+    const scrollMessagesToEnd = () => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+      }
     };
-    // Scroll To End
-    useEffect(() => {
-      const scrollMessagesToEnd = () => {
-        if (messagesEndRef.current) {
-          messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-        }
-      };
-      const timeout = setTimeout(() => {
-        scrollMessagesToEnd();
-      }, 1);
-      return () => clearTimeout(timeout);
-    }, [messages]);
-    const filteredSearchUser = userDetails
-    .filter(
-      (user) =>
-        user.fullname
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        user.username
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        user.email
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())
-    )
+    const timeout = setTimeout(() => {
+      scrollMessagesToEnd();
+    }, 1);
+    return () => clearTimeout(timeout);
+  }, [messages]);
 
   return (
     <div>
@@ -143,7 +127,20 @@ function UserList({ selectedUser, setSelectedUser }) {
               {/* Users List */}
         <div className=" overflow-y-auto max-h-[400px] scrollbar-none ">
               <div className="overflow-y-auto max-h-[420px] scrollbar-none">
-                {filteredSearchUser.map((User, i) => (
+                {userDetails
+                  .filter(
+                    (user) =>
+                      user.fullname
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                      user.username
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                      user.email
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                  )
+                  .map((User, i) => (
                     <div
                       key={i}
                       onClick={() => {
@@ -163,11 +160,14 @@ function UserList({ selectedUser, setSelectedUser }) {
                         }, 1);
                         return () => clearTimeout(timeout);
                       }}
-                      className={`${searchQuery === "" ? "hidden" : ""} 
-                        flex items-center gap-4 p-2 duration-500 hover:bg-gray-700
-                         cursor-pointer rounded-lg transition 
-                         ${selectedUser && selectedUser.email === User.email ? 
-                         "bg-gray-700" : ""}`} >
+                      className={`${
+                        searchQuery === "" ? "hidden" : ""
+                      } flex items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                        selectedUser && selectedUser.email === User.email
+                          ? "bg-gray-700"
+                          : ""
+                      }`}
+                    >
                       <div className="relative w-12 h-12">
                         <div className="">
                           <Image
@@ -187,7 +187,8 @@ function UserList({ selectedUser, setSelectedUser }) {
                       </div>
                     </div>
                   ))}
-                {EmailUser  && userDetails
+                {EmailUser  &&
+                  userDetails
                     .filter(
                       (userDetail) =>
                         userDetail.email === EmailUser ||
@@ -212,11 +213,12 @@ function UserList({ selectedUser, setSelectedUser }) {
                         )[0];
 
                       return { User, lastMessage };
-                    }).sort(
+                    })
+                    .sort(
                       (a, b) =>
                         new Date(b.lastMessage?.createdAt) -
                         new Date(a.lastMessage?.createdAt)
-                    ) 
+                    ) // Sort by last message date
                     .map(({ User, lastMessage }, i) => {
                       const MessgesLength = Array.from(
                         new Map(

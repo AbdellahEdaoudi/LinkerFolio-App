@@ -47,7 +47,7 @@ function Friends() {
       socket.off("receiveUpdatedFriendRequest");
       socket.off("receiveDeletedFriendRequest");
     };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     const fetchFriendRequests = async () => {
@@ -129,6 +129,23 @@ function Friends() {
       }));
     }
   };
+  const DeleteMessages_B_U = async (Emailuser, FriendReq) => {
+    // const confirmUpdate = window.confirm(
+    //   "Are you sure you want to delete all messages between you and this friend?"
+    // );
+    // if (!confirmUpdate) {
+    //   return;
+    // }
+    try {
+      await axios.delete(`${SERVER_URL_V}/messages_B_U`, {
+        data: { Emailuser, FriendReq }
+      });
+    } catch (error) {
+      console.error("Error deleting messages:", error.message);
+      setError("Failed to delete messages");
+    }
+  };
+  
 
   const highlightText = (text) => {
     if (!searchTerm.trim()) return text;
@@ -173,9 +190,9 @@ function Friends() {
     );
   }
 
-  if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
-  }
+  // if (error) {
+  //   return <p className="text-center text-red-500">{error}</p>;
+  // }
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white p-6">
@@ -231,7 +248,9 @@ function Friends() {
                 </div>
                 <div className="flex gap-4 w-full px-4 pb-4">
                   <button
-                    onClick={() => DeleteRequest(request._id)}
+                    onClick={() =>{
+                      DeleteRequest(request._id);
+                      DeleteMessages_B_U(request.from,request.to)}}
                     className="flex-1 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors duration-200"
                   >
                     {isLoading.delete ? (

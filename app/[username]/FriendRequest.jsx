@@ -150,7 +150,6 @@ const SendFriendRequest = async () => {
     (f.from === EmailUser && f.to === emailuser) ||
     (f.from === emailuser && f.to === EmailUser)
   );
-  console.log('CheckFrirnd:', CheckFrirnd ? "Kayen" : "makayench");
   
   return (
     <div>

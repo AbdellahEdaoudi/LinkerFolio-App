@@ -1,9 +1,7 @@
-// "use client";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -12,12 +10,10 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io from "socket.io-client";
 import { EllipsisVertical} from "lucide-react";
-import Linkify from "linkify-react";
 import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
 import { CustomLinkify } from "./CustomLinkify";
 import InputLoadMessages from "./Loading/InputLoadMessages";
-import LMessages from "./Loading/LoadChatPage/LMessages";
 
 function Messages({ selectedUser }) {
   const {toast} = useToast();
@@ -43,7 +39,7 @@ function Messages({ selectedUser }) {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL}/messages`);
+        const response = await axios.get(`${SERVER_URL_V}/messages`);
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -51,8 +47,8 @@ function Messages({ selectedUser }) {
     };
 
     getMessages();
-  }, [SERVER_URL]);
-
+  }, [SERVER_URL_V]);
+  // socket
   useEffect(() => {
     const socket = io(SERVER_URL);
     setSocket(socket);
@@ -96,6 +92,7 @@ function Messages({ selectedUser }) {
     };
   }, [SERVER_URL]);
   
+  // GetFriendRequest
   useEffect(() => {
   const GetFriendRequest = async () => {
     try {
@@ -114,14 +111,11 @@ function Messages({ selectedUser }) {
       setputdelete(true)
     }
   }, [selectedUser]);
-
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   }, [messages,selectedUser]);
-
-
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
     const codeArray = sym.map((el) => "0x" + el);
@@ -224,7 +218,7 @@ function Messages({ selectedUser }) {
     (f.from === EmailUser && f.to === emailuser) ||
     (f.from === emailuser && f.to === EmailUser)
   );
-  const handleLongPress = (e,message) => {
+  const CopiedMessages = (e,message) => {
     e.preventDefault();
     navigator.clipboard.writeText(message).then(() => {
       toast("Message copied!"); 
@@ -235,10 +229,10 @@ function Messages({ selectedUser }) {
     <div>
       {/* Message window on the right */}
       <div className={` flex flex-col justify-between md:w-auto w-screen `}>
+       {/* selectedUser And  Messages */}
         <div className="flex-1 p-2 ">
           {/* selectedUser */}
           <div className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
-            {selectedUser ? (
               <div className="flex items-center justify-between gap-4">
                 <Link
                   href={`/${selectedUser.username}`}
@@ -262,16 +256,6 @@ function Messages({ selectedUser }) {
                   {selectedUser.phoneNumber}
                 </p>
               </div>
-            ) : (
-              <div className="flex gap-2 items-center justify-between ">
-                <div className=" flex justify-around items-center">
-                  <div className="w-12 h-12 rounded-full bg-gray-500 animate-pulse ml-2"></div>
-                  <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
-                </div>
-                <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
-                <div className="rounded-full bg-gray-500 animate-pulse w-44 h-3 ml-2"></div>
-              </div>
-            )}
           </div>
           {/* Messages */}
           <div>
@@ -297,12 +281,9 @@ function Messages({ selectedUser }) {
               </div>
             ):
             <div>
-            <div
-            className="bg-gray-100 p-4 rounded-lg  shadow-lg h-[600px] duration-300  md:h-[350px] scrollbar-none
-               overflow-y-auto"
-            ref={messagesEndRef}
-          >
-            {messages?.length === 0 ? (
+            <div className="bg-gray-100 p-4 rounded-lg  shadow-lg h-[600px] duration-300
+              md:h-[350px] scrollbar-none overflow-y-auto" ref={messagesEndRef}>
+            {FilterMessages.length === 0 ? (
               <div className="flex items-center justify-center h-64   rounded-lg">
               <div className="text-center p-4">
                 <h2 className="text-xl font-semibold text-gray-700 mb-2">
@@ -353,7 +334,7 @@ function Messages({ selectedUser }) {
                               : "flex items-center  gap-2"
                           }`}
                         >
-                          {/* Logo */}
+                          {/* Profile */}
                           <div  
                             className="flex-shrink-0"
                             onClick={()=>router.push(`/${filtUser?.username}`)}
@@ -366,7 +347,7 @@ function Messages({ selectedUser }) {
                           </div>
                           {/* Msg */}
                           <div
-                           onContextMenu={(e) => handleLongPress(e, msg.message)}
+                           onContextMenu={(e) => CopiedMessages(e, msg.message)}
                             className={`whitespace-pre-wrap break-all overflow-y-auto max-h-44  ${
                               (msg.from || msg.to) === EmailUser
                                 ? "bg-gradient-to-r from-sky-400 to-blue-500"
@@ -377,7 +358,7 @@ function Messages({ selectedUser }) {
                             
                           </div>
                           {/* Icon 3 point */}
-                          <p
+                          <div
                             onClick={() => {
                               setUMessage(msg.message);
                               setputdelete(!putdelete);
@@ -391,9 +372,10 @@ function Messages({ selectedUser }) {
                           }`}
                           >
                             <EllipsisVertical width={18} />
-                          </p>
+                          </div>
                         </div>
-                      <span
+                        {/* msg.updated */}
+                      <div
                         className={`
                           ${
                             (msg.from || msg.to) === EmailUser
@@ -403,8 +385,9 @@ function Messages({ selectedUser }) {
                       >
                         {msg.updated}
                         {/* {msg.updated && `,${msg.updated && UpdateDate},${DateUpdMsg.toLocaleTimeString()}`} */}
-                      </span>
-                      <span
+                      </div>
+                      {/* DateMsg */}
+                      <div
                         className={` flex gap-2 mb-1  ${
                           (msg.from || msg.to) === EmailUser
                             ? "justify-end mr-14 "
@@ -415,17 +398,15 @@ function Messages({ selectedUser }) {
                         <p className=" text-gray-900">
                           {DateMsg.toLocaleTimeString()}
                         </p>
-                      </span>
+                      </div>
                     </div>
                   );
                 })
             )}
           </div>
           {/* Input Messgage */}
-          <div
-            className={`bg-gray-200 p-2 mt-2 rounded-md
-                ${putdelete ? "block" : "hidden"}`}
-          >
+          <div className={`bg-gray-200 p-2 mt-2 rounded-md
+                ${putdelete ? "block" : "hidden"}`}>
             <div className="flex items-center gap-4 pr-2 ">
               <textarea
                 type="text"
@@ -458,10 +439,8 @@ function Messages({ selectedUser }) {
             </div>
           </div>
           {/* Input Messgage update Or Delete */}
-          <div
-            className={`bg-gray-200 p-2 mt-2 rounded-md
-                ${putdelete ? "hidden" : "block"}`}
-          >
+          <div className={`bg-gray-200 p-2 mt-2 rounded-md
+                ${putdelete ? "hidden" : "block"}`}>
             <div className="flex items-center gap-4 pr-2 ">
               <textarea
                 type="text"
@@ -511,6 +490,7 @@ function Messages({ selectedUser }) {
             }
           </div>
         </div>
+        {/* Emojes */}
         <div className={` absolute right-4 ${emoji ? "hidden" : "block"}`}>
           <Picker data={data} onEmojiSelect={addEmoji} maxFrequentRows={0} />
         </div>

@@ -17,6 +17,7 @@ import { MyContext } from "../Context/MyContext";
 import SignInnavbar from "./SignIn/SignInnavbar";
 import axios from "axios";
 import FriendsReq from "./Friends/FriendsReq";
+import Friendss from "./Friends/Friendss";
 
 function Navbar() {
   const { user } = useUser();
@@ -25,6 +26,7 @@ function Navbar() {
   const [FrReq, setFrReq] = useState(true);
   const router = useRouter();
   const [Adminfind, setAdminfind] = useState(false);
+  const [FR_FRREQ, setFR_FRREQ] = useState("Friend Requests");
   const {userDetails,Notification,EmailUser,Requests,messages,SERVER_URL_V} = useContext(MyContext);
 
   useEffect(() => {
@@ -54,7 +56,16 @@ function Navbar() {
     }
   };
   
-
+  const FRS_FRREQ = () => {
+    switch (FR_FRREQ) {
+      case "Friend Requests":
+        return <FriendsReq />;
+      case "Friends":
+        return <Friendss />;
+      default:
+        return null; // Handle the default case
+    }
+  };
   return (
     <div>
       <nav className=" border-b drop-shadow-2xl bg-white ">
@@ -193,7 +204,7 @@ function Navbar() {
                 onClick={() => {
                   setSetting(!setting);
                 }}
-                className="bg-gray-700 py-2 border-b flex items-center justify-center border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
+                className="bg-gray-700 hidden py-2 border-b fle items-center justify-center border-gray-600 hover:bg-gray-600 transition duration-300 rounded-sm hover:scale-105 text-center mb-2"
               >
             <div className="flex items-center gap-1"><Users /> Friends</div>
               </Link>
@@ -322,16 +333,18 @@ function Navbar() {
       );
     })
   ) : (
-    <p className="text-center text-sm text-gray-400">No notifications</p>
+    <p className="text-center text-sm text-gray-400">No Messages</p>
   )}
 </nav>
       {/* FrReq */}
       <nav
-  className={`overflow-hidden ${!FrReq && "ring-2"} transition-all   duration-500 text-white bg-gray-900 rounded-md md:w-[460px]  shadow-lg    md:right-2  absolute ${
-    FrReq ? "max-h-0" : "max-h-96 p-4"
-  }`}
->
-    <FriendsReq />
+  className={`overflow-hidden ${!FrReq && "ring-2"} transition-all    duration-500 text-white bg-gray-900 rounded-md md:w-[460px]  shadow-lg right-0.5    md:right-2  absolute 
+    ${FrReq ? "max-h-0" : "max-h-96 p-4"}`}>
+      <div className="flex items-center justify-around">
+        <button onClick={()=>{setFR_FRREQ("Friend Requests")}} className={`${FR_FRREQ === "Friend Requests" && "ring-2"} p-2 bg-gray-800 rounded-lg mb-4`}>Friend Requests</button>
+        <button onClick={()=>{setFR_FRREQ("Friends")}} className={`${FR_FRREQ === "Friends" && "ring-2"} p-2 bg-gray-800 rounded-lg mb-4`}>Friends</button>
+      </div>
+      {FRS_FRREQ()}
 </nav>
     </div>
   );
