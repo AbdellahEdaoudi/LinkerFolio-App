@@ -205,8 +205,8 @@ function ProfilePage() {
                     )}
                   </p>
                   {UserF.phoneNumber && (
-                    <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
-                      <Phone width={18} style={{ color: "blue" }} />
+                    <p className="text-green-800 flex items-center justify-center md:justify-start gap-2 mt-1">
+                      <Phone width={18}  />
                       {UserF.phoneNumber}
                     </p>
                   )}

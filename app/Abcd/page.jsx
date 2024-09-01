@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
-function FriendsReq() {
+function Page() {
     const { SERVER_URL_V, SERVER_URL, EmailUser, userDetails } = useContext(MyContext);
     const [socket, setSocket] = useState(null);
     const [friendRequests, setFriendRequests] = useState([]);
@@ -85,7 +85,7 @@ function FriendsReq() {
 
         setLoadingStatus((prev) => ({ ...prev, [requestId]: { update: true } }));
         try {
-            const response = await axios.put(`${SERVER_URL_V}/friend/${requestId}`, { status: 'accept' });
+            const response = await axios.put(`${SERVER_URL_V}/friend/${requestId}`, { status: 'accepted' });
             setRequests((prev) => prev.filter((req) => req._id !== requestId));
             socket.emit('updateFriendRequest', response.data.data);
             toast('Request accepted successfully!');
@@ -116,8 +116,8 @@ function FriendsReq() {
     };
 
     return (
-        <div className='overflow-y-auto max-h-96'>
-            <div className='flex items-center justify-between  bg-gray-900 pb-4 mb-2 w-full z-50'>
+        <div>
+            <div className='flex items-center justify-between sticky top-0 bg-gray-900 pb-4 mb-2 w-full z-50'>
                 <h1 className="text-sm font-bold">Friend Requests</h1>
                 <input
                     type="text"
@@ -138,37 +138,7 @@ function FriendsReq() {
                     const filtUser = userDetails.filter((user) => user.email === mp.from);
                     return (
                         <div key={i}>
-                            {!filtUser ? (
-                              <div className='  rounded-md mb-2 w-full  flex-1 '>
-                              {[1,2,3,4,5].map((mp,i)=>{
-                              return(
-                                <div key={i} className='p-3 hover:scale-95 duration-300 bg-gray-800 w-full rounded-md mb-2 flex justify-between gap-5'>
-                                  <div className='flex items-center gap-1'>
-                                    <div className='w-9 h-9 bg-gray-400 rounded-full animate-pulse'></div>
-                                    <div className='space-y-1'>
-                                      <p className='w-32 h-3 rounded-md bg-gray-400 animate-pulse '></p>
-                                      <p className='w-32 h-3 rounded-md bg-gray-400 animate-pulse '></p>
-                                    </div>
-                                  </div>
-                                  <div className="flex gap-2 mr-4 ">
-                                        <button
-                                          className="bg-green-600 flex-shrink-0 text-xs hover:scale-95  rounded-lg px-1  duration-200"
-                                        >Accepte
-                                        </button>
-                                        <button
-                                          className=" bg-red-600  text-xs hover:scale-95 rounded-lg px-1 duration-200"
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                </div>
-                              )
-                            })}
-                            </div>
-                            ) : filtUser.length === 0 ? (
-                              <p className="text-xl flex items-center justify-center">No pending friend requests</p>
-                            ) : (
-                              <div>
+                            <div>
                                 {filtUser.map((user, i) => {
                                     const highlightedName = highlightText(user?.fullname);
                                     const highlightedEmail = highlightText(user?.email);
@@ -219,7 +189,6 @@ function FriendsReq() {
                                     );
                                 })}
                             </div>
-                            )}
                         </div>
                     );
                 })}
@@ -227,4 +196,4 @@ function FriendsReq() {
     );
 }
 
-export default FriendsReq;
+export default Page;

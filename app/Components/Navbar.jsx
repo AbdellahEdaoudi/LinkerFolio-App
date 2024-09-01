@@ -16,11 +16,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MyContext } from "../Context/MyContext";
 import SignInnavbar from "./SignIn/SignInnavbar";
 import axios from "axios";
+import FriendsReq from "./Friends/FriendsReq";
 
 function Navbar() {
   const { user } = useUser();
   const [setting, setSetting] = useState(true);
   const [notification, setNotification] = useState(true);
+  const [FrReq, setFrReq] = useState(true);
   const router = useRouter();
   const [Adminfind, setAdminfind] = useState(false);
   const {userDetails,Notification,EmailUser,Requests,messages,SERVER_URL_V} = useContext(MyContext);
@@ -100,6 +102,7 @@ function Navbar() {
                       <div onClick={() => {
                         setNotification(!notification);
                         setSetting(true)
+                        setFrReq(true)
                       }} className="relative flex items-center">
                       <span 
                       className="text-black cursor-pointer  relative">
@@ -114,7 +117,7 @@ function Navbar() {
                       </div>
                        {/* Icon FriendReq */}
                        <div  onClick={() => {
-                          router.push('/Friendrequests');
+                         setFrReq(!FrReq)
                           setSetting(true),
                           setNotification(true)
                         }} className="relative flex items-center">
@@ -133,7 +136,8 @@ function Navbar() {
                       <span
                         onClick={() => {
                           setSetting(!setting);
-                          setNotification(true)
+                          setNotification(true);
+                          setFrReq(true)
                         }}
                         className="text-gray-800 hover:scale-105 duration-300 cursor-pointer"
                       >
@@ -320,6 +324,14 @@ function Navbar() {
   ) : (
     <p className="text-center text-sm text-gray-400">No notifications</p>
   )}
+</nav>
+      {/* FrReq */}
+      <nav
+  className={`overflow-hidden ${!FrReq && "ring-2"} transition-all   duration-500 text-white bg-gray-900 rounded-md md:w-[460px]  shadow-lg    md:right-2  absolute ${
+    FrReq ? "max-h-0" : "max-h-96 p-4"
+  }`}
+>
+    <FriendsReq />
 </nav>
     </div>
   );

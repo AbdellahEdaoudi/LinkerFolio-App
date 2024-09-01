@@ -95,6 +95,7 @@ export const MyProvider = ({ children }) => {
         console.error("Error fetching user details:", error);
       });
   }, [SERVER_URL_V]);
+  
   // getMessages
   useEffect(() => {
     const getMessages = async () => {
@@ -147,9 +148,14 @@ export const MyProvider = ({ children }) => {
   }, {});
 
 const Notification = Object.values(latestNotifications);
-  const Requests  = friendRequests.filter(
-    (fl)=> fl.status === "pending" && fl.to === EmailUser
-  )
+const Requests = friendRequests
+.filter(fl => fl.status === "pending" && fl.to === EmailUser) 
+.filter((fl, index, self) =>
+  index === self.findIndex((t) => (
+    t._id === fl._id 
+  ))
+);
+
   useEffect(() => {
     if (Notification.length > previousNotificationCount) {
       if (audioRef.current) {

@@ -17,10 +17,10 @@ import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
 import { CustomLinkify } from "./CustomLinkify";
 import InputLoadMessages from "./Loading/InputLoadMessages";
-import { toast, ToastContainer } from "react-toastify";
+import LMessages from "./Loading/LoadChatPage/LMessages";
 
 function Messages({ selectedUser }) {
-  const {Toast } = useToast();
+  const {toast} = useToast();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
@@ -148,7 +148,7 @@ function Messages({ selectedUser }) {
       };
       const response = await axios.post(`${SERVER_URL}/messages`, data);
       socket.emit("sendMessage", response.data);
-      Toast({ description: "Your message has been sent." });
+      toast({ description: "Your message has been sent." });
       setMessageInput("");
       setEmoji(true);
     } catch (error) {
@@ -169,7 +169,7 @@ function Messages({ selectedUser }) {
       setEmoji(true);
     } catch (error) {
       console.error("Error deleting message:", error);
-      Toast({
+      toast({
         description: "Error deleting message. Please try again later.",
         status: "error",
       });
@@ -199,7 +199,7 @@ function Messages({ selectedUser }) {
       setEmoji(true);
     } catch (error) {
       console.error("Error updating message:", error);
-      Toast({
+      toast({
         description: "Error updating message. Please try again later.",
         status: "error",
       });
@@ -302,7 +302,7 @@ function Messages({ selectedUser }) {
                overflow-y-auto"
             ref={messagesEndRef}
           >
-            {messages.length === 0 ? (
+            {messages?.length === 0 ? (
               <div className="flex items-center justify-center h-64   rounded-lg">
               <div className="text-center p-4">
                 <h2 className="text-xl font-semibold text-gray-700 mb-2">
