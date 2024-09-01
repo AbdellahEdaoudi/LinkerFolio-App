@@ -18,12 +18,12 @@ export const MyProvider = ({ children }) => {
   const [friendRequests, setFriendRequests] = useState([]);
 
 
-  const CLIENT_URL = "http://localhost:3000";
-  const SERVER_URL = "http://localhost:9999" ;
-  const SERVER_URL_V = "http://localhost:9999" ;
-  //  const CLIENT_URL = "https://linkerfolio.vercel.app";
-  //  const SERVER_URL = "https://socketserver-muhp.onrender.com";
-  //  const SERVER_URL_V = "https://saas-app-api.vercel.app";
+  // const CLIENT_URL = "http://localhost:3000";
+  // const SERVER_URL = "http://localhost:9999" ;
+  // const SERVER_URL_V = "http://localhost:9999" ;
+   const CLIENT_URL = "https://linkerfolio.vercel.app";
+   const SERVER_URL = "https://socketserver-muhp.onrender.com";
+   const SERVER_URL_V = "https://saas-app-api.vercel.app";
    
    const audioRef = useRef(null);
   
