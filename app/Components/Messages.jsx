@@ -203,7 +203,7 @@ function Messages({ selectedUser }) {
     }
   };
   
-  if (!friendRequests || !EmailUser || !messages) {
+  if (!selectedUser ||!friendRequests || !EmailUser || !messages) {
     return <LMessages />;
   }
   const FilterMessages = messages.filter((fl) => {
