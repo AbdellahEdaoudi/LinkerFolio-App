@@ -14,6 +14,7 @@ import { MyContext } from "../Context/MyContext";
 import { useRouter } from "next/navigation";
 import { CustomLinkify } from "./CustomLinkify";
 import InputLoadMessages from "./Loading/InputLoadMessages";
+import LMessages from "./Loading/LoadChatPage/LMessages";
 
 function Messages({ selectedUser }) {
   const {toast} = useToast();
@@ -202,8 +203,8 @@ function Messages({ selectedUser }) {
     }
   };
   
-  if (!selectedUser) {
-    return <div></div>;
+  if (!friendRequests || !EmailUser || !messages) {
+    return <LMessages />;
   }
   const FilterMessages = messages.filter((fl) => {
     return (

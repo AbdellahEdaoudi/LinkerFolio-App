@@ -113,7 +113,7 @@ function Navbar() {
             </button>
             <input
               type="search"
-              placeholder="search"
+              placeholder="Search"
               onChange={(e)=>{setSearch(e.target.value)}}
               className="bg-gray-100 text-black p-2 px-2 rounded-lg focus:outline-none  focus:ring-blue-500 transition duration-300 w-full"
             />
