@@ -2,17 +2,15 @@
 import {
   SignedIn,
   SignedOut,
-  SignInButton,
   SignOutButton,
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import {Bell, BookUser, LogOut, MessageSquare, MessagesSquare, NotebookText, Settings, Shield, Users } from "lucide-react";
+import {Bell, BookUser, LogOut, MessageSquare, MessagesSquare, NotebookText, Search, Settings, Shield, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { MyContext } from "../Context/MyContext";
 import SignInnavbar from "./SignIn/SignInnavbar";
 import axios from "axios";
@@ -28,6 +26,7 @@ function Navbar() {
   const [Adminfind, setAdminfind] = useState(false);
   const [FR_FRREQ, setFR_FRREQ] = useState("Friend Requests");
   const {userDetails,Notification,EmailUser,Requests,messages,SERVER_URL_V} = useContext(MyContext);
+  const [search,setSearch]=useState("");
 
   useEffect(() => {
     const User = userDetails.find(user => user.email === EmailUser);
@@ -66,6 +65,17 @@ function Navbar() {
         return null; // Handle the default case
     }
   };
+  const filteredUserDetails = userDetails.filter(user => 
+    user.fullname.toLowerCase().includes(search.toLowerCase()) ||
+    user.email.toLowerCase().includes(search.toLowerCase()) ||
+    user.category.toLowerCase().includes(search.toLowerCase()) ||
+    user.username.toLowerCase().includes(search.toLowerCase()) 
+  );
+  const highlightText = (text) => {
+    if (!search.trim()) return text;
+    const regex = new RegExp(`(${search.trim()})`, "gi");
+    return text.replace(regex, "<b>$1</b>");
+  };
   return (
     <div>
       <nav className=" border-b drop-shadow-2xl bg-white ">
@@ -93,6 +103,21 @@ function Navbar() {
               height={15}
             />
           </div>
+          {/* SEARCHE */}
+          <div className="flex items-center bg-gray-100 border border-gray-300 rounded-lg shadow-m w-96 max-w-md">
+            <button className="p-2 text-gray-500 hover:text-black">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z" />
+              </svg>
+            </button>
+            <input
+              type="search"
+              placeholder="search"
+              onChange={(e)=>{setSearch(e.target.value)}}
+              className="bg-gray-100 text-black p-2 px-2 rounded-lg focus:outline-none  focus:ring-blue-500 transition duration-300 w-full"
+            />
+          </div>
+
             <SignedIn>
               {user ? (
                 filt.map((userr, i) => (
@@ -112,6 +137,7 @@ function Navbar() {
                         {/* Icon Notification */}
                       <div onClick={() => {
                         setNotification(!notification);
+                        setSearch("")
                         setSetting(true)
                         setFrReq(true)
                       }} className="relative flex items-center">
@@ -128,9 +154,10 @@ function Navbar() {
                       </div>
                        {/* Icon FriendReq */}
                        <div  onClick={() => {
-                         setFrReq(!FrReq)
-                          setSetting(true),
-                          setNotification(true)
+                         setFrReq(!FrReq);
+                          setSearch("");
+                          setSetting(true);
+                          setNotification(true);
                         }} className="relative flex items-center">
                       <span 
                       className="text-black cursor-pointer relative">
@@ -147,6 +174,7 @@ function Navbar() {
                       <span
                         onClick={() => {
                           setSetting(!setting);
+                          setSearch("")
                           setNotification(true);
                           setFrReq(true)
                         }}
@@ -346,6 +374,44 @@ function Navbar() {
       </div>
       {FRS_FRREQ()}
 </nav>
+       {/* Searche */}
+        <nav onClick={()=>{setSearch('')}} className={`fixed  w-full flex justify-center ${search === "" ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"} transition-opacity duration-500 ease-in-out`}>
+          <div className={`bg-black opacity-70 w-full  min-h-screen md:min-h-[520px]  md:h-96 rounded-b-md shadow-lg ${search === "" ? "max-h-0" : "max-h-96"} transition-all duration-500 ease-in-out`}>
+          </div>
+        </nav>
+        <div className={`fixed top-20 left-1/2 w-full transform -translate-x-1/2 bg-white rounded-lg shadow-lg ${search === "" ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"} transition-opacity duration-500 ease-in-out max-w-lg max-h-72 overflow-y-auto`}>
+  <div className="p-3">
+    {filteredUserDetails.length > 0 ? (
+      <div className="space-y-2">
+        {filteredUserDetails.map(user => (
+          <div onClick={()=>{setSearch('');router.push(`/${user.username}`)}} key={user._id} className="flex items-center border hover:scale-95 duration-300 bg-gray-100 cursor-pointer p-2 rounded-lg shadow-sm hover:shadow-md ring-1">
+            <Image width={50} height={50} src={user.urlimage} alt={user.fullname} className="rounded-full mr-2 border-2 border-gray-200"/>
+            <div className="flex-1">
+              <p className="text-black text-xs"
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(`@${user.username}`),
+                }}>
+              </p>
+              <p className="text text-xs"
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(user.email),
+                }}>
+              </p>
+              <p className="text text-xs"
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(user.category),
+                }}>
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="p-3 text-center text-gray-500">No users found</div>
+    )}
+  </div>
+</div>
+
     </div>
   );
 }
