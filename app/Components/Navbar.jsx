@@ -104,8 +104,9 @@ function Navbar() {
             />
           </div>
           {/* SEARCHE */}
+          <div className="md:block hidden">
           <div className="flex items-center bg-gray-100 border border-gray-300 rounded-lg shadow-m w-96 max-w-md">
-            <button className="p-2 text-gray-500 hover:text-black">
+            <button className=" p-2 text-gray-500 hover:text-black">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z" />
               </svg>
@@ -116,6 +117,7 @@ function Navbar() {
               onChange={(e)=>{setSearch(e.target.value)}}
               className="bg-gray-100 text-black p-2 px-2 rounded-lg focus:outline-none  focus:ring-blue-500 transition duration-300 w-full"
             />
+          </div>
           </div>
 
             <SignedIn>

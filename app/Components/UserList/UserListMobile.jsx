@@ -134,6 +134,8 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
     return () => clearTimeout(timeout);
   }, [messages]);
 
+  
+
   return (
     <div>
       <div className="bg-gray-800 w-screen text-white p-4 overflow-y-auto h-[800px]">
@@ -227,7 +229,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         }
                         className="flex flex-col"
                       >
-                        <div className="cursor-pointer p-4 hover:bg-gray-200">
+                        <div className="cursor-pointer p-4 ">
                           <p className="text-lg">{User.fullname}</p>
                           <p className="text-[10px] text-gray-500">
                             {User.email}
