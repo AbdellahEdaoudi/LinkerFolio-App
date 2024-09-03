@@ -43,9 +43,10 @@ function GetUserByUsername({ params }) {
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL_V,language, setLanguage,userLinks,EmailUser}=useContext(MyContext);
+  const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser}=useContext(MyContext);
   const [translatedDetails, setTranslatedDetails] = useState(null);
   const [loading, setLoading] = useState(true); 
+  const [language, setLanguage] = useState('');
   
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${path}`;
@@ -279,7 +280,7 @@ function GetUserByUsername({ params }) {
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
         {/* Image Profile and info user */}
         <div className={`${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md`}>
-          <div>
+          <div className={`${language === "ar" ? 'ml-4' : ''}`}>
             <AlertDialog>
               <AlertDialogTrigger>
                 {!userDetailsG.urlimage ? (
@@ -333,24 +334,27 @@ function GetUserByUsername({ params }) {
               </span>{" "}
               {userDetailsG.email}
             </p>
-            <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 md:flex items-center md:justify-start justify-center   md:gap-2 mt-1`}>
-              <span className="text-green-900">@ {userDetailsG.username}</span>
+            <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex items-center gap-2 md:justify-start justify-center   md:gap-2 mt-1`}>
+              <span className={`flex gap-1 ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} text-green-900`}>
+                <span>@</span>
+                <span>{userDetailsG.username}</span>
+              </span>
               {userDetailsG.country && (
-                <span className="flex gap-1 justify-center">
+                <span className={`flex ${language === "ar" ? 'flex-row-reverse' : 'flex-row'}  flex-row gap-1 justify-center`}>
                   <MapPin width={18} style={{ color: "red" }} />
                   {`${translatedDetails ? translatedDetails.country : userDetailsG.country}`}
                 </span>
               )}
             </p>
             {userDetailsG.phoneNumber && (
-              <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1`}>
+              <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} items-center justify-center md:justify-start gap-2 mt-1`}>
                 <Phone width={18} style={{ color: "green" }} />
                 {userDetailsG.phoneNumber}
               </p>
             )}
 
             {/* Business Links */}
-            <p>
+            <p className={`${language === "ar" && "text-right"}`}>
               <UserLinks language={language} setLanguage={setLanguage} emailuser={emailuser} />
             </p>
             {/* Social Media */}
@@ -445,8 +449,8 @@ function GetUserByUsername({ params }) {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">
-                        {dt.name}
+                      <AlertDialogTitle className={` bg-gray-200  p-2 border rounded-md`}>
+                        <div className={`${language === "ar" && "text-right pr-1"} `}>{dt.name}</div>
                       </AlertDialogTitle>
                       <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                         {ListDisk(dt.data)}

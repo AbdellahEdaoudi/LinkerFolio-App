@@ -37,6 +37,12 @@ function Users() {
     }
   };
 
+  const highlightText = (text) => {
+    if (!searchQuery.trim()) return text;
+    const regex = new RegExp(`(${searchQuery.trim()})`, "gi");
+    return text.replace(regex, "<mark>$1</mark>");
+  };
+
   return (
     <div className="bg-gray-100">
       <div className="flex justify-between items-center mb-4">
@@ -59,7 +65,7 @@ function Users() {
         />
       </div>
 
-      <div className="overflow-y-auto h-full">
+      <div className="overflow-y-auto max-h-[700px] md:max-h-96 h-full">
         {filteredUsers.length > 0 ? (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredUsers.map(user => (
@@ -74,10 +80,18 @@ function Users() {
                     className="w-14 cursor-pointer hover:scale-105 duration-300 h-14 rounded-full object-cover mr-3"
                   />
                   <div>
-                    <h3 className="text-md font-semibold text-gray-900">{user.fullname}</h3>
-                    <p className="text-gray-600 text-[13px]">{user.email}</p>
-                    <p className="text-sm text-gray-500">@ {user.username}</p>
-                    <p className="text-sm text-gray-500">{user.phoneNumber}</p>
+                    <h3 className="text-md font-semibold text-gray-900">
+                      <span dangerouslySetInnerHTML={{ __html: highlightText(user.fullname) }} />
+                    </h3>
+                    <p className="text-gray-600 text-[13px]">
+                      <span dangerouslySetInnerHTML={{ __html: highlightText(user.email) }} />
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      <span dangerouslySetInnerHTML={{ __html: highlightText(`@${user.username}`) }} />
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      <span dangerouslySetInnerHTML={{ __html: highlightText(user.phoneNumber) }} />
+                    </p>
                   </div>
                 </div>
                 <div className="p-3 text-right">

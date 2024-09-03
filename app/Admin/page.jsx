@@ -34,8 +34,8 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      <aside className=" bg-gray-800 h-screen p-4 text-white">
+    <div className=" bg-gray-100 flex">
+      <aside className=" bg-gray-800 h-screen md:h-[517px] p-4 text-white">
         <div className="flex items-center gap-2 mb-6">
           <LayoutDashboard size={24} />
           <p className="text-lg font-semibold md:block hidden">Dashboard</p>
