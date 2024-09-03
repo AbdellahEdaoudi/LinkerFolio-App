@@ -45,7 +45,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
       }
     }
   }, [userDetails, EmailUser, userDetailsG]);
-
+ 
   useEffect(() => {
     if (friendRequests && Array.isArray(friendRequests)) {
       const userF = friendRequests.find(
@@ -58,7 +58,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
         setTof(userF.to);
         setfriendId(userF._id);
       } else {
-        console.log("User not found in friendRequests");
+        // console.log("User not found in friendRequests");
       }
     }
   }, [friendRequests, EmailUser, emailuser]);

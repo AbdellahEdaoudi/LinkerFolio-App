@@ -41,11 +41,10 @@ function GetUserByUsername({ params }) {
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const { CLIENT_URL, SERVER_URL_V, userLinks, EmailUser } =
-    useContext(MyContext);
-
+  const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser}=useContext(MyContext);
+  
   const CopyLinkProfil = () => {
-    const urlToCopy = `${CLIENT_URL}/${userDetailsG.username}`;
+    const urlToCopy = `${CLIENT_URL}/${path}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
       setCopied(true);
       toast("Copied successfully");
