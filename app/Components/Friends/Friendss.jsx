@@ -109,10 +109,12 @@ return (
                                                     <p className='w-32 h-3 rounded-md bg-gray-400 animate-pulse'></p>
                                                 </div>
                                             </div>
-                                            <div className="flex gap-2 mr-4">
-                                                <button className="bg-green-600 flex-shrink-0 text-xs hover:scale-95 rounded-lg px-1 duration-200">Accept</button>
-                                                <button className="bg-red-600 text-xs hover:scale-95 rounded-lg px-1 duration-200">Delete</button>
-                                            </div>
+                                            <div className="flex text-xs bg-red-600 py-1 px-1 rounded-lg items-center gap-1 justify-center">
+                                                        <span>
+                                                            <UserX />
+                                                        </span>
+                                                        <span>Unfriend</span>
+                                                    </div>
                                         </div>
                                     ))}
             </div>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MyContext } from "../../Context/MyContext";
 import io from "socket.io-client";
+import DOMPurify from 'dompurify';
 
 function UserListMobile({ selectedUser, setSelectedUser }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -134,7 +135,12 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
     return () => clearTimeout(timeout);
   }, [messages]);
 
-  
+  const safeHighlightText = (text) => {
+    if (!searchQuery.trim()) return text;
+    const regex = new RegExp(`(${searchQuery.trim()})`, "gi");
+    const highlightedText = text.replace(regex, "<b>$1</b>");
+    return DOMPurify.sanitize(highlightedText);
+  };
 
   return (
     <div>
@@ -152,20 +158,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
           {searchQuery === "" ? "Friends" : "Users List"}
         </div>
         <div className=" overflow-y-auto  scrollbar-none ">
-          {!userDetails ? (
-            <div className="space-y-4">
-              {lodd.map((l, i) => (
-                <div key={i} className="flex items-center space-x-4 ">
-                  <Skeleton className="h-12 w-12 rounded-full" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[310px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div>
+        <div>
               {/* Users List */}
               <div className="overflow-y-auto   scrollbar-none">
                 {userDetails
@@ -204,7 +197,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                       }}
                       className={`${
                         searchQuery === "" ? "hidden" : ""
-                      } flex items-center  pl-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                      } flex items-center   pl-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
                         selectedUser && selectedUser.email === User.email
                           ? "bg-gray-700"
                           : ""
@@ -214,7 +207,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         onClick={() => {
                           router.push(`/${User.username}`);
                         }}
-                        className="relative w-12 h-12"
+                        className="relative w-12 h-12 ml-1"
                       >
                         <Image
                           src={User.urlimage}
@@ -227,13 +220,20 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         onClick={() =>
                           router.push(`/message/to/${User.username}`)
                         }
-                        className="flex flex-col"
+                        className="flex flex-col "
                       >
-                        <div className="cursor-pointer p-4 ">
-                          <p className="text-lg">{User.fullname}</p>
-                          <p className="text-[10px] text-gray-500">
-                            {User.email}
-                          </p>
+                        <div className="cursor-pointer p-3 ">
+                        <p
+                        className="text-lg"
+                        dangerouslySetInnerHTML={{
+                          __html: `${safeHighlightText(User.fullname)}`,
+                        }}
+                      ></p>
+                        <p className="text-[10px] text-gray-500"
+                        dangerouslySetInnerHTML={{
+                          __html: `${safeHighlightText(User.email)}`,
+                        }}>
+                        </p>
                         </div>
                       </div>
                     </div>
@@ -290,7 +290,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         }}
                         className={`${
                           searchQuery === "" ? "" : "hidden"
-                        } flex relative items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+                        } flex relative items-center gap-4 p-2 mb-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
                           selectedUser && selectedUser.email === User.email
                             ? "bg-gray-700"
                             : ""
@@ -298,7 +298,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                       >
                         <Link
                           href={`/${User.username}`}
-                          className="flex-shrink-0 relative w-12 h-12"
+                          className="flex-shrink-0 relative w-12 h-12 "
                         >
                           <Image
                             src={User.urlimage}
@@ -343,7 +343,6 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                     })}
               </div>
             </div>
-          )}
         </div>
       </div>
     </div>

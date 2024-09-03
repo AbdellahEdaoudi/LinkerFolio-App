@@ -16,6 +16,9 @@ import SignInnavbar from "./SignIn/SignInnavbar";
 import axios from "axios";
 import FriendsReq from "./Friends/FriendsReq";
 import Friendss from "./Friends/Friendss";
+import DOMPurify from 'dompurify';
+import Sent from "./Friends/Sent";
+
 
 function Navbar() {
   const { user } = useUser();
@@ -27,7 +30,7 @@ function Navbar() {
   const [FR_FRREQ, setFR_FRREQ] = useState("Friend Requests");
   const {userDetails,Notification,EmailUser,Requests,messages,SERVER_URL_V} = useContext(MyContext);
   const [search,setSearch]=useState("");
-
+  const [shuffledUserDetails, setShuffledUserDetails] = useState([]);
   useEffect(() => {
     const User = userDetails.find(user => user.email === EmailUser);
     if (User && User.email === "abdellahedaoudi80@gmail.com") {
@@ -61,6 +64,8 @@ function Navbar() {
         return <FriendsReq />;
       case "Friends":
         return <Friendss />;
+        case "Sent":
+          return <Sent />;
       default:
         return null; // Handle the default case
     }
@@ -71,10 +76,32 @@ function Navbar() {
     user.category.toLowerCase().includes(search.toLowerCase()) ||
     user.username.toLowerCase().includes(search.toLowerCase()) 
   );
-  const highlightText = (text) => {
+  useEffect(() => {
+    // Shuffle filteredUserDetails whenever search changes
+    const shuffleArray = (array) => {
+      let currentIndex = array.length, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (currentIndex !== 0) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      }
+
+      return array;
+    };
+
+    setShuffledUserDetails(shuffleArray([...filteredUserDetails]));
+  }, [search]);
+  const safeHighlightText = (text) => {
     if (!search.trim()) return text;
     const regex = new RegExp(`(${search.trim()})`, "gi");
-    return text.replace(regex, "<b>$1</b>");
+    const highlightedText = text.replace(regex, "<b>$1</b>");
+    return DOMPurify.sanitize(highlightedText);
   };
   return (
     <div>
@@ -367,6 +394,7 @@ function Navbar() {
       <div className="flex items-center justify-around">
         <button onClick={()=>{setFR_FRREQ("Friend Requests")}} className={`${FR_FRREQ === "Friend Requests" && "ring-2"} p-2 bg-gray-800 rounded-lg mb-4`}>Friend Requests</button>
         <button onClick={()=>{setFR_FRREQ("Friends")}} className={`${FR_FRREQ === "Friends" && "ring-2"} p-2 bg-gray-800 rounded-lg mb-4`}>Friends</button>
+        <button onClick={()=>{setFR_FRREQ("Sent")}} className={`${FR_FRREQ === "Sent" && "ring-2"} p-2 bg-gray-800 rounded-lg mb-4`}>Sent</button>
       </div>
       {FRS_FRREQ()}
 </nav>
@@ -375,29 +403,34 @@ function Navbar() {
           <div className={`bg-black opacity-70 w-full  min-h-screen md:min-h-[520px]  md:h-96 rounded-b-md shadow-lg ${search === "" ? "max-h-0" : "max-h-96"} transition-all duration-500 ease-in-out`}>
           </div>
         </nav>
-        <div className={`fixed top-20 left-1/2 w-full transform -translate-x-1/2 bg-white rounded-lg shadow-lg ${search === "" ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"} transition-opacity duration-500 ease-in-out max-w-lg max-h-72 overflow-y-auto`}>
-  <div className="p-3">
-    {filteredUserDetails.length > 0 ? (
+        
+<div className={`fixed top-20 left-1/2 w-full transform -translate-x-1/2 bg-white rounded-lg shadow-lg ${search === "" ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100 pointer-events-auto"} transition-all duration-500 ease-in-out max-w-lg max-h-72 overflow-y-auto`}>
+  <div className="p-3"> 
+    {shuffledUserDetails.length > 0 ? (
       <div className="space-y-2">
-        {filteredUserDetails.map(user => (
-          <div onClick={()=>{setSearch('');router.push(`/${user.username}`)}} key={user._id} className="flex items-center border hover:scale-95 duration-300 bg-gray-100 cursor-pointer p-2 rounded-lg shadow-sm hover:shadow-md ring-1">
+        {shuffledUserDetails.map(user => (
+          <div onClick={()=>{setSearch("");router.push(`/${user.username}`)}} key={user._id} className="flex items-center border hover:scale-95 duration-300 bg-gray-100 cursor-pointer p-2 rounded-lg shadow-sm hover:shadow-md ring-1">
             <Image width={50} height={50} src={user.urlimage} alt={user.fullname} className="rounded-full mr-2 border-2 border-gray-200"/>
             <div className="flex-1">
-              <p className="text-black text-xs"
-                dangerouslySetInnerHTML={{
-                  __html: highlightText(`@${user.username}`),
-                }}>
-              </p>
-              <p className="text text-xs"
-                dangerouslySetInnerHTML={{
-                  __html: highlightText(user.email),
-                }}>
-              </p>
-              <p className="text text-xs"
-                dangerouslySetInnerHTML={{
-                  __html: highlightText(user.category),
-                }}>
-              </p>
+              <p
+               className="text-black text-xs"
+               dangerouslySetInnerHTML={{
+                 __html: `@${safeHighlightText(user.username)}`,
+               }}
+             ></p>
+             <p
+               className="text text-xs"
+               dangerouslySetInnerHTML={{
+                 __html: safeHighlightText(user.email),
+               }}
+             ></p>
+             <p
+               className="text text-xs"
+               dangerouslySetInnerHTML={{
+                 __html: safeHighlightText(user.category),
+               }}
+             ></p>
+             
             </div>
           </div>
         ))}

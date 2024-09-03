@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../../Context/MyContext";
 import io from "socket.io-client";
+import DOMPurify from 'dompurify';
 
 function UserList({ selectedUser, setSelectedUser }) {
   const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL}=useContext(MyContext);
@@ -11,6 +12,7 @@ function UserList({ selectedUser, setSelectedUser }) {
   const [socket, setSocket] = useState(null);
   const [searchQuery,setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
+  
   
   // getMessages
   useEffect(() => {
@@ -124,6 +126,12 @@ function UserList({ selectedUser, setSelectedUser }) {
           .toLowerCase()
           .includes(searchQuery.toLowerCase())
     )
+    const safeHighlightText = (text) => {
+      if (!searchQuery.trim()) return text;
+      const regex = new RegExp(`(${searchQuery.trim()})`, "gi");
+      const highlightedText = text.replace(regex, "<b>$1</b>");
+      return DOMPurify.sanitize(highlightedText);
+    };
 
   return (
     <div>
@@ -180,9 +188,16 @@ function UserList({ selectedUser, setSelectedUser }) {
                         </div>
                       </div>
                       <div className="flex flex-col">
-                        <p className="text-lg">{User.fullname}</p>
-                        <p className="text-[10px] text-gray-500">
-                          {User.email}
+                      <p
+                        className="text-lg"
+                        dangerouslySetInnerHTML={{
+                          __html: `${safeHighlightText(User.fullname)}`,
+                        }}
+                      ></p>
+                        <p className="text-[10px] text-gray-500"
+                        dangerouslySetInnerHTML={{
+                          __html: `${safeHighlightText(User.email)}`,
+                        }}>
                         </p>
                       </div>
                     </div>
