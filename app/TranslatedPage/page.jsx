@@ -7,8 +7,7 @@ function TranslatedPage() {
   const [language, setLanguage] = useState(''); // Default language
   const [translatedDetails, setTranslatedDetails] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
-  const SERVER_URL_V = 'http://localhost:9999';
-  const TRANSLATE_API_URL = 'http://localhost:9999/translate'; // Updated URL
+  const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser}=useContext(MyContext);
 
   // Fetch user details
   useEffect(() => {
@@ -41,7 +40,7 @@ function TranslatedPage() {
   // Translate content
   const translateContent = async (content, lang) => {
     try {
-      const response = await axios.post(TRANSLATE_API_URL, {
+      const response = await axios.post(`${SERVER_URL_V}/translate`, {
         textObject: content,
         to: lang
       });
@@ -51,10 +50,6 @@ function TranslatedPage() {
     }
   };
 
-  // Handle language change
-  const handleLanguageChange = (event) => {
-    setLanguage(event.target.value);
-  };
 
   return (
     <div className='bg-gray-50 p-6 rounded-lg shadow-lg max-w-3xl mx-auto'>
@@ -67,7 +62,7 @@ function TranslatedPage() {
         className='bg-white border border-gray-300 rounded-md p-2 text-lg mb-6 w-full'
         id="language-select"
         value={language}
-        onChange={handleLanguageChange}
+        onChange={(e)=>{setLanguage(e.target.value);}}
       >
         <option value="en">English</option>
         <option value="es">Spanish</option>

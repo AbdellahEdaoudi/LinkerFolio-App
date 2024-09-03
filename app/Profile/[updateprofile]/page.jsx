@@ -20,7 +20,7 @@ import { MyContext } from "@/app/Context/MyContext";
 import UpdatePLoading from "@/app/Components/Loading/UpdatePLoading";
 function NameUser({ params }) {
   const { user } = useUser();
-  const [loading, setLoading] = useState(true); // Initialize loading state
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");

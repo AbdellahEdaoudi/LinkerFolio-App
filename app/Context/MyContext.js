@@ -16,6 +16,8 @@ export const MyProvider = ({ children }) => {
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
   const [previousfriendRequests, setPreviousfriendRequests] = useState(0);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [language, setLanguage] = useState('');
+
 
 
   // const CLIENT_URL = "http://localhost:3000";
@@ -189,7 +191,8 @@ const Requests = friendRequests
         setMessages,
         socket,
         Requests,
-        friendRequests, setFriendRequests
+        friendRequests, setFriendRequests,
+        language, setLanguage
       }}
     >
       <audio ref={audioRef} src="/notification3.mp3" preload="auto" />

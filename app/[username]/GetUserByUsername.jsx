@@ -34,6 +34,8 @@ import FriendRequest from "./FriendRequest";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import SignInComponents from "../Components/SignIn/SignInComponents";
 import QrcodeProfile from "./QrcodeProfile";
+import { languagess } from "../data/language";
+import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
 
 function GetUserByUsername({ params }) {
   const path = usePathname();
@@ -41,7 +43,9 @@ function GetUserByUsername({ params }) {
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser}=useContext(MyContext);
+  const {CLIENT_URL,SERVER_URL_V,language, setLanguage,userLinks,EmailUser}=useContext(MyContext);
+  const [translatedDetails, setTranslatedDetails] = useState(null);
+  const [loading, setLoading] = useState(true); 
   
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${path}`;
@@ -52,22 +56,49 @@ function GetUserByUsername({ params }) {
     });
   };
 
+  // Translate content
+  const translateContent = async (content, lang) => {
+    try {
+      const response = await axios.post(`${SERVER_URL_V}/translate`, {
+        textObject: content,
+        to: lang
+      });
+      setTranslatedDetails(response.data.translations);
+    } catch (error) {
+      console.error('Error translating content:', error);
+    }
+  };
   useEffect(() => {
     const fetchUserDetails = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(
-          `${SERVER_URL_V}/user/${params.username}`
-        );
-        if (!response.data) {
-          throw new Error("User not found");
-        }
+        const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`);
         setUserDetailsG(response.data);
+        await translateContent({
+          Profile : "Profile",
+          Services : "Services",
+          Education : "Education",
+          Experience : "Experience",
+          Skills : "Skills",
+          Languages : "Languages",
+          bio: response.data.bio,
+          bio: response.data.bio,
+          services: response.data.services,
+          education: response.data.education,
+          skills: response.data.skills,
+          languages: response.data.languages,
+          experience: response.data.experience,
+          country: response.data.country,
+          category: response.data.category
+        }, language);
       } catch (error) {
-        setError(error.message);
+        console.error('Error fetching user details:', error);
+      } finally {
+        setLoading(false); // Set loading false after fetching
       }
     };
     fetchUserDetails();
-  }, [SERVER_URL_V, params.username]);
+  }, [SERVER_URL_V, language]);
 
   if (error) {
     return (
@@ -84,14 +115,18 @@ function GetUserByUsername({ params }) {
     );
   }
 
-  if (!userDetailsG) {
+  if (!userDetailsG ) {
     return (
       <div>
         <Loadingpage />
       </div>
-      // <p className="flex justify-center h-screen items-start py-32 text-8xl">
-      //   <i className="fa fa-spinner fa-spin "></i>
-      // </p>
+    );
+  }
+  if (loading) {
+    return (
+      <div>
+        <LoadingPagetranslate language={language} bgcolorp={userDetailsG.bgcolorp} />
+      </div>
     );
   }
   const datasocial = [
@@ -164,46 +199,86 @@ function GetUserByUsername({ params }) {
     },
   ];
   const datamodul = [
-    { name: "🔷 Profile", data: userDetailsG.bio },
-    { name: "💼 Services", data: userDetailsG.services },
-    { name: "🎓 Education", data: userDetailsG.education },
-    { name: "⭐ Experience", data: userDetailsG.experience },
-    { name: "💡 Skills", data: userDetailsG.skills },
-    { name: "🌍 Languages", data: userDetailsG.languages },
-  ];
-
-  const boldNumbers = (text) => {
-    if (!text) {
-      return [];
+    {
+      name: `${translatedDetails ? `🔷 ${translatedDetails.Profile}` : "🔷 Profile"}`,
+      data: translatedDetails && translatedDetails.bio ? translatedDetails.bio : userDetailsG.bio
+    },
+    {
+      name: `${translatedDetails ? `💼 ${translatedDetails.Services}` : "💼 Services"}`,
+      data: translatedDetails && translatedDetails.services ? translatedDetails.services : userDetailsG.services
+    },
+    {
+      name: `${translatedDetails ? `🎓 ${translatedDetails.Education}` : "🎓 Education"}`,
+      data: translatedDetails && translatedDetails.education ? translatedDetails.education : userDetailsG.education
+    },
+    {
+      name: `${translatedDetails ? `⭐ ${translatedDetails.Experience}` : "⭐ Experience"}`,
+      data: translatedDetails && translatedDetails.experience ? translatedDetails.experience : userDetailsG.experience
+    },
+    {
+      name: `${translatedDetails ? `💡 ${translatedDetails.Skills}` : "💡 Skills"}`,
+      data: translatedDetails && translatedDetails.skills ? translatedDetails.skills : userDetailsG.skills
+    },
+    {
+      name: `${translatedDetails ? `🌍 ${translatedDetails.Languages}` : "🌍 Languages"}`,
+      data: translatedDetails && translatedDetails.languages ? translatedDetails.languages : userDetailsG.languages
     }
-    const parts = text.split(/(\d+|:)/);
-    return parts.map((part, index) =>
-      /\d+|:/.test(part) ? (
-        <span key={index} className="text-black font-bold">
-          {part}
-        </span>
-      ) : (
-        part
-      )
-    );
-  };
-  const ListDisk = (data) => {
+  ];
+  
+  
+  const ListDisk = ( data ) => {
     return (
-      <ul className="list-disc ml-6">
-        {data.split("\n").map((sp, i) => (
-          <li key={i}>{sp}</li>
+      <ul className={`list-disc ml-1 ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'}`}>
+        {data.split("\n").map((item, i) => (
+          <li key={i} className="text-base leading-relaxed">
+            {item}
+          </li>
         ))}
       </ul>
     );
   };
   const emailuser = userDetailsG.email;
+
+  const CV = [
+    {
+      title: `${translatedDetails ? `🔷 ${translatedDetails.Profile}` : "🔷 Profile"}`,
+      content: translatedDetails && translatedDetails.bio ? translatedDetails.bio : userDetailsG.bio,
+      key: translatedDetails ? translatedDetails.bioKey || 'bio' : 'bio'
+    },
+    {
+      title: `${translatedDetails ? `💼 ${translatedDetails.Services}` : "💼 Services"}`,
+      content: translatedDetails && translatedDetails.services ? translatedDetails.services : userDetailsG.services,
+      key: translatedDetails ? translatedDetails.servicesKey || 'services' : 'services'
+    },
+    {
+      title: `${translatedDetails ? `🎓 ${translatedDetails.Education}` : "🎓 Education"}`,
+      content: translatedDetails && translatedDetails.education ? translatedDetails.education : userDetailsG.education,
+      key: translatedDetails ? translatedDetails.educationKey || 'education' : 'education'
+    },
+    {
+      title: `${translatedDetails ? `⭐ ${translatedDetails.Experience}` : "⭐ Experience"}`,
+      content: translatedDetails && translatedDetails.experience ? translatedDetails.experience : userDetailsG.experience,
+      key: translatedDetails ? translatedDetails.experienceKey || 'experience' : 'experience'
+    },
+    {
+      title: `${translatedDetails ? `💡 ${translatedDetails.Skills}` : "💡 Skills"}`,
+      content: translatedDetails && translatedDetails.skills ? translatedDetails.skills : userDetailsG.skills,
+      key: translatedDetails ? translatedDetails.skillsKey || 'skills' : 'skills'
+    },
+    {
+      title: `${translatedDetails ? `🌍 ${translatedDetails.Languages}` : "🌍 Languages"}`,
+      content: translatedDetails && translatedDetails.languages ? translatedDetails.languages : userDetailsG.languages,
+      key: translatedDetails ? translatedDetails.languagesKey || 'languages' : 'languages'
+    }
+  ];
+  
   return (
     <div
-      className={` flex items-start justify-center   pt-4 pb-96 ${userDetailsG.bgcolorp}`}
+      className={`  flex items-start justify-center   pt-4 pb-96 ${userDetailsG.bgcolorp}`}
     >
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
         {/* Image Profile and info user */}
-        <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
+        <div className={`${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md`}>
           <div>
             <AlertDialog>
               <AlertDialogTrigger>
@@ -258,17 +333,17 @@ function GetUserByUsername({ params }) {
               </span>{" "}
               {userDetailsG.email}
             </p>
-            <p className="text-gray-600 md:flex items-center md:justify-start justify-center   md:gap-2 mt-1">
+            <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 md:flex items-center md:justify-start justify-center   md:gap-2 mt-1`}>
               <span className="text-green-900">@ {userDetailsG.username}</span>
               {userDetailsG.country && (
                 <span className="flex gap-1 justify-center">
                   <MapPin width={18} style={{ color: "red" }} />
-                  {userDetailsG.country}
+                  {`${translatedDetails ? translatedDetails.country : userDetailsG.country}`}
                 </span>
               )}
             </p>
             {userDetailsG.phoneNumber && (
-              <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1">
+              <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-1`}>
                 <Phone width={18} style={{ color: "green" }} />
                 {userDetailsG.phoneNumber}
               </p>
@@ -276,7 +351,7 @@ function GetUserByUsername({ params }) {
 
             {/* Business Links */}
             <p>
-              <UserLinks emailuser={emailuser} />
+              <UserLinks language={language} setLanguage={setLanguage} emailuser={emailuser} />
             </p>
             {/* Social Media */}
             <div className="flex flex-wrap gap-4 justify-center my-2 ">
@@ -305,7 +380,7 @@ function GetUserByUsername({ params }) {
           </div>
         </div>
         {/* Setting  */}
-        <nav className="grid grid-cols-1 md:grid-cols-2 absolute md:right-24 right-7 top-10 md:gap-5 duration-300 gap-4">
+        <nav className={`${language === "ar" ? 'list-disc-rtl md:left-24 left-7 top-10' : 'list-disc-ltr md:right-24 right-7 top-10'} grid grid-cols-1 md:grid-cols-2 absolute  md:gap-5 duration-300 gap-4`}>
           {/* CopyLinkProfil */}
           <button
             className="rounded-full hover:scale-110 flex justify-center hover:bg-gray-200 border h-10 w-10 p-2  duration-300"
@@ -336,13 +411,27 @@ function GetUserByUsername({ params }) {
           <SignedOut>
             <SignInComponents />
           </SignedOut>
+          {/* translate */}
+          <div className="absolute  md:top-[113px] top-[220px] md:-right-1  w-full ">
+          <select
+             className='bg-white border cursor-pointer border-gray-300 rounded-md text-lg mb-6 w-full'
+             value={language}
+             onChange={(e)=>{setLanguage(e.target.value);}}
+           >
+             {languagess.map((lang) => (
+             <option  key={lang.value} value={lang.value}>
+               {lang.label}
+             </option>
+           ))}
+           </select>
+          </div>
         </nav>
         {/* Category */}
         <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">
-          {userDetailsG.category}
+        {`${translatedDetails ? translatedDetails.category : userDetailsG.category}`}
         </p>
         {/* Modul */}
-        <div className="flex flex-wrap gap-2 mb-2 justify-center">
+        <div className={` ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} flex flex-wrap gap-2 mb-2 justify-center`}>
           {datamodul.map((dt, i) => {
             return (
               <div key={i}>
@@ -375,108 +464,19 @@ function GetUserByUsername({ params }) {
             );
           })}
         </div>
-
-        {/* Profile */}
-        {userDetailsG.bio && (
-          <div className="p-4 mt-4 bg-white rounded-lg shadow-md border duration-500 hover:scale-100">
-            <h3 className="text-xl font-semibold text-indigo-500 mb-2">
-              🔷 Profile
-            </h3>
-            <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {ListDisk(userDetailsG.bio)}
-            </p>
-          </div>
-        )}
-
-        {/* Services */}
-        {userDetailsG.services && (
-          <div className="mt-3 p-4 bg-white rounded-lg border shadow-md duration-500 hover:scale-100">
-            {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-            <h3 className="text-xl font-semibold text-indigo-500 mb-2">
-              💼 Services
-            </h3>
-            <p className="text-gray-800 overflow-y-auto whitespace-pre-wrap leading-normal tracking-normal text-base">
-              {ListDisk(userDetailsG.services)}
-            </p>
-          </div>
-        )}
-
-        {/* Education */}
-        <div
-          className={`${
-            !userDetailsG.education && "hidden"
-          } mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}
-        >
-          {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-          <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-            🎓 Education
-          </h3>
-          <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetailsG.education)}
-          </p>
+         {/* CV */}
+        <div className="mt-3">
+        {CV.map(({ title, content, key }) =>
+            content && (
+              <div key={key} className="border p-4 text-right!? bg-white rounded-lg shadow-md mb-4 hover:scale-100 duration-500">
+                <h3 className={` ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} text-xl font-semibold text-indigo-600 mb-2`}>{title}</h3>
+                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{ListDisk(content)}</p>
+              </div>
+            )
+          )}
         </div>
 
-        {/* Experience */}
-        <div
-          className={`${
-            !userDetailsG.experience && "hidden"
-          } border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}
-        >
-          {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-          <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-            ⭐ Experience
-          </h3>
-          <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetailsG.experience)}
-          </p>
-        </div>
-
-        {/* Skills */}
-        <div
-          className={`${
-            !userDetailsG.skills && "hidden"
-          } border p-4 bg-white rounded-lg shadow-md mb-6 hover:scale-100 duration-500`}
-        >
-          {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-          <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-            💡 Skills
-          </h3>
-          <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetailsG.skills)}
-          </p>
-        </div>
-
-        {/* Languages */}
-        <div
-          className={`${
-            !userDetailsG.languages && "hidden"
-          } border p-4 bg-white rounded-lg shadow-md hover:scale-100 duration-500`}
-        >
-          {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-          <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-            🌍 Languages
-          </h3>
-          <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
-            {ListDisk(userDetailsG.languages)}
-          </p>
-        </div>
-
-        {/* <div>
-        <div className="border-b border-gray-300 my-2"></div>
-        <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
-          Select Background Color:
-        </label>
-        <div className="grid grid-cols-8 gap-2">
-        {bgcolorOptions.map((bg, index) => (
-              <div
-                key={index}
-                className={`p-4 rounded-md shadow-md cursor-pointer ${bg} ${bg === Bgcolor ? 'border-2 border-blue-500' : ''}`}
-                onClick={() => setbgcolor(bg)}
-              >
-        </div>
-      ))}
-        </div>
-        </div> */}
+        
       </div>
     </div>
   );

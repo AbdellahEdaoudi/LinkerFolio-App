@@ -12,9 +12,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-function UserLinks({ emailuser }) {
+function UserLinks({emailuser,language,setLanguage}) {
   const { userLinks } = useContext(MyContext);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     if (userLinks) {

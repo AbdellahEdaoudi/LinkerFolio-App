@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles/globals.css or any CSS file */
+.list-disc-rtl {
+  list-style-position: inside;
+  direction: rtl;
+}
+
+.list-disc-ltr {
+  list-style-position: inside;
+  direction: ltr;
+}
+
+.list-disc-rtl li {
+  text-align: right;
+}
+
+.list-disc-ltr li {
+  text-align: left;
+}
+
+
   @layer utilities {
     .scrollbar-none::-webkit-scrollbar {
       display: none;
