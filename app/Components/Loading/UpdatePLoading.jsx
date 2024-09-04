@@ -1,5 +1,4 @@
-import { bgcolorOptions } from '@/app/data/bgcolorOptions';
-import React from 'react'
+
 
 function UpdatePLoading() {
     const datasocial = [
