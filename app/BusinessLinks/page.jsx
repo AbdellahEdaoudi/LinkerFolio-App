@@ -1,12 +1,12 @@
 'use client';
 import React, { useContext, useState, useEffect } from 'react';
-import { CirclePlus, Link, X, Edit3, Trash2 } from 'lucide-react';
+import {Link, X, Edit3, Trash2 } from 'lucide-react';
 import { MyContext } from '../Context/MyContext';
 import axios from 'axios';
 import { toast } from "sonner";
 
 function EditUserLinks() {
-  const {SERVER_URL_V, EmailUser, userDetails } = useContext(MyContext);
+  const {SERVER_URL_V, EmailUser } = useContext(MyContext);
   const [userLinks, setUserLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingt, setLoadingt] = useState(false);

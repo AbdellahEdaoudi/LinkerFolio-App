@@ -1,6 +1,6 @@
 "use client"
-import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 import { createContext, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 
@@ -11,8 +11,8 @@ export const MyProvider = ({ children }) => {
   const [userLinks, setUserLinks] = useState([]);
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
-  const { user } = useUser();
-  const EmailUser = user?.emailAddresses[0].emailAddress;
+  const {data,status} = useSession()
+  const EmailUser = data?.user?.email
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
   const [previousfriendRequests, setPreviousfriendRequests] = useState(0);
   const [friendRequests, setFriendRequests] = useState([]);

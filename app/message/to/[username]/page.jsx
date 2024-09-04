@@ -3,21 +3,19 @@ import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { Button } from "../../../../components/ui/button";
+import { useToast } from "../../../../components/ui/use-toast";
 import { BsEmojiSmile } from "react-icons/bs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io from "socket.io-client";
 import { EllipsisVertical } from "lucide-react";
-import { MyContext } from "@/app/Context/MyContext";
-import Linkify from "linkify-react";
+import { MyContext } from "../../../Context/MyContext";
 import { useRouter } from "next/navigation";
-import { CustomLinkify } from "@/app/Components/CustomLinkify";
-import LMessages from "@/app/Components/Loading/LoadChatPage/LMessages";
-import InputLoadMessages from "@/app/Components/Loading/InputLoadMessages";
+import { CustomLinkify } from "../../../Components/CustomLinkify";
+import LMessages from "../../../Components/Loading/LoadChatPage/LMessages";
+import InputLoadMessages from "../../../Components/Loading/InputLoadMessages";
 
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");

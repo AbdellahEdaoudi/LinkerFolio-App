@@ -1,27 +1,22 @@
 "use client";
-import {
-  SignedIn,
-  SignedOut,
-  SignOutButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
 import {Bell, BookUser, LogOut, MessageSquare, MessagesSquare, NotebookText, Search, Settings, Shield, UserRoundSearch, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/MyContext";
-import SignInnavbar from "./SignIn/SignInnavbar";
+import SignInWithGoogle from "./SignInWithGoogle"
 import axios from "axios";
 import FriendsReq from "./Friends/FriendsReq";
 import Friendss from "./Friends/Friendss";
 import DOMPurify from 'dompurify';
 import Sent from "./Friends/Sent";
+import { signOut, useSession } from "next-auth/react";
 
 
 function Navbar() {
-  const { user } = useUser();
+  const {data,status} = useSession()
+  const user = data?.user;
   const [setting, setSetting] = useState(true);
   const [notification, setNotification] = useState(true);
   const [FrReq, setFrReq] = useState(true);
@@ -141,86 +136,89 @@ function Navbar() {
           </div>
           </div>
 
-            <SignedIn>
-              {user ? (
+              {status === 'authenticated' && (
                 filt.map((userr, i) => (
-                    <div key={i} className="flex items-center gap-1">
-                      <div
-                        onClick={() => {
-                          setSetting(true);
-                          setNotification(true)
-                          router.push(`/${userr.username}`);
-                        }}
-                        className="font-medium  hidden mr-4 md:block text-black cursor-pointer hover:scale-105 transition duration-300"
-                      >
-                        <div className="flex items-center gap-2"><UserButton  />{userr.fullname}</div>
-                      </div>
-                      {/* Icons Navbar */}
-                      <div className="flex items-center gap-4">
-                        {/* Icon Notification */}
-                      <div onClick={() => {
-                        setNotification(!notification);
-                        setSearch("")
-                        setSetting(true)
-                        setFrReq(true)
-                      }} className="relative flex items-center">
-                      <span 
-                      className="text-black cursor-pointer  relative">
-                      <MessagesSquare />
-                      </span>
-                      <div onClick={() => {
-                        setNotification(!notification);
-                        setSetting(true)
-                      }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {Notification.length ? Notification.length : Notification.length === 0 ? "0" : "..."}
-                      </div>
-                      </div>
-                       {/* Icon FriendReq */}
-                       <div  onClick={() => {
-                         setFrReq(!FrReq);
-                          setSearch("");
-                          setSetting(true);
-                          setNotification(true);
-                        }} className="relative flex items-center">
-                      <span 
-                      className="text-black cursor-pointer relative">
-                      <Users />
-                      </span>
-                      <div onClick={() => {
-                        setSetting(true),
+                  <div key={i} className="flex items-center gap-1">
+                    <div
+                      onClick={() => {
+                        setSetting(true);
                         setNotification(true)
-                      }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
-                       {Requests ? Requests.length : Requests.length === 0 ? "0" : "..."} 
-                      </div>
-                      </div>
-                      {/* Icon Settings */}
-                      <span
-                        onClick={() => {
-                          setSetting(!setting);
-                          setSearch("")
-                          setNotification(true);
-                          setFrReq(true)
-                        }}
-                        className="text-gray-800 hover:scale-105 duration-300 cursor-pointer"
-                      >
-                        <Settings />
-                      </span>
+                        router.push(`/${userr.username}`);
+                      }}
+                      className="font-medium  hidden mr-4 md:block text-black cursor-pointer hover:scale-105 transition duration-300"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Image className="rounded-full"
+                        src={user.image} width={31} height={35} alt="Photo Profile" />
+                      {user.name}
                       </div>
                     </div>
-                  ))
-              ) : (
-                <div className="flex md:flex-row flex-row-reverse items-center gap-2">
-                  <div className="w-11 h-11 bg-gray-300 rounded-full"></div>
-                  <div>
-                  <div className="md:w-40 w-16 h-4 bg-gray-300 rounded-md mb-1"></div>
-                  <div className="md:w-32 w-12 h-4 bg-gray-300 rounded-md"></div>
+                    {/* Icons Navbar */}
+                    <div className="flex items-center gap-4">
+                      {/* Icon Notification */}
+                    <div onClick={() => {
+                      setNotification(!notification);
+                      setSearch("")
+                      setSetting(true)
+                      setFrReq(true)
+                    }} className="relative flex items-center">
+                    <span 
+                    className="text-black cursor-pointer  relative">
+                    <MessagesSquare />
+                    </span>
+                    <div onClick={() => {
+                      setNotification(!notification);
+                      setSetting(true)
+                    }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
+                     {Notification.length ? Notification.length : Notification.length === 0 ? "0" : "..."}
+                    </div>
+                    </div>
+                     {/* Icon FriendReq */}
+                     <div  onClick={() => {
+                       setFrReq(!FrReq);
+                        setSearch("");
+                        setSetting(true);
+                        setNotification(true);
+                      }} className="relative flex items-center">
+                    <span 
+                    className="text-black cursor-pointer relative">
+                    <Users />
+                    </span>
+                    <div onClick={() => {
+                      setSetting(true),
+                      setNotification(true)
+                    }} className=" w-6 h-4 text-[12px] flex cursor-pointer items-center justify-center absolute rounded-full bg-red-500 -right-1 -top-2">
+                     {Requests ? Requests.length : Requests.length === 0 ? "0" : "..."} 
+                    </div>
+                    </div>
+                    {/* Icon Settings */}
+                    <span
+                      onClick={() => {
+                        setSetting(!setting);
+                        setSearch("")
+                        setNotification(true);
+                        setFrReq(true)
+                      }}
+                      className="text-gray-800 hover:scale-105 duration-300 cursor-pointer"
+                    >
+                      <Settings />
+                    </span>
+                    </div>
                   </div>
-                </div>
+                ))
               )}
-            </SignedIn>
-            <SignedOut>
-            <SignInnavbar />
-            </SignedOut>
+              {status === "unauthenticated" && (
+                <SignInWithGoogle />
+              )}
+              {status === 'loading'  && (
+                <div className="flex md:flex-row flex-row-reverse items-center gap-2">
+                <div className="w-11 h-11 bg-gray-300 rounded-full"></div>
+                <div>
+                <div className="md:w-40 w-16 h-4 bg-gray-300 rounded-md mb-1"></div>
+                <div className="md:w-32 w-12 h-4 bg-gray-300 rounded-md"></div>
+                </div>
+              </div>
+              )}
           </div>
         </section>
       </nav>
@@ -280,8 +278,8 @@ function Navbar() {
               >
           <div className="flex items-center gap-1"><MessageSquare /> Contact Us</div>
               </Link>
-          <div className="bg-red-500 py-2 border-b cursor-pointer border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" >
-          <LogOut /><SignOutButton />  
+          <div onClick={()=>{signOut()}} className="bg-red-500 py-2 border-b cursor-pointer border-gray-600 hover:bg-red-600 transition duration-300 rounded-sm hover:scale-105 justify-center flex gap-2" >
+          <LogOut />Sign Out  
           </div>      
           </nav>
       {/* notification */}
@@ -400,7 +398,7 @@ function Navbar() {
 </nav>
        {/* Searche */}
         <nav onClick={()=>{setSearch('')}} className={`fixed  w-full flex justify-center ${search === "" ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"} transition-opacity duration-500 ease-in-out`}>
-          <div className={`bg-black opacity-70 w-full  min-h-screen md:min-h-[520px]  md:h-96 rounded-b-md shadow-lg ${search === "" ? "max-h-0" : "max-h-96"} transition-all duration-500 ease-in-out`}>
+          <div className={`bg-black opacity-70 w-full  min-h-screen  rounded-b-md shadow-lg ${search === "" ? "max-h-0" : "max-h-96"} transition-all duration-500 ease-in-out`}>
           </div>
         </nav>
         

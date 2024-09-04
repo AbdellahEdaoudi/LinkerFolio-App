@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { MyContext } from '@/app/Context/MyContext';
+import { MyContext } from '../../Context/MyContext';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "../../../components/ui/alert-dialog"
 
 function ContactsPage() {
   const [contacts, setContacts] = useState([]);

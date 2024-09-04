@@ -10,10 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "../../components/ui/alert-dialog";
 
 function EditUserLinks() {
-  const { userLinks, EmailUser } = useContext(MyContext);
+  const {userLinks,EmailUser } = useContext(MyContext);
 
   return (
     <AlertDialog className="bg-black">

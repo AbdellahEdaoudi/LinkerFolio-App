@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
 
     const response = await fetch(`${SERVER_URL}/user/${params.username}`, {
       next: {
-        revalidate: 60 * 60,
+        revalidate: 60 * 10,
       },
     });
     

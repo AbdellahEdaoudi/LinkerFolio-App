@@ -2,10 +2,11 @@ import { Inter, Prompt } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "./Components/Navbar";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "../components/ui/sonner"
 import { MyProvider } from "./Context/MyContext";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import NextAuthProvider from "./providers/NextAuthProvider";
 const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
 
@@ -28,12 +29,14 @@ export default function RootLayout({ children }) {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       </head>
         <body className={`${prompt.className} scrollbar-none bg-gradient-to-r from-blue-500 to-purple-500`}>
-        <MyProvider>
+        <NextAuthProvider>
+          <MyProvider>
         <div className="sticky top-0 z-50 ">
           <Navbar />
           </div>
             {children}
         </MyProvider>
+        </NextAuthProvider>
           <Toaster />
           <ToastContainer />
         </body>

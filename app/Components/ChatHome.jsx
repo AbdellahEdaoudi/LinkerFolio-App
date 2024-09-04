@@ -1,3 +1,4 @@
+"use client"
 import React, { useContext, useEffect, useState } from "react";
 import Messages from "./Messages";
 import UserListMobile from "./UserList/UserListMobile";
@@ -5,10 +6,13 @@ import UserList from "./UserList/UserList";
 import CreateProfile from "./CreateProfile";
 import { MyContext } from "../Context/MyContext";
 import LoadChatPage from "./Loading/LoadChatPage/LoadChatPage";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 function ChatHome() {
   const [selectedUser, setSelectedUser] = useState(null);
   const { userDetails, EmailUser } = useContext(MyContext);
+  const Router = useRouter()
+  const {data,status} = useSession()
 
   // Retrieve selected user from localStorage
   useEffect(() => {
@@ -17,8 +21,11 @@ function ChatHome() {
       setSelectedUser(JSON.parse(UserSelected));
     }
   }, []);
+  if (status === "unauthenticated") {
+    Router.push("SignIn")
+  }
 
-  if (!userDetails || !EmailUser) {
+  if (!userDetails) {
     return <LoadChatPage />;
   }
   const filt = userDetails.find((fl) => fl.email === EmailUser);

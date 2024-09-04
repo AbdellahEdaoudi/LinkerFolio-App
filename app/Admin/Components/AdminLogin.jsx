@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { MyContext } from "@/app/Context/MyContext";
+import { MyContext } from "../../Context/MyContext";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");

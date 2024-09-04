@@ -1,10 +1,6 @@
 "use client"
-import { Button } from '@/components/ui/button';
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 import { EllipsisVertical } from 'lucide-react';
 import React, { useState } from 'react'
-import { BsEmojiSmile } from 'react-icons/bs';
 import InputLoadMessages from '../InputLoadMessages';
 
 function LMessages() {

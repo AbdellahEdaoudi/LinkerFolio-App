@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
-import { MyContext } from '@/app/Context/MyContext';
+import { MyContext } from '../../Context/MyContext';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';

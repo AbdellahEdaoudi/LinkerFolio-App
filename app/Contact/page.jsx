@@ -1,8 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import Image from 'next/image'; // If using Next.js
-import { useRouter } from 'next/navigation'; // If using Next.js
+import Image from 'next/image';
 import { MyContext } from '../Context/MyContext';
 import { toast } from 'react-toastify';
 import { CheckCheck } from 'lucide-react';

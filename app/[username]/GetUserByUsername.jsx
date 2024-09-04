@@ -8,11 +8,7 @@ import {
   Mail,
   MailCheck,
   MapPin,
-  MessageCircleMore,
   Phone,
-  Pin,
-  QrCode,
-  UserPlus,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -24,9 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import QRCode from "qrcode.react";
-import download from "downloadjs";
+} from "../../components/ui/alert-dialog";
 import { MyContext } from "../Context/MyContext";
 import UserLinks from "./UserLinks";
 import Loadingpage from "../Components/Loading/LoadingPage";
@@ -36,8 +30,10 @@ import SignInComponents from "../Components/SignIn/SignInComponents";
 import QrcodeProfile from "./QrcodeProfile";
 import { languagess } from "../data/language";
 import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
+import { useSession } from "next-auth/react";
 
 function GetUserByUsername({ params }) {
+  const { data, status } = useSession();
   const path = usePathname();
   const router = useRouter();
   const [userDetailsG, setUserDetailsG] = useState(null);
@@ -405,16 +401,16 @@ function GetUserByUsername({ params }) {
             </a>
           </span>
           {/* messageTo */}
-          <SignedIn>
+          {status === "authenticated" && (
             <FriendRequest
               userDetailsG={userDetailsG}
               emailuser={emailuser}
               path={path}
             />
-          </SignedIn>
-          <SignedOut>
-            <SignInComponents />
-          </SignedOut>
+          )}
+          {status === "unauthenticated" && (
+            <SignInComponents userDetailsG={userDetailsG} />
+          )}
           {/* translate */}
           <div className="absolute  md:top-[113px] top-[220px] md:-right-1  w-full ">
           <select

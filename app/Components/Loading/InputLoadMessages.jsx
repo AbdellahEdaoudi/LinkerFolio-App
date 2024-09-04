@@ -1,5 +1,5 @@
 "use client"
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../components/ui/button';
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState } from 'react'

@@ -24,7 +24,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "../../components/ui/alert-dialog";
 import { Button } from "@chakra-ui/react";
 import { toast } from "sonner";
 import { MyContext } from "../Context/MyContext";
