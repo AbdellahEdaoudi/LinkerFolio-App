@@ -1,6 +1,6 @@
 "use client";
-import {useUser} from "@clerk/nextjs";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import React, { useContext, useEffect, useState } from "react";
 import {
   AlertDialog,
@@ -12,14 +12,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "../../../components/ui/alert-dialog";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { bgcolorOptions } from "@/app/data/bgcolorOptions";
-import { MyContext } from "@/app/Context/MyContext";
-import UpdatePLoading from "@/app/Components/Loading/UpdatePLoading";
+import { bgcolorOptions } from "../../data/bgcolorOptions";
+import { MyContext } from "../../../app/Context/MyContext";
+import UpdatePLoading from "../../Components/Loading/UpdatePLoading";
 function NameUser({ params }) {
-  const { user } = useUser();
+  const {data,status}=useSession()
+  const user = data?.user
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [fullname, setFullname] = useState("");
@@ -51,8 +52,7 @@ function NameUser({ params }) {
   const [experience, setExperience] = useState("");
   const [id, setid] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
-  const EmailUser = user?.emailAddresses[0]?.emailAddress ;
-  const {SERVER_URL_V} = useContext(MyContext);
+  const {SERVER_URL_V,EmailUser} = useContext(MyContext);
   
   const datasocial = [
     { iconSrc: "/Icons/wts.svg", alt: "WhatsApp", state: whatsapp, setState: setWhatsapp, placeholder: "WhatsApp Link" },

@@ -1,6 +1,5 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import QRCode from "qrcode.react";
 import download from "downloadjs";
 
 import {
@@ -9,8 +8,6 @@ import {
   MapPin,
   PenOff,
   Phone,
-  Pin,
-  QrCode,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
