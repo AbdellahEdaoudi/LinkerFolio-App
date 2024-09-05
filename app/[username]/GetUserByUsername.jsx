@@ -197,30 +197,61 @@ function GetUserByUsername({ params }) {
   ];
   const datamodul = [
     {
-      name: `${translatedDetails ? `🔷 ${translatedDetails.Profile}` : "🔷 Profile"}`,
+      name: translatedDetails 
+        ? `🔷 ${translatedDetails.Profile}` 
+        : "🔷 Profile",
+        namedata: translatedDetails 
+        ? `${language === "ar" ? `${translatedDetails.Profile} 🔷` : `🔷 ${translatedDetails.Profile}`}` 
+        : "🔷 Profile",
       data: translatedDetails && translatedDetails.bio ? translatedDetails.bio : userDetailsG.bio
     },
     {
-      name: `${translatedDetails ? `💼 ${translatedDetails.Services}` : "💼 Services"}`,
+      name: translatedDetails 
+        ? `💼 ${translatedDetails.Services}` 
+        : "💼 Services",
+       namedata: translatedDetails 
+        ? `${language === "ar" ? `${translatedDetails.Services} 💼` : `💼 ${translatedDetails.Services}`}` 
+        : "💼 Services",
       data: translatedDetails && translatedDetails.services ? translatedDetails.services : userDetailsG.services
     },
     {
-      name: `${translatedDetails ? `🎓 ${translatedDetails.Education}` : "🎓 Education"}`,
+      name: translatedDetails 
+        ? `🎓 ${translatedDetails.Education}` 
+        : "🎓 Education",
+        namedata: translatedDetails 
+        ? `${language === "ar" ? `${translatedDetails.Education} 🎓` : `🎓 ${translatedDetails.Education}`}` 
+        : "🎓 Education",
       data: translatedDetails && translatedDetails.education ? translatedDetails.education : userDetailsG.education
     },
     {
-      name: `${translatedDetails ? `⭐ ${translatedDetails.Experience}` : "⭐ Experience"}`,
+      name: translatedDetails 
+        ? `⭐ ${translatedDetails.Experience}` 
+        : "⭐ Experience",
+        namedata: translatedDetails 
+        ? `${language === "ar" ? `${translatedDetails.Experience} ⭐` : `⭐ ${translatedDetails.Experience}`}` 
+        : "⭐ Experience",
       data: translatedDetails && translatedDetails.experience ? translatedDetails.experience : userDetailsG.experience
     },
     {
-      name: `${translatedDetails ? `💡 ${translatedDetails.Skills}` : "💡 Skills"}`,
+      name: translatedDetails 
+        ? `💡 ${translatedDetails.Skills}` 
+        : "💡 Skills",
+        namedata: translatedDetails 
+        ? `${language === "ar" ? `${translatedDetails.Skills} 💡` : `💡 ${translatedDetails.Skills}`}` 
+        : "💡 Skills",
       data: translatedDetails && translatedDetails.skills ? translatedDetails.skills : userDetailsG.skills
     },
     {
-      name: `${translatedDetails ? `🌍 ${translatedDetails.Languages}` : "🌍 Languages"}`,
+      name: translatedDetails 
+        ? `🌍 ${translatedDetails.Languages}` 
+        : "🌍 Languages",
+        namedata: translatedDetails 
+        ? `${language === "ar" ? `${translatedDetails.Languages} 🌍` : `🌍 ${translatedDetails.Languages}`}` 
+        : "🌍 Languages",
       data: translatedDetails && translatedDetails.languages ? translatedDetails.languages : userDetailsG.languages
     }
   ];
+  
   
   
   const ListDisk = ( data ) => {
@@ -324,13 +355,7 @@ function GetUserByUsername({ params }) {
             <h2 className="font-bold text-2xl text-gray-800">
               {userDetailsG.fullname}
             </h2>
-            <p className="hidden text-gray-600 fle items-center justify-center md:justify-start gap-2 mt-1">
-              <span className="text-green-500">
-                <MailCheck width={18} />
-              </span>{" "}
-              {userDetailsG.email}
-            </p>
-            <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex items-center gap-2 md:justify-start justify-center   md:gap-2 mt-1`}>
+            <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex md:flex-row flex-col items-center gap-2 md:justify-start justify-center   md:gap-2 mt-1`}>
               <span className={`flex gap-1 ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} text-green-900`}>
                 <span>@</span>
                 <span>{userDetailsG.username}</span>
@@ -414,12 +439,12 @@ function GetUserByUsername({ params }) {
           {/* translate */}
           <div className="absolute  md:top-[113px] top-[220px] md:-right-1  w-full ">
           <select
-             className='bg-white border cursor-pointer border-gray-300 rounded-md text-lg mb-6 w-full'
+             className='bg-white  border  cursor-pointer border-gray-300 rounded-md  mb-6 w-full'
              value={language}
              onChange={(e)=>{setLanguage(e.target.value);}}
            >
              {languagess.map((lang) => (
-             <option  key={lang.value} value={lang.value}>
+             <option className="text-center"  key={lang.value} value={lang.value}>
                {lang.label}
              </option>
            ))}
@@ -446,7 +471,7 @@ function GetUserByUsername({ params }) {
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle className={` bg-gray-200  p-2 border rounded-md`}>
-                        <div className={`${language === "ar" && "text-right pr-1"} `}>{dt.name}</div>
+                        <div className={`${language === "ar" && "text-right pr-1 "}`}>{dt.namedata}</div>
                       </AlertDialogTitle>
                       <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                         {ListDisk(dt.data)}
