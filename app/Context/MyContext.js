@@ -16,6 +16,7 @@ export const MyProvider = ({ children }) => {
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
   const [previousfriendRequests, setPreviousfriendRequests] = useState(0);
   const [friendRequests, setFriendRequests] = useState([]);
+  
 
 
   // const CLIENT_URL = "http://localhost:3000";

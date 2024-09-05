@@ -6,18 +6,18 @@ function LoadCreateProfile() {
     <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
       <div className="flex items-center justify-around mb-6">
         {/* User Image Placeholder */}
-        <div className="rounded-full bg-gray-500 animate-pulse w-28 h-28 object-cover border-4 border-purple-500 shadow-lg"></div>
+        <div className="rounded-full bg-gray-500  w-28 h-28 object-cover border-4 border-purple-500 shadow-lg"></div>
       </div>
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Loading Message */}
-        <div className="bg-gray-300 rounded-md text-sm w-full h-8 animate-pulse  mb-2">
-          
+        <div className="bg-gray-30 rounded-md text-sm w-28 h-4 animate-pulse  ">
+          Username
         </div>
-        <div className="bg-gray-300 rounded-md text-sm w-full h-16 animate-pulse  mb-2">
+        <div className="bg-gray-300 rounded-md text-sm w-full h-12 animate-pulse  mb-2">
           
         </div>
         {/* Optional: Placeholder for additional content */}
-        <div className="bg-gray-300 h-6 rounded-md animate-pulse"></div>
+        <div className="bg-gray-300 h-12 rounded-md animate-pulse"></div>
       </div>
     </div>
   </div>

@@ -5,8 +5,9 @@ import Image from "next/image";
 import { MyContext } from "../Context/MyContext";
 import LoadChatPage from "./Loading/LoadChatPage/LoadChatPage";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const CreateProfile = ({ userDetails }) => {
+const CreateProfile = () => {
   const { data, status } = useSession();
   const EmailUser = data?.user?.email;
   const fullName = data?.user?.name;
@@ -15,7 +16,9 @@ const CreateProfile = ({ userDetails }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { SERVER_URL_V } = useContext(MyContext);
+  const router = useRouter();
+  const { SERVER_URL_V,userDetails} = useContext(MyContext);
+
 
   const postData = async (e) => {
     e.preventDefault()

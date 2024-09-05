@@ -25,8 +25,8 @@ import { MyContext } from "../Context/MyContext";
 import UserLinks from "./UserLinks";
 import Loadingpage from "../Components/Loading/LoadingPage";
 import FriendRequest from "./FriendRequest";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
 import SignInComponents from "../Components/SignIn/SignInComponents";
+import SignInComponents_CP from "../Components/SignIn/SignInComponents_CP";
 import QrcodeProfile from "./QrcodeProfile";
 import { languagess } from "../data/language";
 import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
@@ -39,11 +39,11 @@ function GetUserByUsername({ params }) {
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL_V,userLinks,EmailUser}=useContext(MyContext);
+  const {CLIENT_URL,SERVER_URL_V,userDetails,EmailUser}=useContext(MyContext);
   const [translatedDetails, setTranslatedDetails] = useState(null);
   const [loading, setLoading] = useState(true); 
   const [language, setLanguage] = useState('');
-  
+  const filt = userDetails.find((fl) => fl.email === EmailUser);
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${path}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
@@ -426,7 +426,7 @@ function GetUserByUsername({ params }) {
             </a>
           </span>
           {/* messageTo */}
-          {status === "authenticated" && (
+          {(status === "authenticated" && filt) && (
             <FriendRequest
               userDetailsG={userDetailsG}
               emailuser={emailuser}
@@ -435,6 +435,9 @@ function GetUserByUsername({ params }) {
           )}
           {status === "unauthenticated" && (
             <SignInComponents userDetailsG={userDetailsG} />
+          )}
+          {(status === "authenticated" && !filt ) && (
+            <SignInComponents_CP userDetailsG={userDetailsG} />
           )}
           {/* translate */}
           <div className="absolute  md:top-[113px] top-[220px] md:-right-1  w-full ">

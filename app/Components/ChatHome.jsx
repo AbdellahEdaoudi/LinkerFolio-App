@@ -61,7 +61,7 @@ function ChatHome() {
           </div>
         </div>
       ) : (
-        <CreateProfile userDetails={userDetails} />
+        <CreateProfile  />
       )}
     </div>
   );
