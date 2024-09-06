@@ -20,30 +20,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../../components/ui/alert-dialog";
-import { MyContext } from "../Context/MyContext";
-import UserLinks from "./UserLinks";
-import Loadingpage from "../Components/Loading/LoadingPage";
-import FriendRequest from "./FriendRequest";
-import SignInComponents from "../Components/SignIn/SignInComponents";
-import SignInComponents_CP from "../Components/SignIn/SignInComponents_CP";
-import QrcodeProfile from "./QrcodeProfile";
-import { languagess } from "../data/language";
-import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
+} from "../../../components/ui/alert-dialog";
+import { MyContext } from "../../Context/MyContext";
+import UserLinks from "../UserLinks";
+import Loadingpage from "../../Components/Loading/LoadingPage";
+import FriendRequest from "../FriendRequest";
+import SignInComponents from "../../Components/SignIn/SignInComponents";
+import SignInComponents_CP from "../../Components/SignIn/SignInComponents_CP";
+import QrcodeProfile from "../QrcodeProfile";
+import { languagess } from "../../data/language";
+import LoadingPagetranslate from "../../Components/Loading/LoadingPagetranslate";
 import { useSession } from "next-auth/react";
-import SocialMedia from "./SocialMedia"
+import SocialMedia from "../SocialMedia"
 
-function GetUserByUsername({ params }) {
+function page({ params }) {
   const { data, status } = useSession();
-  const path = usePathname();
   const router = useRouter();
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const {CLIENT_URL,SERVER_URL_V,userDetails,EmailUser}=useContext(MyContext);
   const [translatedDetails, setTranslatedDetails] = useState(null);
+  const path = usePathname();
+  const lg = path.split("/")[2]
   const [loading, setLoading] = useState(true); 
-  const [language, setLanguage] = useState('');
+  const [language, setLanguage] = useState(lg);
   const filt = userDetails.find((fl) => fl.email === EmailUser);
   const CopyLinkProfil = () => {
     const urlToCopy = `${CLIENT_URL}/${path}`;
@@ -66,6 +67,7 @@ function GetUserByUsername({ params }) {
       console.error('Error translating content:', error);
     }
   };
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       setLoading(true);
@@ -410,4 +412,4 @@ function GetUserByUsername({ params }) {
   );
 }
 
-export default GetUserByUsername;
+export default page;

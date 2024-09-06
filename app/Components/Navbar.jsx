@@ -107,7 +107,7 @@ function Navbar() {
                 router.push("/");
                 setSetting(true);
               }} 
-                className="flex items-center  md:w-auto  hover:scale-105 duration-300 cursor-pointer">
+                className="flex items-center flex-shrink-0 md:w-auto  hover:scale-105 duration-300 cursor-pointer">
           <Image
               src="/favicon.png"
               alt="Logo"
@@ -118,12 +118,13 @@ function Navbar() {
               src="/Logo.png"
               alt="Logo"
               width={160}
+              className="md:block hidden"
               height={15}
             />
           </div>
           {/* SEARCHE */}
-          <div className="md:block hidden">
-          <div className="flex items-center bg-gray-100 border shadow-sm border-gray-300 rounded-lg shadow-m w-96 max-w-md">
+          <div className="md:mx-0 mx-2">
+          <div className="flex items-center bg-gray-100 border shadow-sm border-gray-300 rounded-lg shadow-m  md:w-96 max-w-md">
             <button className=" p-2 text-gray-500 ">
             <UserRoundSearch />
             </button>
@@ -131,7 +132,7 @@ function Navbar() {
               type="search"
               placeholder="Search"
               onChange={(e)=>{setSearch(e.target.value)}}
-              className="bg-gray-100 text-black  p-2 px- rounded-lg focus:outline-none  focus:ring-blue-500 transition duration-300 w-full"
+              className="bg-gray-100 text-black  p-2  rounded-lg focus:outline-none  focus:ring-blue-500 transition duration-300 w-full"
             />
           </div>
           </div>

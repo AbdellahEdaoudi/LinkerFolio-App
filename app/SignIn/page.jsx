@@ -21,11 +21,11 @@ const Page = () => {
           <p className="text-gray-800 mb-6 leading-relaxed">
             LinkerFolio is an innovative application that showcases your resume and social media links in a professional and seamless manner, enhancing your digital presence and simplifying the process of sharing your personal information.
             <br />
-            🔹 <strong>Distinguished Resume:</strong> Present yourself in the best light with a stylish design that clearly and attractively displays your experience, skills, and education. This will help you stand out from the competition and speed up the job application process, making it easier for companies to find your information and contact you quickly.
+            ✨ <strong>Distinguished Resume:</strong> Present yourself in the best light with a stylish design that clearly and attractively displays your experience, skills, and education. This will help you stand out from the competition and speed up the job application process, making it easier for companies to find your information and contact you quickly.
             <br />
-            🔹 <strong>Social Link Management:</strong> Centralize all your social media links in one place for easy access and sharing with the world. This saves you time and makes it simpler and faster to share your information.
+            ✨ <strong>Social Link Management:</strong> Centralize all your social media links in one place for easy access and sharing with the world. This saves you time and makes it simpler and faster to share your information.
             <br />
-            🔹 <strong>Download and Share QR Code:</strong> Automatically get a QR code for your personal page, which you can download and share for easy access to your resume and social media links via smartphones. This simplifies communication with others and streamlines your job application process anytime, anywhere.
+            ✨ <strong>Download and Share QR Code:</strong> Automatically get a QR code for your personal page, which you can download and share for easy access to your resume and social media links via smartphones. This simplifies communication with others and streamlines your job application process anytime, anywhere.
             <br />
             ✨ <strong>Automatic Translation:</strong> Share your resume with others, who can then translate it into major languages such as English, French, Arabic, Spanish, German, Chinese, Japanese, Russian, and Portuguese, making it easier for a global audience to understand your resume.
             <br />
@@ -49,7 +49,7 @@ const Page = () => {
           </button>
           <button
             onClick={()=>signIn("linkedin", {redirect:true, callbackUrl:`/`})}
-            className="w-full flex items-center justify-center px-6 py-3 bg-blue-800 text-white border border-blue-900 rounded-lg shadow-lg transition-transform transform hover:scale-105 mb-4 hover:bg-blue-700"
+            className="hidden w-full fle items-center justify-center px-6 py-3 bg-blue-800 text-white border border-blue-900 rounded-lg shadow-lg transition-transform transform hover:scale-105 mb-4 hover:bg-blue-700"
           >
             <Image src={"/Icons/link.svg"} width={28} height={28} className="bg-white rounded-lg ring-1" alt="LinkedIn Logo" />
             <span className="ml-3 text-lg font-semibold">Sign in with LinkedIn</span>

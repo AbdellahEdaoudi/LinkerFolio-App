@@ -4,9 +4,10 @@ import {Link, X, Edit3, Trash2 } from 'lucide-react';
 import { MyContext } from '../Context/MyContext';
 import axios from 'axios';
 import { toast } from "sonner";
+import CreateProfile from '../Components/CreateProfile';
 
 function EditUserLinks() {
-  const {SERVER_URL_V, EmailUser } = useContext(MyContext);
+  const {SERVER_URL_V, EmailUser,userDetails} = useContext(MyContext);
   const [userLinks, setUserLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingt, setLoadingt] = useState(false);
@@ -84,6 +85,13 @@ function EditUserLinks() {
       setLoadingt(false);
     }
   };
+  // Filter user details based on EmailUser
+  const filt = userDetails.find((fl) => fl.email === EmailUser);
+
+  // Check if filt is valid before rendering
+  if (!filt) {
+    return <CreateProfile />;
+  }
 
   const DeleteLink = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this link?");
