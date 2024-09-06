@@ -48,7 +48,7 @@ const Page = () => {
             <span className="ml-3 text-lg font-semibold">Sign in with Google</span>
           </button>
           <button
-            onClick={() => signIn("linkedin")}
+            onClick={()=>signIn("linkedin", {redirect:true, callbackUrl:`/`})}
             className="w-full flex items-center justify-center px-6 py-3 bg-blue-800 text-white border border-blue-900 rounded-lg shadow-lg transition-transform transform hover:scale-105 mb-4 hover:bg-blue-700"
           >
             <Image src={"/Icons/link.svg"} width={28} height={28} className="bg-white rounded-lg ring-1" alt="LinkedIn Logo" />
