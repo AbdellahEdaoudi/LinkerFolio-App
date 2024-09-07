@@ -33,7 +33,7 @@ import LoadingPagetranslate from "../../Components/Loading/LoadingPagetranslate"
 import { useSession } from "next-auth/react";
 import SocialMedia from "../SocialMedia"
 
-function page({ params }) {
+function Page({ params }) {
   const { data, status } = useSession();
   const router = useRouter();
   const [userDetailsG, setUserDetailsG] = useState(null);
@@ -412,4 +412,4 @@ function page({ params }) {
   );
 }
 
-export default page;
+export default Page;
