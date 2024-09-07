@@ -45,7 +45,11 @@ function FriendsReq() {
         const GetFriendRequest = async () => {
             setLouading(true)
             try {
-                const response = await axios.get(`${SERVER_URL_V}/friend`);
+                const response = await axios.get(`${SERVER_URL_V}/friend`,{
+                    headers: {
+                      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+                    }
+                  });
                 setFriendRequests(response.data.data);
                 setLouading(false)
             } catch (error) {
@@ -69,7 +73,11 @@ function FriendsReq() {
 
         setLoadingStatus((prev) => ({ ...prev, [requestId]: { update: true } }));
         try {
-            const response = await axios.put(`${SERVER_URL_V}/friend/${requestId}`, { status: 'accept' });
+            const response = await axios.put(`${SERVER_URL_V}/friend/${requestId}`, { status: 'accept' },{
+                headers: {
+                  'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+                }
+              });
             setRequests((prev) => prev.filter((req) => req._id !== requestId));
             socket.emit('updateFriendRequest', response.data.data);
             toast('Request accepted successfully!');
@@ -87,7 +95,11 @@ function FriendsReq() {
 
         setLoadingStatus((prev) => ({ ...prev, [requestId]: { delete: true } }));
         try {
-            await axios.delete(`${SERVER_URL_V}/friend/${requestId}`);
+            await axios.delete(`${SERVER_URL_V}/friend/${requestId}`,{
+                headers: {
+                  'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+                }
+              });
             setRequests((prev) => prev.filter((req) => req._id !== requestId));
             socket.emit('deleteFriendRequest', requestId);
             toast('Request deleted successfully');

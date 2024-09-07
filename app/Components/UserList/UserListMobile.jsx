@@ -71,6 +71,10 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
       const response = await axios.put(`${SERVER_URL_V}/readorno`, {
         fromEmail,
         toEmail,
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
       });
       socket.emit("updateMessage", response.data);
       return response.data;

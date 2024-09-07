@@ -18,7 +18,11 @@ function EditUserLinks() {
 
   useEffect(() => {
     axios
-      .get(`${SERVER_URL_V}/links`)
+      .get(`${SERVER_URL_V}/links`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      })
       .then((res) => {
         const links = res.data;
         const sortedLinks = links.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -45,6 +49,10 @@ function EditUserLinks() {
         useremail: EmailUser,
         namelink,
         link
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
       });
       console.log('Link added:', response.data);
       setUserLinks(Links => [response.data.data, ...Links]);
@@ -67,6 +75,10 @@ function EditUserLinks() {
       const response = await axios.put(`${SERVER_URL_V}/links/${editLinkId}`, {
         namelink,
         link
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
       });
       console.log('Link updated:', response.data);
       setUserLinks((Links) =>
@@ -98,7 +110,11 @@ function EditUserLinks() {
     
     if (confirmDelete) {
       try {
-        await axios.delete(`${SERVER_URL_V}/links/${id}`);
+        await axios.delete(`${SERVER_URL_V}/links/${id}`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setUserLinks((Links) => Links.filter((item) => item._id !== id));
         toast("Link deleted successfully!");
       } catch (error) {

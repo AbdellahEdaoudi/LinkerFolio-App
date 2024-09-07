@@ -46,7 +46,11 @@ function Friendss() {
         const GetFriendRequest = async () => {
             setLouading(true)
             try {
-                const response = await axios.get(`${SERVER_URL_V}/friend`);
+                const response = await axios.get(`${SERVER_URL_V}/friend`,{
+                    headers: {
+                      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+                    }
+                  });
                 setFriendRequests(response.data.data);
                 setLouading(false)
             } catch (error) {

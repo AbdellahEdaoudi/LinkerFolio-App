@@ -28,7 +28,11 @@ const ContactForm = () => {
     setLoading(true);
     try {
       console.log('Data Send:', { iduser ,email, phoneNumber, message });
-      await axios.post(`${SERVER_URL_V}/contacts`, {iduser, email, phoneNumber, message });
+      await axios.post(`${SERVER_URL_V}/contacts`, {iduser, email, phoneNumber, message },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       toast(<p className='flex gap-3 items-center'><CheckCheck /> Sent successfully!</p>, {
         position: "top-center",
         autoClose: 2000,

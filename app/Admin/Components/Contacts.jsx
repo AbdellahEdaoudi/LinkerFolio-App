@@ -23,7 +23,11 @@ function ContactsPage() {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/contacts`);
+        const response = await axios.get(`${SERVER_URL_V}/contacts`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setContacts(response.data);
         setLoading(false);
       } catch (err) {
@@ -40,7 +44,11 @@ function ContactsPage() {
     
     if (confirmDelete) {
       try {
-        await axios.delete(`${SERVER_URL_V}/contacts/${id}`);
+        await axios.delete(`${SERVER_URL_V}/contacts/${id}`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setContacts(contacts.filter(contact => contact._id !== id));
       } catch (err) {
         setError(err);

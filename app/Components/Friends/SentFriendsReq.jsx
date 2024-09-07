@@ -55,7 +55,11 @@ function SentFriendsReq() {
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/friend`);
+        const response = await axios.get(`${SERVER_URL_V}/friend`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         const allRequests = response.data.data;
 
         const FriendsReq = allRequests.filter(
@@ -70,7 +74,11 @@ function SentFriendsReq() {
           try {
             const usersPromises = FriendsReq.map(request => {
               const friendEmail = request.from === EmailUser ? request.to : request.from;
-              return axios.get(`${SERVER_URL_V}/usersE/${friendEmail}`);
+              return axios.get(`${SERVER_URL_V}/usersE/${friendEmail}`,{
+                headers: {
+                  'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+                }
+              });
             });
             const usersResponses = await Promise.all(usersPromises);
 
@@ -109,7 +117,11 @@ function SentFriendsReq() {
   
     setLoadingStatus(prev => ({ ...prev, [friendId]: { confirm: true, delete: false } }));
     try {
-      const response = await axios.put(`${SERVER_URL_V}/friend/${friendId}`, { status: 'accept' });
+      const response = await axios.put(`${SERVER_URL_V}/friend/${friendId}`, { status: 'accept' },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       setAcceptedFriends(prev => prev.filter(request => request._id !== friendId));
       socket.emit("updateFriendRequest", response.data.data);
       toast.success('Friend request accepted successfully!');
@@ -130,7 +142,11 @@ function SentFriendsReq() {
     }
     setLoadingStatus(prev => ({ ...prev, [friendId]: { confirm: false, delete: true } }));
     try {
-      await axios.delete(`${SERVER_URL_V}/friend/${friendId}`);
+      await axios.delete(`${SERVER_URL_V}/friend/${friendId}`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       setAcceptedFriends(prev => prev.filter(request => request._id !== friendId));
       socket.emit("deleteFriendRequest", friendId);
     } catch (error) {

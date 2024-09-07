@@ -29,7 +29,11 @@ function Users() {
 
     if (confirmDelete) {
       try {
-        await axios.delete(`${SERVER_URL_V}/users/${id}`);
+        await axios.delete(`${SERVER_URL_V}/users/${id}`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setFilteredUsers(filteredUsers.filter(user => user._id !== id));
       } catch (error) {
         console.error("Error deleting user:", error);

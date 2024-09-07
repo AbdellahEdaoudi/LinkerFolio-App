@@ -87,8 +87,11 @@ export const MyProvider = ({ children }) => {
 
   // Fetch users
   useEffect(() => {
-    axios
-      .get(`${SERVER_URL_V}/users`)
+    axios.get(`${SERVER_URL_V}/users`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      })
       .then((res) => {
         setUserDetails(res.data);
       })
@@ -101,7 +104,11 @@ export const MyProvider = ({ children }) => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/messages`);
+        const response = await axios.get(`${SERVER_URL_V}/messages`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setMessages(response.data.reverse());
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -113,7 +120,11 @@ export const MyProvider = ({ children }) => {
   // links
   useEffect(() => {
     axios
-      .get(`${SERVER_URL_V}/links`)
+      .get(`${SERVER_URL_V}/links`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      })
       .then((res) => {
         setUserLinks(res.data);
       })
@@ -126,7 +137,11 @@ export const MyProvider = ({ children }) => {
   useEffect(() => {
     const GetFriendRequest = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/friend`);
+        const response = await axios.get(`${SERVER_URL_V}/friend`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setFriendRequests(response.data.data);
       } catch (error) {
         console.error('Error fetching friend requests', error.response ? error.response.data : error.message);
@@ -135,10 +150,6 @@ export const MyProvider = ({ children }) => {
     GetFriendRequest();
   }, []);
 
-
-  
-
-  
   const latestNotifications = messages
   .filter((fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false)
   .reduce((acc, msg) => {

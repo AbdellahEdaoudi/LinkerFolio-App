@@ -42,6 +42,10 @@ function Navbar() {
       const response = await axios.put(`${SERVER_URL_V}/readorno`, {
         fromEmail,
         toEmail,
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
       });
       return response.data;
     } catch (error) {
@@ -118,7 +122,7 @@ function Navbar() {
               src="/Logo.png"
               alt="Logo"
               width={160}
-              className="md:block hidden"
+              className="md:block sm:block hidden"
               height={15}
             />
           </div>

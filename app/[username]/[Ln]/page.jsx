@@ -61,6 +61,10 @@ function Page({ params }) {
       const response = await axios.post(`${SERVER_URL_V}/translate`, {
         textObject: content,
         to: lang
+      }, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+        }
       });
       setTranslatedDetails(response.data.translations);
     } catch (error) {
@@ -72,7 +76,11 @@ function Page({ params }) {
     const fetchUserDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`);
+        const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setUserDetailsG(response.data);
         await translateContent({
           Profile : "Profile",
@@ -81,7 +89,6 @@ function Page({ params }) {
           Experience : "Experience",
           Skills : "Skills",
           Languages : "Languages",
-          bio: response.data.bio,
           bio: response.data.bio,
           services: response.data.services,
           education: response.data.education,

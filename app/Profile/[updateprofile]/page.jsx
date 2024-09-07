@@ -71,7 +71,11 @@ function NameUser({ params }) {
   // Get Detail User
   useEffect(() => {
     axios
-      .get(`${SERVER_URL_V}/users/${params.updateprofile}`)
+      .get(`${SERVER_URL_V}/users/${params.updateprofile}`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      })
       .then((res) => {
         const data = res.data;
         setid(data._id);
@@ -149,7 +153,11 @@ function NameUser({ params }) {
     try {
       const response = await axios.put(
         `${SERVER_URL_V}/users/${params.updateprofile}`, formData
-      );
+        ,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
       router.push("/Profile");
       console.log("User details updated successfully", response.data);
     } catch (error) {

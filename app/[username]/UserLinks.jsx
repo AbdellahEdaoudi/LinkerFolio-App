@@ -24,6 +24,10 @@ function UserLinks({ emailuser, language, setLanguage }) {
       const response = await axios.post(`${SERVER_URL_V}/translate`, {
         textObject: { namelink: content },
         to: lang,
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
       });
       return response.data.translations.namelink;
     } catch (error) {
@@ -43,6 +47,10 @@ function UserLinks({ emailuser, language, setLanguage }) {
             noLinks: "No business links available.",
           },
           to: language,
+        },{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
         });
         setTranslations(response.data.translations);
       } catch (error) {

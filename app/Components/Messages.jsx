@@ -40,7 +40,11 @@ function Messages({ selectedUser }) {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/messages`);
+        const response = await axios.get(`${SERVER_URL_V}/messages`,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -97,7 +101,11 @@ function Messages({ selectedUser }) {
   useEffect(() => {
   const GetFriendRequest = async () => {
     try {
-      const response = await axios.get(`${SERVER_URL_V}/friend`);
+      const response = await axios.get(`${SERVER_URL_V}/friend`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       setFriendRequests(response.data.data);
     } catch (error) {
       console.error('Error fetching friend requests', error.response ? error.response.data : error.message);
@@ -141,7 +149,11 @@ function Messages({ selectedUser }) {
         message: messageInput,
         readorno : false
       };
-      const response = await axios.post(`${SERVER_URL}/messages`, data);
+      const response = await axios.post(`${SERVER_URL}/messages`, data,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       socket.emit("sendMessage", response.data);
       toast({ description: "Your message has been sent." });
       setMessageInput("");
@@ -158,7 +170,11 @@ function Messages({ selectedUser }) {
       if (!window.confirm("Are you sure you want to delete this message?")) {
         return;
       }
-      await axios.delete(`${SERVER_URL}/messages/${idMsg}`);
+      await axios.delete(`${SERVER_URL}/messages/${idMsg}`,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       socket.emit("deleteMessage", idMsg);
       setputdelete(true);
       setEmoji(true);
@@ -187,8 +203,11 @@ function Messages({ selectedUser }) {
       };
       const response = await axios.put(
         `${SERVER_URL}/messages/${idMsg}`,
-        updatedMessage
-      );
+        updatedMessage,{
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
       socket.emit("updateMessage", response.data);
       setputdelete(true);
       setEmoji(true);

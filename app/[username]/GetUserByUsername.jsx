@@ -54,49 +54,56 @@ function GetUserByUsername({ params }) {
     });
   };
 
-  // Translate content
-  const translateContent = async (content, lang) => {
-    try {
-      const response = await axios.post(`${SERVER_URL_V}/translate`, {
-        textObject: content,
-        to: lang
-      });
-      setTranslatedDetails(response.data.translations);
-    } catch (error) {
-      console.error('Error translating content:', error);
-    }
-  };
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      setLoading(true);
+    // Translate content
+    const translateContent = async (content, lang) => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`);
-        setUserDetailsG(response.data);
-        await translateContent({
-          Profile : "Profile",
-          Services : "Services",
-          Education : "Education",
-          Experience : "Experience",
-          Skills : "Skills",
-          Languages : "Languages",
-          bio: response.data.bio,
-          bio: response.data.bio,
-          services: response.data.services,
-          education: response.data.education,
-          skills: response.data.skills,
-          languages: response.data.languages,
-          experience: response.data.experience,
-          country: response.data.country,
-          category: response.data.category
-        }, language);
+        const response = await axios.post(`${SERVER_URL_V}/translate`, {
+          textObject: content,
+          to: lang
+        }, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+          }
+        });
+        setTranslatedDetails(response.data.translations);
       } catch (error) {
-        console.error('Error fetching user details:', error);
-      } finally {
-        setLoading(false); // Set loading false after fetching
+        console.error('Error translating content:', error);
       }
     };
-    fetchUserDetails();
-  }, [SERVER_URL_V, language]);
+    useEffect(() => {
+      const fetchUserDetails = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`, {
+            headers: {
+              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+            }
+          });
+          setUserDetailsG(response.data);
+          await translateContent({
+            Profile : "Profile",
+            Services : "Services",
+            Education : "Education",
+            Experience : "Experience",
+            Skills : "Skills",
+            Languages : "Languages",
+            bio: response.data.bio,
+            services: response.data.services,
+            education: response.data.education,
+            skills: response.data.skills,
+            languages: response.data.languages,
+            experience: response.data.experience,
+            country: response.data.country,
+            category: response.data.category
+          }, language);
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+        } finally {
+          setLoading(false); // Set loading false after fetching
+        }
+      };
+      fetchUserDetails();
+    }, [SERVER_URL_V, language]);
 
   if (error) {
     return (

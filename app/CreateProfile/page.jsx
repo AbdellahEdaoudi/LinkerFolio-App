@@ -59,7 +59,11 @@ const CreateProfile = () => {
         aboni: false,
         blocked: false,
       };
-      const response = await axios.post(`${SERVER_URL_V}/users`, data);
+      const response = await axios.post(`${SERVER_URL_V}/users`, data,{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
+      });
       console.log("Response:", response.data);
       setSuccessMessage("Your profile has been created!");
       window.location.href = "/";

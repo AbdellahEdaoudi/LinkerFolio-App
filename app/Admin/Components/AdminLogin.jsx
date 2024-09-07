@@ -24,6 +24,10 @@ function AdminLogin() {
       const response = await axios.post(`${SERVER_URL_V}/login`, {
         email,
         password,
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+        }
       });
 
       setSuccess("Login successful");
