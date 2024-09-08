@@ -94,7 +94,11 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
   useEffect(() => {
     const GetFriendRequest = async () => {
       try {
-        const response = await axios.get(`${SERVER_URL_V}/friend`);
+        const response = await axios.get(`${SERVER_URL_V}/friend`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+          }
+        });
         setFriendRequests(response.data.data);
       } catch (error) {
         console.error(
@@ -112,7 +116,11 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
     console.log(data);
 
     try {
-      const response = await axios.post(`${SERVER_URL_V}/friend`, data);
+      const response = await axios.post(`${SERVER_URL_V}/friend`, data, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+        }
+      });
       const newRequest = response.data.data;
       setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
       setfriendId(newRequest._id);
@@ -134,7 +142,11 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
       console.log(data);
       const response = await axios.put(
         `${SERVER_URL_V}/friend/${friendId}`,
-        data
+        data, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+          }
+        }
       );
       socket.emit("updateFriendRequest", response.data.data);
       setLoading(false);
@@ -150,7 +162,11 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
   const DeleteRequest = async () => {
     setLoadingD(true);
     try {
-      await axios.delete(`${SERVER_URL_V}/friend/${friendId}`);
+      await axios.delete(`${SERVER_URL_V}/friend/${friendId}`, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+        }
+      });
       toast("Friend request canceled!");
       socket.emit("deleteFriendRequest", friendId);
       setLoadingD(false);
