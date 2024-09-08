@@ -250,8 +250,8 @@ function GetUserByUsername({ params }) {
             <AlertDialog>
               <AlertDialogTrigger>
                     <Image
-                      width={136}
-                      height={0}
+                      width={140}
+                      height={140}
                       src={userDetailsG.urlimage}
                       alt="Profile Image"
                       className="object-cover cursor-pointer border-4  border-green-600 shadow-lg  rounded-full  duration-500"
@@ -281,6 +281,12 @@ function GetUserByUsername({ params }) {
           <div className="text-center md:text-left">
             <div className="font-bold text-2xl text-gray-800">
               {userDetailsG.fullname}
+            </div>
+            <div className="text-gray-600 text-[1rem] flex items-center justify-center md:justify-start gap-2 mt-1">
+                    <span className="text-green-500">
+                      <MailCheck width={18} />
+                    </span>
+                    {userDetailsG.email}
             </div>
             <div className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex md:flex-row flex-col items-center md:gap-2 md:justify-start justify-center `}>
               <div className={`flex gap-1 ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} text-green-900`}>
