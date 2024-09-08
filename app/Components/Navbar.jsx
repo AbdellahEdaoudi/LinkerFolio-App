@@ -155,7 +155,7 @@ function Navbar() {
                       <div className="flex items-center gap-2">
                         <Image className="rounded-full border-2 border-amber-400"
                         src={userr.urlimage} width={35} height={35} alt="Photo Profile" />
-                      {/* {userr.username} */}
+                      {userr.fullname}  
                       </div>
                     </div>
                     {/* Icons Navbar */}
