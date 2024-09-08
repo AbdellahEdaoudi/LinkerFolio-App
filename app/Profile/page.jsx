@@ -1,7 +1,4 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
-import download from "downloadjs";
-
 import {
   Link2,
   MailCheck,
@@ -28,57 +25,20 @@ import { MyContext } from "../Context/MyContext";
 import UserLinks from "../[username]/UserLinks";
 import Loadingpage from "../Components/Loading/LoadingPage";
 import QrcodeProfile from "./QrcodeProfile";
+import CreateProfile from "../Components/CreateProfile";
 
 function ProfilePage() {
-  const { user } = useUser();
   const [copied, setCopied] = useState(false);
   const { CLIENT_URL, userDetails, EmailUser } = useContext(MyContext);
   const [filtUser, setFiltUser] = useState(null);
+
+
 
   useEffect(() => {
     const FindUser = userDetails.find((fl) => fl.email === EmailUser);
     setFiltUser(FindUser);
   }, [userDetails, EmailUser]);
 
-  const DownloadQRCode = () => {
-    const qrCodeDataURL = document
-      .getElementById("qrcode")
-      .toDataURL("image/png");
-    download(qrCodeDataURL, `${user.fullName}.png`, "image/png");
-  };
-  const ShareQRCode = () => {
-    const canvas = document.getElementById("qrcode");
-    const tempCanvas = document.createElement("canvas");
-    const context = tempCanvas.getContext("2d");
-
-    tempCanvas.width = canvas.width + 40;
-    tempCanvas.height = canvas.height + 40;
-
-    context.fillStyle = "white";
-    context.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
-    context.drawImage(canvas, 20, 20);
-
-    tempCanvas.toBlob(
-      (blob) => {
-        const file = new File([blob], "qrcode.png", { type: "image/png" });
-
-        if (navigator.share) {
-          navigator
-            .share({
-              title: `${userDetails.fullname}'s QR Code`,
-              files: [file],
-            })
-            .then(() => console.log("Successful share"))
-            .catch((error) => console.log("Error sharing", error));
-        } else {
-          alert("Share not supported on this browser");
-        }
-      },
-      "image/png",
-      1.0
-    );
-  };
 
   if (!filtUser) {
     return <Loadingpage />;
@@ -109,21 +69,6 @@ function ProfilePage() {
       ]
     : [];
 
-  const boldNumbers = (text) => {
-    if (!text) {
-      return [];
-    }
-    const parts = text.split(/(\d+|:)/);
-    return parts.map((part, index) =>
-      /\d+|:/.test(part) ? (
-        <span key={index} className="text-black font-bold">
-          {part}
-        </span>
-      ) : (
-        part
-      )
-    );
-  };
   const ListDisk = (data) => {
     return (
       <ul className="list-disc ml-6">
@@ -133,6 +78,13 @@ function ProfilePage() {
       </ul>
     );
   };
+  if (!userDetails || userDetails.length === 0) {
+    return <Loadingpage />
+  }
+  const filt = userDetails.find((fl) => fl.email === EmailUser);
+  if (!filt) {
+    return <CreateProfile />;
+  }
 
   return (
     <div className="">
@@ -220,7 +172,7 @@ function ProfilePage() {
                           UserF[item.key] && (
                             <li key={i}>
                               <a
-                                className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md border shadow-md transition duration-300"
+                                className="flex hover:scale-105 items-center justify-center bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-md border shadow-md transition duration-300"
                                 href={UserF[item.key]}
                                 target="_blank"
                                 rel="noopener noreferrer"

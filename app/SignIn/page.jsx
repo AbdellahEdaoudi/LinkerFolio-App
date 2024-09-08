@@ -65,7 +65,7 @@ const Page = () => {
           <div>
             <Image
             className="rounded-lg"
-            src={"/LinkerFolioAbdellah.png"} width={500} height={100} alt="LinkerFolioAbdellah" />
+            src={"/Mark_Linkerfolio/Mark_Linkerfolio.png"} width={800} height={100} alt="LinkerFolioAbdellah" />
           </div>
         </div>
         

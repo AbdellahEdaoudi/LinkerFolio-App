@@ -2,7 +2,7 @@ import React from 'react'
 import GetUserByUsername from './GetUserByUsername';
 
 export async function generateMetadata({ params }) {
-      const SERVER_URL = "https://saas-app-api.vercel.app";
+      const SERVER_URL = "https://linkerfolio-server.vercel.app";
       // const SERVER_URL = "http://localhost:9999";
   try {
 
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
     const user = await response.json();
 
     return {
-      title: `${user.fullname} | LinkerFolio`,
+      title: `${user.fullname ? `${user.fullname} | LinkerFolio` : `LinkerFolio`}`,
       description: user.bio,
       // icons: {
       //   icon: user.urlimage,

@@ -153,9 +153,9 @@ function Navbar() {
                       className="font-medium  hidden mr-4 md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                     >
                       <div className="flex items-center gap-2">
-                        <Image className="rounded-full"
-                        src={user.image} width={31} height={35} alt="Photo Profile" />
-                      {user.name}
+                        <Image className="rounded-full border-2 border-amber-400"
+                        src={userr.urlimage} width={35} height={35} alt="Photo Profile" />
+                      {/* {userr.username} */}
                       </div>
                     </div>
                     {/* Icons Navbar */}

@@ -5,6 +5,7 @@ import { MyContext } from '../Context/MyContext';
 import axios from 'axios';
 import { toast } from "sonner";
 import CreateProfile from '../Components/CreateProfile';
+import LoadChatPage from '../Components/Loading/LoadChatPage/LoadChatPage';
 
 function EditUserLinks() {
   const {SERVER_URL_V, EmailUser,userDetails} = useContext(MyContext);
@@ -97,10 +98,11 @@ function EditUserLinks() {
       setLoadingt(false);
     }
   };
-  // Filter user details based on EmailUser
-  const filt = userDetails.find((fl) => fl.email === EmailUser);
 
-  // Check if filt is valid before rendering
+  if (!userDetails || userDetails.length === 0) {
+    return <LoadChatPage />;
+  }
+  const filt = userDetails.find((fl) => fl.email === EmailUser);
   if (!filt) {
     return <CreateProfile />;
   }
