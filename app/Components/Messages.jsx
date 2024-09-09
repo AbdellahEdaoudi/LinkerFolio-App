@@ -222,7 +222,7 @@ function Messages({ selectedUser }) {
     }
   };
   
-  if (!selectedUser ||!friendRequests || !EmailUser || !messages) {
+  if (!selectedUser ||!friendRequests || friendRequests.length === 0 || !EmailUser || !messages) {
     return <LMessages />;
   }
   const FilterMessages = messages.filter((fl) => {
