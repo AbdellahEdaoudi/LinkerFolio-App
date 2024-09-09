@@ -75,7 +75,11 @@ function Friendss() {
 
         setLoadingStatus((prev) => ({ ...prev, [requestId]: { delete: true } }));
         try {
-            await axios.delete(`${SERVER_URL_V}/friend/${requestId}`);
+            await axios.delete(`${SERVER_URL_V}/friend/${requestId}`,{
+                headers: {
+                  'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+                }
+              });
             setRequests((prev) => prev.filter((req) => req._id !== requestId));
             socket.emit('deleteFriendRequest', requestId);
             toast('Unfriend successfully');
