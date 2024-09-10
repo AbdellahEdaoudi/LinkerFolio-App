@@ -195,7 +195,7 @@ function GetUserByUsername({ params }) {
   
   const ListDisk = ( data ) => {
     return (
-      <ul className={`list-disc  ml-4 ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr '}`}>
+      <ul className={`list-disc  ml-4 ${language === "ar" ? 'list-disc-rtl mr-4' : 'list-disc-ltr ml-4 '}`}>
         {data.split("\n").map((item, i) => (
           <li key={i} className="text-base leading-relaxed list-outside">
             {item}

@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 import { bgcolorOptions } from "../../data/bgcolorOptions";
 import { MyContext } from "../../../app/Context/MyContext";
 import UpdatePLoading from "../../Components/Loading/UpdatePLoading";
+import { toast } from 'react-toastify';
+import { CheckCircle } from "lucide-react";
 function NameUser({ params }) {
   const {data,status}=useSession()
   const user = data?.user
@@ -158,14 +160,15 @@ function NameUser({ params }) {
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
           }
         });
-      router.push("/Profile");
-      console.log("User details updated successfully", response.data);
+        toast(<p className='flex gap-3 items-center'><CheckCircle /> Updated Successfully</p>, {
+          autoClose: 3000,
+        });
+        console.log("User details updated successfully", response.data);
+        router.push("/Profile");
     } catch (error) {
       console.error("Error updating user details:", error);
       if (error.response && error.response.status === 400 && error.response.data.error === 'Username already exists') {
         setErrorMessage('Username already exists');
-      } else {
-        setErrorMessage('An error occurred while updating your profile. Please try again.');
       }
     } finally {
       setLoading(false);

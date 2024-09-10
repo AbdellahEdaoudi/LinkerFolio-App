@@ -34,7 +34,6 @@ const ContactForm = () => {
         }
       });
       toast(<p className='flex gap-3 items-center'><CheckCheck /> Sent successfully!</p>, {
-        position: "top-center",
         autoClose: 2000,
       });
       setMessage('');
