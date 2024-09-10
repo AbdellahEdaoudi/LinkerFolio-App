@@ -3,6 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
   CheckCheck,
+  Loader,
+  LoaderPinwheel,
   MessageCircleMore,
   UserMinus,
   UserPlus,
@@ -177,6 +179,12 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
       setLoadingD(false);
     }
   };
+  if (friendRequests.length === 0 || !friendRequests) {
+    return <div className="p-1 border rounded-full flex items-center animate-spin justify-center">
+      {/* <Loader /> */}
+      <LoaderPinwheel />
+      </div>
+  }
 
   const CheckFrirnd = friendRequests.find(
     (f) =>

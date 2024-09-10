@@ -420,10 +420,6 @@ function NameUser({ params }) {
   />
 </div>
 
-<div className="border-b border-gray-300 my-8"></div>
-
-
-<div className="border-b border-gray-300 my-8"></div>
 {/* Education Section */}
 <div className="mb-8">
 <h3 className="text-xl font-semibold text-indigo-600 mb-2">🎓 Education</h3>
