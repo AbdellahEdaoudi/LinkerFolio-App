@@ -80,22 +80,24 @@ function GetUserByUsername({ params }) {
             }
           });
           setUserDetailsG(response.data);
-          await translateContent({
-            Profile : "Profile",
-            Services : "Services",
-            Education : "Education",
-            Experience : "Experience",
-            Skills : "Skills",
-            Languages : "Languages",
-            bio: response.data.bio,
-            services: response.data.services,
-            education: response.data.education,
-            skills: response.data.skills,
-            languages: response.data.languages,
-            experience: response.data.experience,
-            country: response.data.country,
-            category: response.data.category
-          }, language);
+          if (language !== "") {
+            await translateContent({
+              Profile: "Profile",
+              Services: "Services",
+              Education: "Education",
+              Experience: "Experience",
+              Skills: "Skills",
+              Languages: "Languages",
+              bio: response.data.bio,
+              services: response.data.services,
+              education: response.data.education,
+              skills: response.data.skills,
+              languages: response.data.languages,
+              experience: response.data.experience,
+              country: response.data.country,
+              category: response.data.category
+            }, language);
+          }
         } catch (error) {
           console.error('Error fetching user details:', error);
         } finally {
