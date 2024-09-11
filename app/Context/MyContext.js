@@ -23,8 +23,8 @@ export const MyProvider = ({ children }) => {
   // const SERVER_URL = "http://localhost:9999" ;
   // const SERVER_URL_V = "http://localhost:9999" ;
    const CLIENT_URL = "https://linkerfolio.vercel.app";
-   const SERVER_URL = "https://socketserver-muhp.onrender.com";
-   const SERVER_URL_V = "https://linkerfolio-server.vercel.app";
+   const SERVER_URL = "https://server-linkerfolio.onrender.com";
+   const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
    
    const audioRef = useRef(null);
   // socket.io
