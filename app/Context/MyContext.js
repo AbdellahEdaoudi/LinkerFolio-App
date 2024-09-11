@@ -27,8 +27,6 @@ export const MyProvider = ({ children }) => {
    const SERVER_URL_V = "https://linkerfolio-server.vercel.app";
    
    const audioRef = useRef(null);
-  
-   
   // socket.io
   useEffect(() => {
     const socket = io(SERVER_URL);
@@ -84,7 +82,6 @@ export const MyProvider = ({ children }) => {
     };
   }, [SERVER_URL]);
   
-
   // Fetch users
   useEffect(() => {
     axios.get(`${SERVER_URL_V}/users`,{
@@ -199,8 +196,8 @@ const Requests = friendRequests
         messages,
         setMessages,
         socket,
-        Requests,
-        friendRequests, setFriendRequests
+        friendRequests, setFriendRequests,
+        Requests
       }}
     >
       <audio ref={audioRef} src="/notification3.mp3" preload="auto" />

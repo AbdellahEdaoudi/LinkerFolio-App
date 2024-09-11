@@ -7,7 +7,6 @@ import { MyProvider } from "./Context/MyContext";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import NextAuthProvider from "./providers/NextAuthProvider";
-import MainLayout from "./MainLayout"
 const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
 
@@ -32,12 +31,10 @@ export default function RootLayout({ children }) {
         <body className={`${prompt.className} scrollbar-none bg-gradient-to-r from-blue-500 to-purple-500`}>
         <NextAuthProvider>
           <MyProvider>
-          <MainLayout>
             <div className="sticky top-0 z-50 ">
           <Navbar />
           </div>
             {children}
-          </MainLayout>
         </MyProvider>
         </NextAuthProvider>
           <Toaster />
