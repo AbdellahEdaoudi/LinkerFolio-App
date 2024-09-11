@@ -19,12 +19,12 @@ export const MyProvider = ({ children }) => {
   
 
 
-  // const CLIENT_URL = "http://localhost:3000";
-  // const SERVER_URL = "http://localhost:9999" ;
-  // const SERVER_URL_V = "http://localhost:9999" ;
-   const CLIENT_URL = "https://linkerfolio.vercel.app";
-   const SERVER_URL = "https://socketserver-muhp.onrender.com";
-   const SERVER_URL_V = "https://linkerfolio-server.vercel.app";
+  const CLIENT_URL = "http://localhost:3000";
+  const SERVER_URL = "http://localhost:9999" ;
+  const SERVER_URL_V = "http://localhost:9999" ;
+  //  const CLIENT_URL = "https://linkerfolio.vercel.app";
+  //  const SERVER_URL = "https://socketserver-muhp.onrender.com";
+  //  const SERVER_URL_V = "https://linkerfolio-server.vercel.app";
    
    const audioRef = useRef(null);
   
@@ -132,7 +132,6 @@ export const MyProvider = ({ children }) => {
         console.error("Error fetching user details:", error);
       });
   }, [SERVER_URL_V]);
-
   // GetFriendRequest
   useEffect(() => {
     const GetFriendRequest = async () => {

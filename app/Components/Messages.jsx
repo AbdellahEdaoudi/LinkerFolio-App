@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -18,7 +17,6 @@ import LMessages from "./Loading/LoadChatPage/LMessages";
 
 function Messages({ selectedUser }) {
   const {toast} = useToast();
-  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
@@ -258,7 +256,7 @@ function Messages({ selectedUser }) {
                   href={`/${selectedUser.username}`}
                   className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
                 >
-                  <div className="w-12 h-12 rounded-full overflow-hidden">
+                  <div className="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden">
                    <Image
                      width={96}  // 24 * 4
                      height={96} // 24 * 4
@@ -267,7 +265,7 @@ function Messages({ selectedUser }) {
                      className="object-cover"
                    />
                    </div>
-                  <p className="font-bold">{selectedUser.fullname }</p>
+                  <p className="font-bold line-clamp-1">{selectedUser.fullname }</p>
                 </Link>
                 <p className="font-bold md:block hidden">
                   {selectedUser.email}
