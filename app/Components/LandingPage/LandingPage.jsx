@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "../../../@/components/ui/card";
 import {
+  ArrowRight,
   CheckCircle,
   Download,
   Globe,
@@ -23,7 +24,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-20 relative">
+        <section className="w-full pt-7 pb-12 md:py-20 relative">
           <div className="absolute inset-0 bg-[url('/')] bg-cover bg-center opacity-10"></div>
           <div className="container px-4 md:px-6 mx-auto relative z-10">
             <div className="flex flex-col lg:flex-row items-center md:mx-20 gap-6 lg:gap-12">
@@ -82,44 +83,44 @@ export default function LandingPage() {
             </h2>
             <div className="grid gap-8 lg:grid-cols-3">
               {[
-  {
-    icon: Share2,
-    title: "Premium Resume",
-    description:
-      "A stylish design that highlights your experience, skills, and education attractively.",
-  },
-  {
-    icon: Users,
-    title: "Social Link Management",
-    description:
-      "Consolidate all your social media links in one place for easy access and sharing.",
-  },
-  {
-    icon: QrCode,
-    title: "Download and Share QR Code",
-    description:
-      "Download and share a QR code for quick access to your resume and social media links.",
-  },
-  {
-    icon: Globe,
-    title: "Automatic Translation",
-    description:
-      "Translate your resume into multiple languages for a global audience.",
-  },
-  {
-    icon: Users,
-    title: "Social Communication",
-    description:
-      "Connect with friends directly and securely within a professional environment.",
-  },
-  {
-    icon: Palette,
-    title: "Customizable Background Colors",
-    description:
-      "Choose from various background colors to personalize the look of your resume page.",
-  },
-]
-.map((feature, index) => (
+                   {
+                     icon: Share2,
+                     title: "Premium Resume",
+                     description:
+                       "A stylish design that highlights your experience, skills, and education attractively.",
+                   },
+                   {
+                     icon: Users,
+                     title: "Social Link Management",
+                     description:
+                       "Consolidate all your social media links in one place for easy access and sharing.",
+                   },
+                   {
+                     icon: QrCode,
+                     title: "Download and Share QR Code",
+                     description:
+                       "Download and share a QR code for quick access to your resume and social media links.",
+                   },
+                   {
+                     icon: Globe,
+                     title: "Automatic Translation",
+                     description:
+                       "Translate your resume into multiple languages for a global audience.",
+                   },
+                   {
+                     icon: Users,
+                     title: "Social Communication",
+                     description:
+                       "Connect with friends directly and securely within a professional environment.",
+                   },
+                   {
+                     icon: Palette,
+                     title: "Customizable Background Colors",
+                     description:
+                       "Choose from various background colors to personalize the look of your resume page.",
+                   },
+                 ]
+                 .map((feature, index) => (
                 <Card
                   key={index}
                   className="bg-slate-700 border-none overflow-hidden group hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300"
@@ -287,6 +288,23 @@ export default function LandingPage() {
             </p>
           </div>
         </section>
+
+        <section id="cta" className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-emerald-500 to-cyan-500">
+  <div className="container px-4 md:px-6 mx-auto text-center">
+    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white mb-4">
+      Ready to boost your career?
+    </h2>
+    <p className="mx-auto max-w-[600px] text-slate-100 md:text-xl mb-8">
+      Join thousands of professionals using LinkerFolio to achieve their career goals. Start today and see the difference yourself!
+    </p>
+    <Button 
+      onClick={()=>signIn("google", {redirect:true, callbackUrl:`/Home`})}
+      asChild size="lg" className="bg-white cursor-pointer hover:bg-slate-100 text-emerald-600 text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-white/50">
+      <div >Start for free now <ArrowRight className="mr-2 h-5 w-5" /></div>
+    </Button>
+  </div>
+</section>
+
 
         <footer className="w-full py-6 bg-gray-900 border-t border-gray-800">
         <div className="container px-4 md:px-6 mx-auto">

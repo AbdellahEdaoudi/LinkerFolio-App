@@ -147,7 +147,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
 
   return (
     <div>
-      <div className="bg-gray-800 w-screen text-white p-4 overflow-y-auto h-[800px]">
+      <div className="bg-gray-800 w-screen text-white p-4 ">
         {/* Search input */}
         <input
           type="search"
@@ -163,7 +163,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
         <div className=" overflow-y-auto  scrollbar-none ">
         <div>
               {/* Users List */}
-              <div className="overflow-y-auto   scrollbar-none">
+              <div className="overflow-y-auto max-h-[500px] min-h-[520px] scrollbar-none">
                 {userDetails
                   .filter(
                     (user) =>
