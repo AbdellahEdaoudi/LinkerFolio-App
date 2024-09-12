@@ -1,5 +1,4 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -20,7 +19,6 @@ import InputLoadMessages from "../../../Components/Loading/InputLoadMessages";
 function UserProfile({ params }) {
   const [userDname, setUserDname] = useState("");
   const { toast } = useToast();
-  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
