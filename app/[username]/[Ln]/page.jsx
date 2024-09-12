@@ -282,7 +282,7 @@ function Page({ params }) {
             </AlertDialog>
           </div>
           <div className="text-center md:text-left">
-            <div className="font-bold text-2xl text-gray-800">
+            <div className={`font-bold text-2xl text-gray-800 ${language === "ar" && "text-start"}`}>
               {userDetailsG.fullname}
             </div>
             <div className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex md:flex-row flex-col items-center md:gap-2 md:justify-start justify-center `}>
