@@ -46,7 +46,7 @@ function GetUserByUsername({ params }) {
   const [language, setLanguage] = useState('');
   const filt = userDetails.find((fl) => fl.email === EmailUser);
   const CopyLinkProfil = () => {
-    const urlToCopy = `${CLIENT_URL}/${path}`;
+    const urlToCopy = `${CLIENT_URL}${path}`;
     navigator.clipboard.writeText(urlToCopy).then(() => {
       setCopied(true);
       toast("Copied successfully");
@@ -265,8 +265,8 @@ function GetUserByUsername({ params }) {
                 <AlertDialogHeader>
                   <AlertDialogDescription className="flex justify-center">
                     <Image
-                      width={400}
-                      height={400}
+                      width={250}
+                      height={250}
                       src={userDetailsG.urlimage}
                       alt="Profile Image"
                       className="object-cover rounded-full cursor-pointer"
@@ -332,7 +332,7 @@ function GetUserByUsername({ params }) {
             {copied ? <p className="text-[14px]">Copied!</p> : <Link />} <br />
           </button>
           {/* Modal Qr and Link */}
-          <QrcodeProfile userDetailsG={userDetailsG} />
+          <QrcodeProfile path={path} userDetailsG={userDetailsG} />
           {/* Email User */}
           <span className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-red-700 hover:scale-110 duration-200  ">
             <a

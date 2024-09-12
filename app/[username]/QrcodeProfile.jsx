@@ -13,7 +13,7 @@ import QRCode from "qrcode.react";
 import { MyContext } from "../Context/MyContext";
 import { QrCode } from "lucide-react";
 
-function QrcodeProfile({ userDetailsG }) {
+function QrcodeProfile({ userDetailsG,path}) {
   const { CLIENT_URL } = useContext(MyContext);
   const qrCodeRef = useRef(null);
 
@@ -54,7 +54,7 @@ function QrcodeProfile({ userDetailsG }) {
   };
 
   const ShareLink = () => {
-    const url = `${CLIENT_URL}/${userDetailsG.username}`;
+    const url = `${CLIENT_URL}${path}`;
 
     if (navigator.share) {
       navigator
@@ -83,7 +83,7 @@ function QrcodeProfile({ userDetailsG }) {
               <div className="flex flex-col justify-center items-center  ">
                 <div className={`mb-6 hidden`} ref={qrCodeRef}>
                   <QRCode
-                    value={`${CLIENT_URL}/${userDetailsG.username}`}
+                    value={`${CLIENT_URL}${path}`}
                     size={500}
                     bgColor="#ffffff"
                     fgColor="#000000"
@@ -107,7 +107,7 @@ function QrcodeProfile({ userDetailsG }) {
                 <div className="border-2 rounded-md ">
                   <QRCode
                     id="qrcode"
-                    value={`${CLIENT_URL}/${userDetailsG.username}`}
+                    value={`${CLIENT_URL}${path}`}
                     size={200}
                     bgColor="#ffffff"
                     fgColor="#000000"

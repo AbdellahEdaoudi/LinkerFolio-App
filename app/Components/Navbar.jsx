@@ -110,6 +110,8 @@ function Navbar() {
           <div onClick={()=>{
                 router.push("/Home");
                 setSetting(true);
+                setFrReq(true);
+                setNotification(true);
               }} 
                 className="flex items-center flex-shrink-0 md:w-auto  hover:scale-105 duration-300 cursor-pointer">
           <Image
