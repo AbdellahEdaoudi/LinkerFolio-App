@@ -18,7 +18,7 @@ function ChatHome() {
     <div>
       {/* LAPTOP */}
       <div className="md:block hidden duration-500">
-        <div className="flex flex-row overflow-hidden bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600">
+        <div className="flex flex-row overflow-hidden ">
           {/* Users list */}
           <nav className="w-72 min-w-72 flex-shrink-0">
             <UserList

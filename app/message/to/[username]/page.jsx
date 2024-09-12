@@ -294,7 +294,7 @@ function UserProfile({ params }) {
             </h2>
             {CheckFrirnd && CheckFrirnd.status === "pending" ? (
               <div>
-                <div className="flex items-start pt-16 justify-center h-[500px] md:h-[350px] bg-yellow-100">
+                <div className="flex items-start pt-16 justify-center h-[350px] md:h-[350px] bg-yellow-100">
                 <div className="text-center border border-yellow-500 p-8 mx-5 bg-white shadow-lg rounded-md">
                   <h1 className="text-yellow-700 font-bold text-2xl mb-4">
                     Pending Friend Request
@@ -308,7 +308,7 @@ function UserProfile({ params }) {
               </div>
             ) : !CheckFrirnd && EmailUser !== emailuser ? (
               <div>
-                <div className="flex items-start rounded-md pt-16 justify-center h-[500px] md:h-[350px] bg-red-100">
+                <div className="flex items-start rounded-md pt-16 justify-center h-[350px] md:h-[350px] bg-red-100">
                 <div className="text-center border border-red-500 p-8 mx-5 bg-white shadow-lg rounded-md">
                   <h1 className="text-red-700 font-bold text-2xl mb-4">
                     Cannot Communicate
@@ -324,7 +324,7 @@ function UserProfile({ params }) {
               <div>
                 {/* Messages */}
                 <div
-                  className="bg-white p-4 rounded-lg shadow-lg h-[500px] md:h-[350px] scrollbar-none
+                  className="bg-white p-4 rounded-lg shadow-lg h-[350px] md:h-[350px] scrollbar-none
                overflow-y-auto"
                   ref={messagesEndRef}
                 >
