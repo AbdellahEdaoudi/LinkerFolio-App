@@ -57,7 +57,7 @@ function EditUserLinks() {
       });
       console.log('Link added:', response.data);
       setUserLinks(Links => [response.data.data, ...Links]);
-      toast("Link added successfully!");
+      // toast("Link added successfully!");
       setLink('');
       setNamelink('');
     } catch (error) {
@@ -87,7 +87,7 @@ function EditUserLinks() {
           item._id === editLinkId ? response.data.data : item
         )
       );
-      toast("Link updated successfully!");
+      // toast("Link updated successfully!");
       setEditLinkId(null);
       setLink('');
       setNamelink('');
@@ -118,7 +118,7 @@ function EditUserLinks() {
           }
         });
         setUserLinks((Links) => Links.filter((item) => item._id !== id));
-        toast("Link deleted successfully!");
+        // toast("Link deleted successfully!");
       } catch (error) {
         console.error('There was an error deleting the link!', error);
         toast.error('Failed to delete the link.');

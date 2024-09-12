@@ -249,7 +249,7 @@ function UserProfile({ params }) {
       (f.from === EmailUser && f.to === emailuser) ||
       (f.from === emailuser && f.to === EmailUser)
   );
-  if (!userDname) {
+  if (!userDname || !friendRequests  || friendRequests.length === 0) {
     return <LMessages />;
   }
 
