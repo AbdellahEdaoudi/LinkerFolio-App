@@ -1,6 +1,5 @@
 import { Inter, Prompt } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "./Components/Navbar";
 import { Toaster } from "../components/ui/sonner"
 import { MyProvider } from "./Context/MyContext";
@@ -23,8 +22,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
+      <html className="scroll-smooth" lang="en">
       <head>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       </head>
@@ -41,6 +39,5 @@ export default function RootLayout({ children }) {
           <ToastContainer />
         </body>
       </html>
-    </ClerkProvider>
   );
 }

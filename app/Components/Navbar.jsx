@@ -104,11 +104,11 @@ function Navbar() {
   };
   return (
     <div>
-      <nav className=" border-b drop-shadow-2xl bg-white ">
+      <nav className=" border-b drop-shadow-2xl bg-gray-200  backdrop-blur-lg ">
         <section className="md:container md:mx-auto ml-3 mr-6 py-3">
           <div className="flex justify-between items-center text-white">
           <div onClick={()=>{
-                router.push("/");
+                router.push("/Home");
                 setSetting(true);
               }} 
                 className="flex items-center flex-shrink-0 md:w-auto  hover:scale-105 duration-300 cursor-pointer">
@@ -128,7 +128,7 @@ function Navbar() {
           </div>
           {/* SEARCHE */}
           <div className="md:mx-0 mx-2">
-          <div className="flex items-center bg-gray-100 border shadow-sm border-gray-300 rounded-lg shadow-m  md:w-96 max-w-md">
+          <div className="flex items-center bg-gray-100 border shadow-sm border-gray-300 rounded-lg   md:w-96 max-w-md">
             <button className=" p-2 text-gray-500 ">
             <UserRoundSearch />
             </button>

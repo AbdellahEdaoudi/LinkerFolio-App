@@ -343,7 +343,7 @@ function NameUser({ params }) {
 </div>
 
 {/* Social Media Section */}
-<div className="mb-8">
+<div className="mb-3">
   <div className="flex flex-wrap gap-4 justify-center">
     {datasocial.map((item, i) => (
       <AlertDialog key={i}>
@@ -377,7 +377,24 @@ function NameUser({ params }) {
     ))}
   </div>
 </div>
-<div className="border-b border-gray-300 my-8"></div>
+
+<div className="flex items-center justify-end mr-10">
+        {/* Submit Button */}
+      <button
+        disabled={loading}
+        type="submit"
+        className="flex items-center justify-center mb-2 gap-2  bg-gray-800 text-white px-5 py-3 rounded-lg text-[14px] "
+      >
+        {loading ? (
+          <>
+            Updating <i className="fa fa-spinner fa-spin"></i>
+          </>
+        ) : (
+          "Save"
+        )}
+      </button>
+      </div>
+<div className="border-b border-gray-300 mb-6"></div>
 {/* Background Color Selection */}
 <div>
         <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">

@@ -20,9 +20,9 @@ const CreateProfile = () => {
   const { SERVER_URL_V,userDetails} = useContext(MyContext);
   const filt = userDetails.find((fl) => fl.email === EmailUser);
 
-  if (status === "authenticated" && filt) {
-    router.push("/")
-  }
+  // if (status === "authenticated" && filt) {
+  //   router.push("/Home")
+  // }
 
   const postData = async (e) => {
     e.preventDefault()
@@ -91,7 +91,7 @@ const CreateProfile = () => {
 
   return (
     <form onSubmit={postData}>
-      <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 p-6">
+      <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen bg-slate-800 p-6">
         <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
           <div className="flex items-center justify-around mb-6">
             {UrlImage? (

@@ -12,7 +12,6 @@
     "@chakra-ui/react": "^2.8.2",
     "@ckeditor/ckeditor5-build-classic": "^43.1.0",
     "@ckeditor/ckeditor5-react": "^9.1.0",
-    "@clerk/nextjs": "^5.2.2",
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@radix-ui/react-alert-dialog": "^1.1.1",

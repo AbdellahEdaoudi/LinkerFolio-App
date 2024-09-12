@@ -30,7 +30,7 @@ import SignInComponents_CP from "../Components/SignIn/SignInComponents_CP";
 import QrcodeProfile from "./QrcodeProfile";
 import { languagess } from "../data/language";
 import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import SocialMedia from "./SocialMedia"
 
 function GetUserByUsername({ params }) {
@@ -240,7 +240,9 @@ function GetUserByUsername({ params }) {
       key: translatedDetails ? translatedDetails.languagesKey || 'languages' : 'languages'
     }
   ];
-  
+  if (status === 'unauthenticated') {
+    signIn("google", {redirect:true, callbackUrl:`/${userDetailsG.username}`})
+  }
   return (
     <div
       className={`  flex items-start justify-center   pt-4 min-h-screen pb-96 ${userDetailsG.bgcolorp}`}
