@@ -283,7 +283,7 @@ function GetUserByUsername({ params }) {
             </AlertDialog>
           </div>
           <div className="text-center md:text-left">
-            <div className="font-bold text-2xl text-gray-800">
+            <div className={`font-bold text-2xl text-gray-800 ${language === "ar" && "text-start"}`}>
               {userDetailsG.fullname}
             </div>
             <div className="text-gray-600 text-[1rem] flex items-center justify-center md:justify-start gap-2 mt-1">
