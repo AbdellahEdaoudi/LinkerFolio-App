@@ -10,7 +10,10 @@ export async function generateMetadata({ params }) {
       next: {
         revalidate: 60 * 10,
       },
-    });
+      headers: {
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+      }
+    });    
     
     const user = await response.json();
 
