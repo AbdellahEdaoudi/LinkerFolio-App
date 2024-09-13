@@ -2,7 +2,7 @@ import React from 'react'
 import GetUserByUsername from './GetUserByUsername';
 
 export async function generateMetadata({ params }) {
-      const SERVER_URL = "https://linkerfolio-server.vercel.app";
+      const SERVER_URL = "https://server-linkerfolio.vercel.app";
       // const SERVER_URL = "http://localhost:9999";
   try {
 
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
   } catch (error) {
     console.error('Error fetching user data:', error);
     return {
-      title: 'ChatFlow',
+      title: `LinkerFolio`,
       description: 'Failed to fetch user data',
     };
   }
