@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { Button } from "../../../@/components/ui/button";
 import {
@@ -18,9 +19,18 @@ import {
   Users,
 } from "lucide-react";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+  const { data, status } = useSession();
+  const Router = useRouter();
+  useEffect(() => {
+    if (status === "authenticated") {
+      Router.push("/Home");
+    }
+  }, [status, Router]);
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <main className="flex-1">

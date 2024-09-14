@@ -6,20 +6,12 @@ import { MyProvider } from "./Context/MyContext";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import NextAuthProvider from "./providers/NextAuthProvider";
+import {Metadata} from "./data/metadata"
+
 const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
 
-export const metadata = {
-  title: "LinkerFolio",
-  description: "LinkerFolio is an innovative platform for managing your portfolio and social media links seamlessly. Create, customize, and share your personal or professional links with ease.",
-  keywords: "LinkerFolio, portfolio management, social media links, personal branding, professional portfolio, link manager, online portfolio, social media integration, custom profiles",
-  author: "Abdellah Edaoudi",
-  robots: "index, follow", 
-  viewport: "width=device-width, initial-scale=1.0",
-};
-
-
-
+export const metadata = Metadata ;
 export default function RootLayout({ children }) {
   return (
       <html className="scroll-smooth" lang="en">

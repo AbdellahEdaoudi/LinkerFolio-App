@@ -493,6 +493,7 @@ function UserProfile({ params }) {
                       type="text"
                       placeholder="Enter your message here..."
                       value={messageInput}
+                      maxLength={999}
                       onChange={(e) => {
                         setMessageInput(e.target.value);
                       }}
@@ -532,14 +533,7 @@ function UserProfile({ params }) {
                       type="text"
                       placeholder="Enter your message here..."
                       value={umessage}
-                      // onChange={(e) => {
-                      //   const words = e.target.value
-                      //     .split(/\s+/)
-                      //     .filter((word) => word.length > 0);
-                      //   if (words.length <= 200) {
-                      //     setUMessage(e.target.value)
-                      //   }
-                      // }}
+                      maxLength={999}
                       onChange={(e) => {
                         setUMessage(e.target.value);
                       }}
