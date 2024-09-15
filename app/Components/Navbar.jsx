@@ -512,11 +512,8 @@ function Navbar() {
       </nav>
       {/* Searche */}
       <nav
-        onClick={() => {
-          setSearch("");
-        }}
-        className={`fixed  w-full flex justify-center ${
-          search === ""
+        onClick={() => {setSearch("");}}
+        className={`fixed  w-full flex justify-center ${search === ""
             ? "opacity-0 pointer-events-none"
             : "opacity-100 pointer-events-auto"
         } transition-opacity duration-500 ease-in-out`}
