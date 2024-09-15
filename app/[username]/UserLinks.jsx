@@ -98,7 +98,7 @@ function UserLinks({ emailuser, language, setLanguage }) {
   return (
     <AlertDialog className="bg-black">
       <AlertDialogTrigger>
-        <p className="text-blue-900 hover:cursor-pointer flex items-center justify-center md:justify-start gap-2">
+        <p className="text-blue-900 hover:cursor-pointer flex items-center justify-center sm:justify-start md:justify-start gap-2">
           <Link width={18} />
           {translations.businessLinks || "Business Links"}
         </p>

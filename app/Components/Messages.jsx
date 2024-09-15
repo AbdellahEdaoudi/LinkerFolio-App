@@ -320,7 +320,7 @@ function Messages({ selectedUser }) {
               <div>
                 <div
                   className="bg-gray-100 p-4 rounded-lg  shadow-lg h-[600px] duration-300
-              md:h-[350px] scrollbar-none overflow-y-auto"
+              sm:h-[350px] md:h-[350px] scrollbar-none overflow-y-auto"
                   ref={messagesEndRef}
                 >
                   {FilterMessages.length === 0 ? (

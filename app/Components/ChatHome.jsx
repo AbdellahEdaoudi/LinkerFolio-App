@@ -17,7 +17,7 @@ function ChatHome() {
   return (
     <div>
       {/* LAPTOP */}
-      <div className="md:block hidden duration-500">
+      <div className="md:block sm:block hidden duration-500">
         <div className="flex flex-row overflow-hidden ">
           {/* Users list */}
           <nav className="w-72 min-w-72 flex-shrink-0">
@@ -33,7 +33,7 @@ function ChatHome() {
         </div>
       </div>
       {/* MOBILE */}
-      <div className="md:hidden block">
+      <div className="md:hidden sm:hidden block">
         <div className="w-1/6">
           <UserListMobile
             selectedUser={selectedUser}

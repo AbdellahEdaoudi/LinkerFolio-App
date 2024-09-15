@@ -175,7 +175,7 @@ function Navbar() {
                       setFrReq(true);
                       router.push(`/${userr.username}`);
                     }}
-                    className="font-medium  hidden mr-4 md:block text-black cursor-pointer hover:scale-105 transition duration-300"
+                    className="font-medium  hidden mr-4 sm:hidden md:block text-black cursor-pointer hover:scale-105 transition duration-300"
                   >
                     <div className="flex items-center gap-2">
                       <Image
