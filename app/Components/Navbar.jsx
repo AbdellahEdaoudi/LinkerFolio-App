@@ -171,7 +171,7 @@ function Navbar() {
               </div>
             </div>
 
-            {status === "authenticated" &&
+            {(status === "authenticated" && userDetails) &&
               filt.map((userr, i) => (
                 <div key={i} className="flex items-center gap-1">
                   <div
@@ -265,7 +265,7 @@ function Navbar() {
                 </div>
               ))}
             {status === "unauthenticated" && <SignInWithGoogle />}
-            {status === "loading" && (
+            {(status === "loading" || !userDetails || userDetails.length === 0) && (
               <div className="flex md:flex-row flex-row-reverse items-center gap-2">
                 <div className="w-11 h-11 bg-gray-300 rounded-full"></div>
                 <div>
