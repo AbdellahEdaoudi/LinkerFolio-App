@@ -15,7 +15,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../Context/MyContext";
 import SignInWithGoogle from "./SignInWithGoogle";
 import axios from "axios";
@@ -34,6 +34,7 @@ function Navbar() {
   const router = useRouter();
   const [Adminfind, setAdminfind] = useState(false);
   const [FR_FRREQ, setFR_FRREQ] = useState("Friend Requests");
+  const navRef = useRef(null);
   const {
     userDetails,
     Notification,
@@ -96,18 +97,12 @@ function Navbar() {
       user.username.toLowerCase().includes(search.toLowerCase())
   );
   useEffect(() => {
-    // Shuffle filteredUserDetails whenever search changes
     const shuffleArray = (array) => {
       let currentIndex = array.length,
         randomIndex;
-
-      // While there remain elements to shuffle...
       while (currentIndex !== 0) {
-        // Pick a remaining element...
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-
-        // And swap it with the current element.
         [array[currentIndex], array[randomIndex]] = [
           array[randomIndex],
           array[currentIndex],
@@ -125,8 +120,19 @@ function Navbar() {
     const highlightedText = text.replace(regex, "<b>$1</b>");
     return DOMPurify.sanitize(highlightedText);
   };
+  useEffect(() => {
+    const ClickOutside = (event) => {
+      if (!navRef.current?.contains(event.target)) {
+        setSetting(true);
+        setFrReq(true);
+        setNotification(true);
+      }
+    };
+    document.addEventListener('mousedown', ClickOutside);
+    return () => document.removeEventListener('mousedown', ClickOutside);
+  }, []);
   return (
-    <div>
+    <div ref={navRef}>
       <nav className=" border-b drop-shadow-2xl bg-gray-200  backdrop-blur-lg ">
         <section className="md:container md:mx-auto ml-3 mr-6 py-3">
           <div className="flex justify-between items-center text-white">
