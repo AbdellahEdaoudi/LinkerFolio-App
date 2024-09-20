@@ -278,7 +278,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
         <button
           className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200"
           onClick={() => {
-            router.push(`/message/to/${path}`);
+            router.push(`/message/to/${path.split('/')[1]}`);
           }}
         >
           <MessageCircleMore />
@@ -287,7 +287,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
         <button
           className="flex gap-2 border p-2 rounded-full w-10 cursor-pointer hover:text-blue-500 hover:scale-110 duration-200"
           onClick={() => {
-            router.push(`/message/to/${path}`);
+            router.push(`/message/to/${path.split('/')[1]}`);
           }}
         >
           <MessageCircleMore />
