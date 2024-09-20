@@ -230,7 +230,7 @@ function Messages({ selectedUser }) {
     !friendRequests ||
     friendRequests.length === 0 ||
     !EmailUser ||
-    !messages
+    !messages || messages.length === 0
   ) {
     return <LMessages />;
   }
