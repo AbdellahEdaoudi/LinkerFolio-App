@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../../Context/MyContext";
 import io from "socket.io-client";
 import DOMPurify from 'dompurify';
+import LUserList from "../Loading/LoadChatPage/LUserList";
 
 function UserList({ selectedUser, setSelectedUser }) {
   const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL}=useContext(MyContext);
@@ -12,8 +13,7 @@ function UserList({ selectedUser, setSelectedUser }) {
   const [socket, setSocket] = useState(null);
   const [searchQuery,setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
-  
-  
+
   // getMessages
   useEffect(() => {
     const getMessages = async () => {
@@ -53,11 +53,6 @@ function UserList({ selectedUser, setSelectedUser }) {
       socket.disconnect();
     };
   }, [SERVER_URL]);
-  const LiseMessages = messages.filter((message, index, self) =>
-    index === self.findIndex((m) => m.from === message.from)
-  );
-
-
 
   const ReadOrNo = async (fromEmail,toEmail) => {
     try {
@@ -140,6 +135,13 @@ function UserList({ selectedUser, setSelectedUser }) {
       const highlightedText = text.replace(regex, "<b>$1</b>");
       return DOMPurify.sanitize(highlightedText);
     };
+    if (!userDetails || !messages ||  messages.length === 0 || !EmailUser ) {
+      return (
+        <div className="p-4 ">
+          <LUserList />
+        </div>
+      )
+    }
 
   return (
     <div>

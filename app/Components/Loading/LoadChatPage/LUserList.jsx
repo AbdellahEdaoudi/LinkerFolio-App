@@ -16,11 +16,11 @@ function LUserList() {
       <div className="space-y-2 ">
       {[1,2,3,4,5,6].map((mp,i)=>{
         return(
-          <div key={i} className="flex items-center gap-2 animate-pulse bg-gray-400 p-2 md:p-1 rounded-md opacity-25">
-        <div className="w-12 h-12 bg-gray-500 rounded-full">
+          <div key={i} className="flex items-center gap-2 animate-pulse  bg-gray-400 p-2 md:p-1 rounded-md opacity-25">
+        <div className="w-12 h-12 flex-shrink-0 bg-gray-500 rounded-full">
         </div>
         <div className="space-y-2">
-          <p className="w-52 h-4 bg-gray-500 rounded-md"></p>
+          <p className="w-48 h-4 bg-gray-500 rounded-md"></p>
           <p className="w-44 h-3 bg-gray-500 rounded-md"></p>
         </div>
       </div>

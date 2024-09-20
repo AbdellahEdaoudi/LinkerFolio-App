@@ -260,13 +260,13 @@ function Messages({ selectedUser }) {
         {/* selectedUser And  Messages */}
         <div className="flex-1 p-2 ">
           {/* selectedUser */}
-          <div className="mb-2 bg-slate-200 py-1 rounded-lg px-4">
+          <div className="mb-2 bg-slate-200 py-1 rounded-lg px-4 ">
             <div className="flex items-center justify-between gap-4">
               <Link
                 href={`/${selectedUser.username}`}
                 className="cursor-pointer hover:scale-105 duration-300 flex gap-2 items-center"
               >
-                <div className="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden">
+                <div className="w-12 h-12 border-2 border-green-500 rounded-full flex-shrink-0 overflow-hidden">
                   <Image
                     width={96} // 24 * 4
                     height={96} // 24 * 4
