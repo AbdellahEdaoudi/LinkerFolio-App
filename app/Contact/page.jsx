@@ -35,11 +35,23 @@ const ContactForm = () => {
       });
       toast(<p className='flex gap-3 items-center'><CheckCheck /> Sent successfully!</p>, {
         autoClose: 2000,
-      });
+      }); 
       setMessage('');
     } catch (error) {
       console.error('Error adding contact:', error);
-      alert('An error occurred while adding the contact.');
+      if (error.response && error.response.status === 429) {
+        toast.error(<p className='flex gap-3 items-center'>
+            Too many requests! Please try again later.
+        </p>, {
+            autoClose: 2000,
+        });
+    } else {
+        toast.error(<p className='flex gap-3 items-center'>
+            An error occurred while adding the contact.
+        </p>, {
+            autoClose: 2000,
+        });
+    }
     } finally {
       setLoading(false);
     }
