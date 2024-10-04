@@ -32,6 +32,7 @@ import { languagess } from "../data/language";
 import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
 import { signIn, useSession } from "next-auth/react";
 import SocialMedia from "./SocialMedia"
+import AccountNotFound from '../Components/AccountNotFound'
 
 function GetUserByUsername({ params }) {
   const { data, status } = useSession();
@@ -100,28 +101,19 @@ function GetUserByUsername({ params }) {
           }
         } catch (error) {
           console.error('Error fetching user details:', error);
+          setError('error')
         } finally {
           setLoading(false); // Set loading false after fetching
         }
       };
       fetchUserDetails();
     }, [SERVER_URL_V, language]);
-
   if (error) {
     return (
-      <div className="flex items-start pt-28 justify-center min-h-screen bg-gray-100">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-red-600 mb-4">
-            Account not found
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Sorry, we couldn't find the account you were looking for.
-          </p>
-        </div>
-      </div>
+      <AccountNotFound />
     );
   }
-
+  
   if (!userDetailsG ) {
     return (
       <div>

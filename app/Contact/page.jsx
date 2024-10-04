@@ -13,6 +13,8 @@ const ContactForm = () => {
   const [iduser, setIduser] = useState('');
   const [Loading, setLoading] = useState(false);
   const {userDetails,EmailUser,SERVER_URL_V}=useContext(MyContext);
+  const [particles, setParticles] = useState([])
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const user = userDetails.find(user => user.email === EmailUser);
@@ -27,7 +29,6 @@ const ContactForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log('Data Send:', { iduser ,email, phoneNumber, message });
       await axios.post(`${SERVER_URL_V}/contacts`, {iduser, email, phoneNumber, message },{
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
@@ -56,12 +57,71 @@ const ContactForm = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const generateParticles = () => {
+      return Array.from({ length: 50 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 5 + 1,
+        speedX: Math.random() * 2 - 1,
+        speedY: Math.random() * 2 - 1,
+      }))
+    }
+
+    setParticles(generateParticles())
+
+    const handleResize = () => {
+      setParticles(generateParticles())
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const moveParticles = () => {
+      setParticles(prevParticles =>
+        prevParticles.map(particle => ({
+          ...particle,
+          x: (particle.x + particle.speedX + window.innerWidth) % window.innerWidth,
+          y: (particle.y + particle.speedY + window.innerHeight) % window.innerHeight,
+        }))
+      )
+    }
+
+    const intervalId = setInterval(moveParticles, 50)
+    return () => clearInterval(intervalId)
+  }, [])
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
   return (
-    <div className="  pt-4 pb-28 px-4 flex flex-col-reverse md:flex-row items-center justify-center bg-gradient-to-r from-teal-50 to-teal-200">
-      <div className='md:w-1/2 flex justify-center mb-6 md:mb-0'>
-        <Image src={"/Conatct.png"} width={300} height={300} alt="Contact Image"/>
+    <div className='relative'>
+      <div className="absolute inset-0">
+        {particles.map((particle, index) => (
+          <div
+            key={index}
+            className="absolute rounded-full bg-[#00a896]"
+            style={{
+              left: particle.x,
+              top: particle.y,
+              width: particle.size,
+              height: particle.size,
+              opacity: 0.6,
+              transform: `translate(${(mousePos.x - particle.x) / 20}px, ${(mousePos.y - particle.y) / 20}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          />
+        ))}
       </div>
-      <div className="md:w-1/2 w-full bg-white p-6 rounded-lg shadow-md mb-3 md:mb-0">
+      <div className="  pt-4 pb-28 px-4 flex flex-col-reverse md:flex-row items-center justify-center">
+      <div className="md:w-1/2 w-full bg-white p-6 rounded-lg shadow-md mb-3 md:mb-0 z-10">
         <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">Contact Us</h2>
         <form onSubmit={sendContact}>
           <div className="mb-4">
@@ -103,13 +163,15 @@ const ContactForm = () => {
           <button
             disabled={Loading}
             type="submit"
-            className="w-full bg-gradient-to-r from-teal-400 to-teal-500 text-white py-2 px-4 rounded-md hover:from-teal-500 hover:to-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-500 transition-transform duration-200"
+            className="w-full bg-gradient-to-r from-teal-400 to-teal-500 text-white py-2 px-4  rounded-md hover:from-teal-500 hover:to-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-500 duration-300"
           >
             {Loading ? <>Sending <i className="fa fa-spinner fa-spin "></i></> : "Send"}
           </button>
         </form>
       </div>
     </div>
+    </div>
+    
   );
 };
 
