@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation';
 import { UserMinus } from 'lucide-react';
 
 function Sent() {
-    const { SERVER_URL_V, SERVER_URL, EmailUser, userDetails,
-        friendRequests, setFriendRequests,socket, setSocket} =
+    const { SERVER_URL_V, EmailUser, userDetails,
+        friendRequests,socket} =
         useContext(MyContext);
     const [requests, setRequests] = useState([]);
     const [loadingStatus, setLoadingStatus] = useState({});
