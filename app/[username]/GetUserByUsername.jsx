@@ -237,7 +237,7 @@ function GetUserByUsername({ params }) {
   }
   return (
     <div
-      className={`  flex items-start justify-center   pt-4 min-h-screen pb-20 ${userDetailsG.bgcolorp}`}
+      className={`flex items-start justify-center   pt-4  pb-20 ${userDetailsG.bgcolorp}`}
     >
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
         {/* Image Profile and info user */}

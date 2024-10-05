@@ -1,20 +1,23 @@
 "use client";
+
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import Image from 'next/image';
 import { MyContext } from '../Context/MyContext';
 import { toast } from 'react-toastify';
-import { CheckCheck } from 'lucide-react';
+import { CheckCheck, Mail, Phone, MessageSquare, Loader2 } from 'lucide-react';
+import { Button } from "../../components/ui/button"
+import { Input } from "../../@/components/ui/input"
+import { Textarea } from "../../@/components/ui/textarea"
 
 const ContactForm = () => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
   const [iduser, setIduser] = useState('');
-  const [Loading, setLoading] = useState(false);
-  const {userDetails,EmailUser,SERVER_URL_V}=useContext(MyContext);
-  const [particles, setParticles] = useState([])
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [loading, setLoading] = useState(false);
+  const { userDetails, EmailUser, SERVER_URL_V } = useContext(MyContext);
+  const [particles, setParticles] = useState([]);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const user = userDetails.find(user => user.email === EmailUser);
@@ -29,34 +32,31 @@ const ContactForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${SERVER_URL_V}/contacts`, {iduser, email, phoneNumber, message },{
+      await axios.post(`${SERVER_URL_V}/contacts`, { iduser, email, phoneNumber, message }, {
         headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
         }
       });
-      toast(<p className='flex gap-3 items-center'><CheckCheck /> Sent successfully!</p>, {
+      toast(<p className='flex gap-3 items-center'><CheckCheck className="text-teal-500" /> Message sent successfully!</p>, {
         autoClose: 2000,
-      }); 
+      });
       setMessage('');
     } catch (error) {
       console.error('Error adding contact:', error);
       if (error.response && error.response.status === 429) {
-        toast.error(<p className='flex gap-3 items-center'>
-            Too many requests! Please try again later.
-        </p>, {
-            autoClose: 2000,
+        toast.error(<p className='flex gap-3 items-center'>Too many requests! Please try again later.</p>, {
+          autoClose: 2000,
         });
-    } else {
-        toast.error(<p className='flex gap-3 items-center'>
-            An error occurred while adding the contact.
-        </p>, {
-            autoClose: 2000,
+      } else {
+        toast.error(<p className='flex gap-3 items-center'>An error occurred while sending the message.</p>, {
+          autoClose: 2000,
         });
-    }
+      }
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     const generateParticles = () => {
       return Array.from({ length: 50 }, () => ({
@@ -101,77 +101,92 @@ const ContactForm = () => {
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
+
   return (
-    <div className='relative'>
-      <div className="absolute inset-0">
+    <div className="flex items-center justify-center bg-gradient-to-br from-teal-950 to-teal-950 p-4">
+      <div className="absolute inset-0 overflow-hidden">
         {particles.map((particle, index) => (
           <div
             key={index}
-            className="absolute rounded-full bg-[#00a896]"
+            className="absolute rounded-full bg-teal-200"
             style={{
               left: particle.x,
               top: particle.y,
               width: particle.size,
               height: particle.size,
-              opacity: 0.6,
+              opacity: 0.4,
               transform: `translate(${(mousePos.x - particle.x) / 20}px, ${(mousePos.y - particle.y) / 20}px)`,
               transition: 'transform 0.1s ease-out',
             }}
           />
         ))}
       </div>
-      <div className="  pt-4 pb-28 px-4 flex flex-col-reverse md:flex-row items-center justify-center">
-      <div className="md:w-1/2 w-full bg-white p-6 rounded-lg shadow-md mb-3 md:mb-0 z-10">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">Contact Us</h2>
-        <form onSubmit={sendContact}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-base font-medium mb-1">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              // onChange={(e)=>{setEmail(e.target.value)}}
-              className="w-full px-3 py-2 border bg-white text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="number" className="block text-gray-700 text-base font-medium mb-1">Phone Number</label>
-            <input
-              type="text"
-              id="number"
-              value={phoneNumber}
-              onChange={(e)=>{setPhoneNumber(e.target.value)}}
-              className="w-full px-3 py-2 border bg-white text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
-              placeholder="Enter your phone number"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="message" className="block text-gray-700 text-base font-medium mb-1">Message</label>
-            <textarea
-              id="message"
-              value={message}
-              onChange={(e)=>{setMessage(e.target.value)}}
-              className="w-full px-3 py-2 border border-gray-300 text-black bg-white rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-teal-500"
-              rows="3"
-              placeholder="Enter your message"
-              required
-            />
-          </div>
-          <button
-            disabled={Loading}
-            type="submit"
-            className="w-full bg-gradient-to-r from-teal-400 to-teal-500 text-white py-2 px-4  rounded-md hover:from-teal-500 hover:to-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-500 duration-300"
-          >
-            {Loading ? <>Sending <i className="fa fa-spinner fa-spin "></i></> : "Send"}
-          </button>
-        </form>
+      <div className="bg-white w-full max-w-md rounded-xl shadow-2xl overflow-hidden z-10">
+        <div className="p-8">
+          <h2 className="text-3xl font-bold text-center text-teal-700 mb-6">Contact Us</h2>
+          <form onSubmit={sendContact} className="space-y-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-teal-600 mb-1">Email</label>
+              <div className="relative">
+                <Input
+                  type="email"
+                  id="email"
+                  value={email}
+                  className="pl-10 border-teal-300 focus:border-teal-500 focus:ring-teal-500"
+                  placeholder="Enter your email"
+                  required
+                />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-800 h-5 w-5" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="number" className="block text-sm font-medium text-teal-600 mb-1">Phone Number</label>
+              <div className="relative">
+                <Input
+                  type="text"
+                  id="number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="pl-10 border-teal-300 focus:border-teal-500 focus:ring-teal-500"
+                  placeholder="Enter your phone number"
+                  required
+                />
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-800 h-5 w-5" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-teal-600 mb-1">Message</label>
+              <div className="relative">
+                <Textarea
+                  id="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="pl-10 pt-2 border-teal-300 focus:border-teal-500 focus:ring-teal-500"
+                  rows={4}
+                  placeholder="Enter your message"
+                  required
+                />
+                <MessageSquare className="absolute left-3 top-3 text-teal-800 h-5 w-5" />
+              </div>
+            </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-teal-700 to-teal-800 text-white py-2 px-4 rounded-md hover:from-teal-800 hover:to-teal-900 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Sending
+                </>
+              ) : (
+                "Send Message"
+              )}
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
-    </div>
-    
   );
 };
 
