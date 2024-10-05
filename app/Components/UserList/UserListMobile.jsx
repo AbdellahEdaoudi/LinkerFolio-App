@@ -17,54 +17,11 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
     SERVER_URL,
     setMessages,
     userDetails,
-    EmailUser,
+    EmailUser,socket, setSocket,
     messages,friendRequests, setFriendRequests  
   } = useContext(MyContext);
   const router = useRouter();
-  const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-    setSocket(socket);
-
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-    socket.on("receiveUpdatedMessage", (updatedMessage) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === updatedMessage._id ? updatedMessage : msg
-        )
-      );
-    });
-    socket.on("receiveDeletedMessage", (deletedMessageId) => {
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== deletedMessageId)
-      );
-    });
-
-    socket.on("receiveFriendRequest", (newRequest) => {
-      setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
-    });
-
-    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request._id === updatedRequest._id ? updatedRequest : request
-        )
-      );
-    });
-
-    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.filter((request) => request._id !== deletedRequestId)
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [SERVER_URL]);
 
   const ReadOrNo = async (fromEmail,toEmail) => {
     try {
@@ -293,11 +250,8 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         }}
                         className={`${
                           searchQuery === "" ? "" : "hidden"
-                        } flex relative items-center gap-4 p-2 mb-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
-                          selectedUser && selectedUser.email === User.email
-                            ? "bg-gray-700"
-                            : ""
-                        }`}
+                        } flex relative items-center gap-4 p-2 mb-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition 
+                         `}
                       >
                         <Link
                           href={`/${User.username}`}

@@ -26,6 +26,7 @@ import UserLinks from "../[username]/UserLinks";
 import Loadingpage from "../Components/Loading/LoadingPage";
 import QrcodeProfile from "./QrcodeProfile";
 import CreateProfile from "../Components/CreateProfile";
+import ParticleComponent from "../Components/ParticleComponent";
 
 function ProfilePage() {
   const [copied, setCopied] = useState(false);
@@ -87,7 +88,8 @@ function ProfilePage() {
   }
 
   return (
-    <div className="">
+    <div className="relative">
+      <ParticleComponent /> 
       {userDetails
         .filter((fl) => fl.email === EmailUser)
         .map((UserF, i) => (

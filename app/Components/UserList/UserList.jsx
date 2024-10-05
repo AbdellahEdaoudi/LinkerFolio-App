@@ -8,51 +8,13 @@ import DOMPurify from 'dompurify';
 import LUserList from "../Loading/LoadChatPage/LUserList";
 
 function UserList({ selectedUser, setSelectedUser }) {
-  const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL}=useContext(MyContext);
-  const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
+  const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL,
+    messages, setMessages,socket, setSocket
+  }=useContext(MyContext);
   const [searchQuery,setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
 
-  // getMessages
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/messages`,{
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-          }
-        });
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-    getMessages();
-  }, [SERVER_URL_V]);
-  // socket
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-    setSocket(socket);
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-    socket.on("receiveUpdatedMessage", (updatedMessage) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === updatedMessage._id ? updatedMessage : msg
-        )
-      );
-    });
-    socket.on("receiveDeletedMessage", (deletedMessageId) => {
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== deletedMessageId)
-      );
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, [SERVER_URL]);
+
 
   const ReadOrNo = async (fromEmail,toEmail) => {
     try {

@@ -6,6 +6,7 @@ import { MyContext } from "../Context/MyContext";
 import LoadChatPage from "./Loading/LoadChatPage/LoadChatPage";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ParticleComponent from "./ParticleComponent";
 
 const CreateProfile = () => {
   const { data, status } = useSession();
@@ -20,7 +21,7 @@ const CreateProfile = () => {
   const { SERVER_URL_V,userDetails} = useContext(MyContext);
 
 
-  const postData = async (e) => {
+  const CreateAccount = async (e) => {
     e.preventDefault()
     try {
       setIsLoading(true);
@@ -86,7 +87,8 @@ const CreateProfile = () => {
   }
 
   return (
-    <form onSubmit={postData}>
+    <form onSubmit={CreateAccount}>
+      <ParticleComponent />
       <div className="flex md:items-start items-start justify-center md:h-[580px] h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
         <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
           <div className="flex items-center justify-around mb-6">

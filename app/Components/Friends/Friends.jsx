@@ -9,62 +9,13 @@ import { useRouter } from "next/navigation";
 import { UserX } from "lucide-react";
 
 function Friends() {
-  const { SERVER_URL_V, SERVER_URL, EmailUser, userDetails } =
+  const { SERVER_URL_V, SERVER_URL, EmailUser, userDetails,
+    friendRequests, setFriendRequests,socket, setSocket} =
     useContext(MyContext);
-  const [socket, setSocket] = useState(null);
-  const [friendRequests, setFriendRequests] = useState([]);
   const [requests, setRequests] = useState([]);
-  const [Loading, setLouading] = useState(true);
   const [loadingStatus, setLoadingStatus] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
-
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-    setSocket(socket);
-    socket.on("receiveFriendRequest", (newRequest) => {
-      setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
-    });
-    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request._id === updatedRequest._id ? updatedRequest : request
-        )
-      );
-    });
-    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.filter((request) => request._id !== deletedRequestId)
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [SERVER_URL]);
-
-  useEffect(() => {
-    const GetFriendRequest = async () => {
-      setLouading(true);
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/friend`, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        });
-        setFriendRequests(response.data.data);
-        setLouading(false);
-      } catch (error) {
-        console.error(
-          "Error fetching friend requests",
-          error.response ? error.response.data : error.message
-        );
-      } finally {
-        setLouading(false);
-      }
-    };
-    GetFriendRequest();
-  }, [SERVER_URL_V]);
 
   const highlightText = (text) => {
     if (!searchTerm.trim()) return text;
@@ -134,7 +85,7 @@ function Friends() {
         />
       </div>
 
-      {Loading ? (
+      {!friendRequests ? (
         <div className="rounded-md mb-2 w-full flex-1">
           {[1].map((_, i) => (
             <div
@@ -215,7 +166,7 @@ function Friends() {
           })}
         </div>
       )}
-      {!Loading && FriendsCount === 0 && (
+      {FriendsCount === 0 && (
         <p className="text-sm py-5 flex items-center justify-center">
           No pending friend requests
         </p>

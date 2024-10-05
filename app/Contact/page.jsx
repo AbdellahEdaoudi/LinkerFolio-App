@@ -8,6 +8,7 @@ import { CheckCheck, Mail, Phone, MessageSquare, Loader2 } from 'lucide-react';
 import { Button } from "../../components/ui/button"
 import { Input } from "../../@/components/ui/input"
 import { Textarea } from "../../@/components/ui/textarea"
+import ParticleComponent from '../Components/ParticleComponent';
 
 const ContactForm = () => {
   const [email, setEmail] = useState('');
@@ -16,8 +17,7 @@ const ContactForm = () => {
   const [iduser, setIduser] = useState('');
   const [loading, setLoading] = useState(false);
   const { userDetails, EmailUser, SERVER_URL_V } = useContext(MyContext);
-  const [particles, setParticles] = useState([]);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  
 
   useEffect(() => {
     const user = userDetails.find(user => user.email === EmailUser);
@@ -57,70 +57,11 @@ const ContactForm = () => {
     }
   };
 
-  useEffect(() => {
-    const generateParticles = () => {
-      return Array.from({ length: 50 }, () => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 5 + 1,
-        speedX: Math.random() * 2 - 1,
-        speedY: Math.random() * 2 - 1,
-      }))
-    }
-
-    setParticles(generateParticles())
-
-    const handleResize = () => {
-      setParticles(generateParticles())
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  useEffect(() => {
-    const moveParticles = () => {
-      setParticles(prevParticles =>
-        prevParticles.map(particle => ({
-          ...particle,
-          x: (particle.x + particle.speedX + window.innerWidth) % window.innerWidth,
-          y: (particle.y + particle.speedY + window.innerHeight) % window.innerHeight,
-        }))
-      )
-    }
-
-    const intervalId = setInterval(moveParticles, 50)
-    return () => clearInterval(intervalId)
-  }, [])
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY })
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+  
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-br from-teal-950 to-teal-950 p-4">
-      <div className="absolute inset-0 overflow-hidden">
-        {particles.map((particle, index) => (
-          <div
-            key={index}
-            className="absolute rounded-full bg-teal-200"
-            style={{
-              left: particle.x,
-              top: particle.y,
-              width: particle.size,
-              height: particle.size,
-              opacity: 0.4,
-              transform: `translate(${(mousePos.x - particle.x) / 20}px, ${(mousePos.y - particle.y) / 20}px)`,
-              transition: 'transform 0.1s ease-out',
-            }}
-          />
-        ))}
-      </div>
+      <ParticleComponent />
       <div className="bg-white w-full max-w-md rounded-xl shadow-2xl overflow-hidden z-10">
         <div className="p-8">
           <h2 className="text-3xl font-bold text-center text-teal-700 mb-6">Contact Us</h2>

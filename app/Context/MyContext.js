@@ -10,74 +10,63 @@ export const MyProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState([]);
   const [userLinks, setUserLinks] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
   const [socket, setSocket] = useState(null);
   const {data,status} = useSession()
   const EmailUser = data?.user?.email
   const [previousNotificationCount, setPreviousNotificationCount] = useState(0);
   const [previousfriendRequests, setPreviousfriendRequests] = useState(0);
-  const [friendRequests, setFriendRequests] = useState([]);
   
 
 
-  // const CLIENT_URL = "http://localhost:3000";
-  // const SERVER_URL = "http://localhost:9999" ;
-  // const SERVER_URL_V = "http://localhost:9999" ;
-   const CLIENT_URL = "https://linkerfolio.vercel.app";
-   const SERVER_URL = "https://server-linkerfolio.onrender.com";
-   const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
+  const CLIENT_URL = "http://localhost:3000";
+  const SERVER_URL = "http://localhost:9999" ;
+  const SERVER_URL_V = "http://localhost:9999" ;
+  //  const CLIENT_URL = "https://linkerfolio.vercel.app";
+  //  const SERVER_URL = "https://server-linkerfolio.onrender.com";
+  //  const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
    
    const audioRef = useRef(null);
   // socket.io
   useEffect(() => {
     const socket = io(SERVER_URL);
     setSocket(socket);
-    // Messages
-    socket.on('receiveMessage', (data) => {
-      setMessages((prevMessages) => {
-        if (prevMessages.some(msg => msg._id === data._id)) {
-          return prevMessages;
-        }
-        return [data, ...prevMessages];
-      });
+
+    socket.on("receiveMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
-    socket.on('receiveUpdatedMessage', (data) => {
+    socket.on("receiveUpdatedMessage", (updatedMessage) => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
-          msg._id === data._id ? { ...msg, ...data } : msg
+          msg._id === updatedMessage._id ? updatedMessage : msg
         )
       );
     });
-    socket.on('receiveDeletedMessage', (id) => {
+    socket.on("receiveDeletedMessage", (deletedMessageId) => {
       setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== id)
+        prevMessages.filter((msg) => msg._id !== deletedMessageId)
       );
     });
-  
-    // FriendRequest
-    socket.on('receiveFriendRequest', (newRequest) => {
-      setFriendRequests(prevRequests => [...prevRequests, newRequest]);
+
+    socket.on("receiveFriendRequest", (newRequest) => {
+      setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
     });
-    socket.on('receiveUpdatedFriendRequest', (updatedRequest) => {
-      setFriendRequests(prevRequests =>
-        prevRequests.map(request =>
+
+    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
+      setFriendRequests((prevRequests) =>
+        prevRequests.map((request) =>
           request._id === updatedRequest._id ? updatedRequest : request
         )
       );
     });
-    socket.on('receiveDeletedFriendRequest', (deletedRequestId) => {
-      setFriendRequests(prevRequests =>
-        prevRequests.filter(request => request._id !== deletedRequestId)
+
+    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
+      setFriendRequests((prevRequests) =>
+        prevRequests.filter((request) => request._id !== deletedRequestId)
       );
     });
-  
-    // Clean up on unmount
+
     return () => {
-      socket.off('receiveMessage');
-      socket.off('receiveUpdatedMessage');
-      socket.off('receiveDeletedMessage');
-      socket.off('receiveFriendRequest');
-      socket.off('receiveUpdatedFriendRequest');
-      socket.off('receiveDeletedFriendRequest');
       socket.disconnect();
     };
   }, [SERVER_URL]);
@@ -114,7 +103,7 @@ export const MyProvider = ({ children }) => {
 
     getMessages();
   }, [SERVER_URL_V]);
-  // links
+  // Get links
   useEffect(() => {
     axios
       .get(`${SERVER_URL_V}/links`,{

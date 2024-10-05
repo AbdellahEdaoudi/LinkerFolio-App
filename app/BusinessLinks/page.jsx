@@ -6,10 +6,10 @@ import axios from 'axios';
 import { toast } from "sonner";
 import CreateProfile from '../Components/CreateProfile';
 import LoadChatPage from '../Components/Loading/LoadChatPage/LoadChatPage';
+import ParticleComponent  from "../Components/ParticleComponent"
 
 function EditUserLinks() {
-  const {SERVER_URL_V, EmailUser,userDetails} = useContext(MyContext);
-  const [userLinks, setUserLinks] = useState([]);
+  const {SERVER_URL_V, EmailUser,userDetails,userLinks, setUserLinks} = useContext(MyContext);
   const [loading, setLoading] = useState(true);
   const [loadingt, setLoadingt] = useState(false);
   const [namelink, setNamelink] = useState('');
@@ -17,22 +17,7 @@ function EditUserLinks() {
   const [Add, setAdd] = useState(true);
   const [editLinkId, setEditLinkId] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get(`${SERVER_URL_V}/links`,{
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-        }
-      })
-      .then((res) => {
-        const links = res.data;
-        const sortedLinks = links.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setUserLinks(sortedLinks);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-      });
-  }, [SERVER_URL_V]);
+
 
   useEffect(() => {
     if (userLinks) {
@@ -135,9 +120,10 @@ function EditUserLinks() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-80 bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 pt-4 pb-12 flex justify-center`}>
+    <div className={`min-h-screen bg-gray-80 g-gradient-to-r from-teal-400 via-blue-500 to-purple-600 pt-4 pb-12 flex justify-center`}>
+      <ParticleComponent />
       {/* UserLinks */}
-      <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800'>
+      <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800 z-10'>
         <div className='flex items-center justify-around mb-4'>
           <p className='text-3xl font-semibold text-gray-900'>Business Links</p>
           <p onClick={() => {setEditLinkId(false)
@@ -182,7 +168,7 @@ function EditUserLinks() {
         </div>
         {/* Links */}
         <div className='p-2 space-y-3 grid grid-cols-1'>
-          {!userLinks ? (
+          {(!userLinks && userLinks.length === 0) ? (
             <div className='space-y-3 mt-3'>
               {[1,2,3,4].map((mp,i)=>{
                 return(

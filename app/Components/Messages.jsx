@@ -27,95 +27,19 @@ function Messages({ selectedUser }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 20 }, (_, index) => index + 1);
-  const { SERVER_URL, SERVER_URL_V, userDetails, EmailUser } =
+  const { SERVER_URL, SERVER_URL_V, userDetails, EmailUser,
+    messages, setMessages ,
+    socket, setSocket ,
+    friendRequests, setFriendRequests
+  } =
     useContext(MyContext);
-  const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
-  const [friendRequests, setFriendRequests] = useState([]);
+  // const [messages, setMessages] = useState([]);
+  // const [socket, setSocket] = useState(null);
+  // const [friendRequests, setFriendRequests] = useState([]);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const router = useRouter();
 
-  // Get Messages
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/messages`, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        });
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-
-    getMessages();
-  }, [SERVER_URL_V]);
-  // socket
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-    setSocket(socket);
-
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-    socket.on("receiveUpdatedMessage", (updatedMessage) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === updatedMessage._id ? updatedMessage : msg
-        )
-      );
-    });
-    socket.on("receiveDeletedMessage", (deletedMessageId) => {
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== deletedMessageId)
-      );
-    });
-
-    socket.on("receiveFriendRequest", (newRequest) => {
-      setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
-    });
-
-    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request._id === updatedRequest._id ? updatedRequest : request
-        )
-      );
-    });
-
-    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.filter((request) => request._id !== deletedRequestId)
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [SERVER_URL]);
-
-  // GetFriendRequest
-  useEffect(() => {
-    const GetFriendRequest = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/friend`, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        });
-        setFriendRequests(response.data.data);
-      } catch (error) {
-        console.error(
-          "Error fetching friend requests",
-          error.response ? error.response.data : error.message
-        );
-      }
-    };
-    GetFriendRequest();
-  }, [SERVER_URL_V]);
-
+  
   useEffect(() => {
     if (selectedUser) {
       setputdelete(true);
@@ -239,7 +163,10 @@ function Messages({ selectedUser }) {
       (fl.from === EmailUser && fl.to === selectedUser?.email) ||
       (fl.from === selectedUser?.email && fl.to === EmailUser)
     );
-  });
+  }).filter((msg, index, self) =>
+    index === self.findIndex((m) => m._id === msg._id)
+  );
+  
   const emailuser = selectedUser?.email;
   const CheckFrirnd = friendRequests.find(
     (f) =>

@@ -22,8 +22,6 @@ function UserProfile({ params }) {
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
   const [loadingd, setLoadingd] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
   const [messageInput, setMessageInput] = useState("");
   const [umessage, setUMessage] = useState("");
   const [emoji, setEmoji] = useState(true);
@@ -31,31 +29,16 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const { SERVER_URL, SERVER_URL_V, userDetails, EmailUser } =
+  const { SERVER_URL, SERVER_URL_V, userDetails, EmailUser,
+    messages, setMessages ,
+    socket, setSocket ,
+    friendRequests, setFriendRequests
+  } =
     useContext(MyContext);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
-  const [friendRequests, setFriendRequests] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const GetFriendRequest = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/friend`,{
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-          }
-        });
-        setFriendRequests(response.data.data);
-      } catch (error) {
-        console.error(
-          "Error fetching friend requests",
-          error.response ? error.response.data : error.message
-        );
-      }
-    };
 
-    GetFriendRequest();
-  }, [SERVER_URL_V]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -63,48 +46,6 @@ function UserProfile({ params }) {
     }
   }, [messages]);
 
-  useEffect(() => {
-    const socket = io(SERVER_URL);
-    setSocket(socket);
-
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-    socket.on("receiveUpdatedMessage", (updatedMessage) => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === updatedMessage._id ? updatedMessage : msg
-        )
-      );
-    });
-    socket.on("receiveDeletedMessage", (deletedMessageId) => {
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg._id !== deletedMessageId)
-      );
-    });
-
-    socket.on("receiveFriendRequest", (newRequest) => {
-      setFriendRequests((prevRequests) => [...prevRequests, newRequest]);
-    });
-
-    socket.on("receiveUpdatedFriendRequest", (updatedRequest) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request._id === updatedRequest._id ? updatedRequest : request
-        )
-      );
-    });
-
-    socket.on("receiveDeletedFriendRequest", (deletedRequestId) => {
-      setFriendRequests((prevRequests) =>
-        prevRequests.filter((request) => request._id !== deletedRequestId)
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [SERVER_URL]);
 
   const addEmoji = (e) => {
     const sym = e.unified.split("-");
@@ -116,24 +57,6 @@ function UserProfile({ params }) {
       setUMessage(umessage + emoji);
     }
   };
-
-  // Get Messages
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL}/messages`,{
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-          }
-        });
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-
-    getMessages();
-  }, [SERVER_URL]);
 
   const sendMessage = async () => {
     setLoading(true);
@@ -254,7 +177,15 @@ function UserProfile({ params }) {
     || !messages || messages.length === 0) {
     return <LMessages />;
   }
-
+  const FilterMessages = messages.filter((fl) => {
+    return (
+      (fl.from === EmailUser &&
+        fl.to === userDname.email) ||
+      (fl.from === userDname.email && fl.to === EmailUser)
+    );
+  }).filter((msg, index, self) =>
+    index === self.findIndex((m) => m._id === msg._id)
+  );
   return (
     <div>
       <div className="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600">
@@ -330,13 +261,7 @@ function UserProfile({ params }) {
                overflow-y-auto"
                   ref={messagesEndRef}
                 >
-                  {messages.filter((fl) => {
-                        return (
-                          (fl.from === EmailUser &&
-                            fl.to === userDname.email) ||
-                          (fl.from === userDname.email && fl.to === EmailUser)
-                        );
-                      }).length === 0 ? (
+                  {FilterMessages.length === 0 ? (
                     <div className="flex items-center justify-center h-64  rounded-lg">
                       <div className="text-center p-4">
                         <h2 className="text-xl font-semibold text-gray-700 mb-2">
@@ -348,15 +273,7 @@ function UserProfile({ params }) {
                       </div>
                     </div>
                   ) : (
-                    messages
-                      .filter((fl) => {
-                        return (
-                          (fl.from === EmailUser &&
-                            fl.to === userDname.email) ||
-                          (fl.from === userDname.email && fl.to === EmailUser)
-                        );
-                      })
-                      .map((msg, i) => {
+                    FilterMessages.map((msg, i) => {
                         const DateMsg = new Date(msg.createdAt);
                         const DateUpdMsg = new Date(msg.updatedAt);
                         const DateToday = new Date();

@@ -33,6 +33,7 @@ import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
 import { signIn, useSession } from "next-auth/react";
 import SocialMedia from "./SocialMedia"
 import AccountNotFound from '../Components/AccountNotFound'
+import ParticleComponent from "../Components/ParticleComponent";
 
 function GetUserByUsername({ params }) {
   const { data, status } = useSession();
@@ -237,8 +238,9 @@ function GetUserByUsername({ params }) {
   }
   return (
     <div
-      className={`flex items-start justify-center   pt-4  pb-20 ${userDetailsG.bgcolorp}`}
+      className={`flex items-start justify-center   pt-4  pb-20 relative ${userDetailsG.bgcolorp}`}
     >
+      <ParticleComponent /> 
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
         {/* Image Profile and info user */}
         <div className={`${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} border flex flex-col md:flex-row sm:flex-row sm:items-start  md:items-start items-center sm:gap-5 md:gap-5 mb-3 p-4 bg-white rounded-lg shadow-md`}>
