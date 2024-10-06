@@ -1,6 +1,7 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 
-const ParticleComponent = () => {
+const ParticleComponent = ({bgcolor}) => {
   const [particles, setParticles] = useState([]);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -50,7 +51,7 @@ const ParticleComponent = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 overflow-hidden z-0">
+    <div className={`${bgcolor && bgcolor}  fixed inset-0 overflow-hidden z-0`}>
       {particles.map((particle, index) => (
         <div
           key={index}

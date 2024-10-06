@@ -11,6 +11,7 @@ export const MyProvider = ({ children }) => {
   const [userLinks, setUserLinks] = useState([]);
   const [messages, setMessages] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [contacts, setContacts] = useState([])
   const [socket, setSocket] = useState(null);
   const {data,status} = useSession()
   const EmailUser = data?.user?.email
@@ -19,12 +20,12 @@ export const MyProvider = ({ children }) => {
   
 
 
-  // const CLIENT_URL = "http://localhost:3000";
-  // const SERVER_URL = "http://localhost:9999" ;
-  // const SERVER_URL_V = "http://localhost:9999" ;
-   const CLIENT_URL = "https://linkerfolio.vercel.app";
-   const SERVER_URL = "https://server-linkerfolio.onrender.com";
-   const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
+  const CLIENT_URL = "http://localhost:3000";
+  const SERVER_URL = "http://localhost:9999" ;
+  const SERVER_URL_V = "http://localhost:9999" ;
+  //  const CLIENT_URL = "https://linkerfolio.vercel.app";
+  //  const SERVER_URL = "https://server-linkerfolio.onrender.com";
+  //  const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
    
    const audioRef = useRef(null);
   // socket.io
@@ -134,6 +135,21 @@ export const MyProvider = ({ children }) => {
     };
     GetFriendRequest();
   }, []);
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await axios.get(`${SERVER_URL_V}/contacts`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+          }
+        })
+        setContacts(response.data)
+      } catch (err) {
+        setError(err)
+      }
+    }
+    fetchContacts()
+  }, [SERVER_URL_V])
 
   const latestNotifications = messages
   .filter((fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false)
@@ -186,7 +202,7 @@ const Requests = friendRequests
         setMessages,
         socket,
         friendRequests, setFriendRequests,
-        Requests
+        Requests,contacts,setContacts
       }}
     >
       <audio ref={audioRef} src="/notification3.mp3" preload="auto" />

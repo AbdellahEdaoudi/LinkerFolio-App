@@ -120,8 +120,8 @@ function EditUserLinks() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-80 g-gradient-to-r from-teal-400 via-blue-500 to-purple-600 pt-4 pb-12 flex justify-center`}>
-      <ParticleComponent />
+    <div className={`min-h-screen  pt-4 pb-12 flex justify-center`}>
+      <ParticleComponent bgcolor={"bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600"} />
       {/* UserLinks */}
       <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800 z-10'>
         <div className='flex items-center justify-around mb-4'>

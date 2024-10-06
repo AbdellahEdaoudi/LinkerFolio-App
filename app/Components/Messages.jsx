@@ -180,7 +180,7 @@ function Messages({ selectedUser }) {
   return (
     <div>
       {/* Message window on the right */}
-      <div className={` flex flex-col bg-gray-80 bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 justify-between md:w-auto w-scre en`}>
+      <div className={` flex flex-col bg-gray-80 bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 justify-between md:w-auto `}>
         {/* selectedUser And  Messages */}
         <div className="flex-1 p-2 ">
           {/* selectedUser */}
@@ -213,7 +213,7 @@ function Messages({ selectedUser }) {
           <div>
             {CheckFrirnd && CheckFrirnd.status === "pending" ? (
               <div>
-                <div className="flex items-start pt-16 justify-center h-[350px] rounded-md bg-yellow-100">
+                <div className="flex items-start pt-16 justify-center h-[59.7vh] rounded-md bg-yellow-100">
                   <div className="text-center border border-yellow-500 p-8 bg-white shadow-lg rounded-md">
                     <h1 className="text-yellow-700 font-bold text-2xl mb-4">
                       Pending Friend Request
@@ -227,7 +227,7 @@ function Messages({ selectedUser }) {
               </div>
             ) : !CheckFrirnd && EmailUser !== emailuser ? (
               <div>
-                <div className="flex items-start pt-16 justify-center h-[350px] rounded-md bg-red-100">
+                <div className="flex items-start pt-16 justify-center h-[59.7vh] rounded-md bg-red-100">
                   <div className="text-center border border-red-500 p-8 bg-white shadow-lg rounded-md">
                     <h1 className="text-red-700 font-bold text-2xl mb-4">
                       Cannot Communicate
@@ -243,8 +243,8 @@ function Messages({ selectedUser }) {
             ) : (
               <div>
                 <div
-                  className="bg-gray-100 p-4 rounded-lg  shadow-lg h-[600px] duration-300
-              sm:h-[350px] md:h-[350px] scrollbar-none overflow-y-auto"
+                  className="bg-gray-100 p-4 rounded-lg  shadow-lg h-[600vh] duration-300
+              sm:h-[59.7vh] md:h-[60vh] scrollbar-none overflow-y-auto"
                   ref={messagesEndRef}
                 >
                   {FilterMessages.length === 0 ? (
