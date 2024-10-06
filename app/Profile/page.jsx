@@ -88,15 +88,13 @@ function ProfilePage() {
   }
 
   return (
-    <div className="relative">
-      <ParticleComponent /> 
-      {userDetails
-        .filter((fl) => fl.email === EmailUser)
-        .map((UserF, i) => (
-          <div
-            key={i}
-            className={`flex items-start  justify-center   pt-4 pb-96 ${UserF.bgcolorp}  `}
-          >
+    <div>
+      {userDetails.filter((fl) => fl.email === EmailUser)
+        .map((UserF, i) => {
+          return (
+            <div key={i} className="relative">
+          <ParticleComponent bgcolor={UserF.bgcolorp}/> 
+           <div className={`flex items-start  justify-center   pt-4 pb-20  ${UserF.bgcolorp}  `}>
             <div
               className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`}
             >
@@ -398,7 +396,10 @@ function ProfilePage() {
               </div>
             </div>
           </div>
-        ))}
+          </div>
+          )
+          
+        })}
     </div>
   );
 }

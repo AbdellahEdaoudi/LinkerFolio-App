@@ -103,6 +103,9 @@ function EditUserLinks() {
           }
         });
         setUserLinks((Links) => Links.filter((item) => item._id !== id));
+        setEditLinkId(false)
+            setNamelink("")
+            setLink("")
         // toast("Link deleted successfully!");
       } catch (error) {
         console.error('There was an error deleting the link!', error);
@@ -120,10 +123,10 @@ function EditUserLinks() {
   };
 
   return (
-    <div className={`min-h-screen  pt-4 pb-12 flex justify-center`}>
-      <ParticleComponent bgcolor={"bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600"} />
-      {/* UserLinks */}
-      <section className='p-4 rounded-lg bg-gray-100 w-[700px] mx-3 text-gray-800 z-10'>
+    <div className={` pt-4 pb-12 flex justify-center`}>
+<ParticleComponent bgcolor={"bg-gradient-to-r from-gray-950 via-teal-950 to-gray-900"} />
+{/* UserLinks */}
+      <section className='p-4 rounded-lg bg-gray-100 w-[110vh] mx-3 text-gray-800 z-10'>
         <div className='flex items-center justify-around mb-4'>
           <p className='text-3xl font-semibold text-gray-900'>Business Links</p>
           <p onClick={() => {setEditLinkId(false)

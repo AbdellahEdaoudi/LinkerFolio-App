@@ -20,6 +20,7 @@ import { MyContext } from "../../../app/Context/MyContext";
 import UpdatePLoading from "../../Components/Loading/UpdatePLoading";
 import { toast } from 'react-toastify';
 import { CheckCircle } from "lucide-react";
+import ParticleComponent from "../../Components/ParticleComponent";
 function NameUser({ params }) {
   const {data,status}=useSession()
   const user = data?.user
@@ -210,7 +211,8 @@ function NameUser({ params }) {
   
   return (
     <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}>
-  <form onSubmit={updateProfile}>
+      <ParticleComponent bgcolor={bgcolorp} />
+  <form onSubmit={updateProfile} className="z-10">
     <div className="mx-4  md:w-[800px] px-4 md:px-8 pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
     
     <div className="flex flex-col md:flex-row items-start justify-between mb-8 space-y-8 md:space-y-0 md:space-x-8">
