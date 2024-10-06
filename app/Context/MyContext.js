@@ -145,7 +145,7 @@ export const MyProvider = ({ children }) => {
         })
         setContacts(response.data)
       } catch (err) {
-        setError(err)
+        console.log(err);
       }
     }
     fetchContacts()

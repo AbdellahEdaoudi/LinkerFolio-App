@@ -109,17 +109,17 @@ function GetUserByUsername({ params }) {
       };
       fetchUserDetails();
     }, [SERVER_URL_V, language]);
-  if (error) {
-    return (
-      <AccountNotFound />
-    );
-  }
   
   if (!userDetailsG ) {
     return (
       <div>
         <Loadingpage />
       </div>
+    );
+  }
+  if (error) {
+    return (
+      <AccountNotFound />
     );
   }
   if (loading) {
