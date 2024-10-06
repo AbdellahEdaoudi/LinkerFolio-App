@@ -33,7 +33,15 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
-      socket.emit("updateMessage", response.data);
+      const from = response.data.result[0].from
+      const to = response.data.result[0].to
+      setMessages(prevMessages =>
+        prevMessages.map(message =>
+          message.from === from && message.to === to && message.readorno === false
+            ? { ...message, readorno: true }
+            : message
+        )
+      );
       return response.data;
     } catch (error) {
       console.error(
@@ -43,39 +51,27 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
       throw error;
     }
   };
+  // Define the function to handle user clicks
   const UserClick = async (User, lastMessage) => {
     setSelectedUser(User);
-
-    if (lastMessage && lastMessage.from && lastMessage.to) {
-      if (lastMessage.readorno === false) {
-          try {
-              await ReadOrNo(lastMessage.from, lastMessage.to);
-              console.log("successful");
-          } catch (error) {
-              console.error("Error updating readorno:", error);
-          }
-      }
-  } else {
-      console.warn("lastMessage or its properties are undefined");
-  }
-
-    // Store selected user in localStorage
     localStorage.setItem("SelectedUser", JSON.stringify(User));
-    
+    if (lastMessage && lastMessage.from && lastMessage.to) {
+      await ReadOrNo(lastMessage.from, lastMessage.to);
+    } else {
+      // console.warn("lastMessage or its properties are undefined");
+    }
+
     // Scroll messages to the end
     const scrollMessagesToEnd = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
         }
     };
-    
     const timeout = setTimeout(() => {
         scrollMessagesToEnd();
     }, 1);
-    
     return () => clearTimeout(timeout);
-};
-
+    };
 
   //  search input change
   const SearchChange = (e) => {
@@ -101,6 +97,24 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
     const highlightedText = text.replace(regex, "<b>$1</b>");
     return DOMPurify.sanitize(highlightedText);
   };
+  const filteredUserDetails = userDetails.filter(userDetail =>
+    userDetail.email === EmailUser ||
+    messages.some(msg =>
+      (msg.from === EmailUser && msg.to === userDetail.email) ||
+      (msg.to === EmailUser && msg.from === userDetail.email)
+    )
+  );
+  const userWithLastMessages = filteredUserDetails.map(User => {
+    const lastMessage = messages
+      .filter(msg =>
+        (msg.from === EmailUser && msg.to === User.email) ||
+        (msg.to === EmailUser && msg.from === User.email)
+      ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+  
+    return { User, lastMessage };
+  }).sort((a, b) =>
+    new Date(b.lastMessage?.createdAt) - new Date(a.lastMessage?.createdAt)
+  );
 
   return (
     <div>
@@ -119,7 +133,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
         </div>
         <div className=" overflow-y-auto  scrollbar-none ">
         <div>
-              {/* Users List */}
+              {/* Search User List */}
               <div className="overflow-y-auto max-h-[500px]  scrollbar-none">
                 {userDetails
                   .filter(
@@ -198,40 +212,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                       </div>
                     </div>
                   ))}
-                {EmailUser &&
-                  userDetails
-                    .filter(
-                      (userDetail) =>
-                        userDetail.email === EmailUser ||
-                        messages.some(
-                          (msg) =>
-                            (msg.from === EmailUser &&
-                              msg.to === userDetail.email) ||
-                            (msg.to === EmailUser &&
-                              msg.from === userDetail.email)
-                        )
-                    )
-                    .map((User) => {
-                      // Find the last message between EmailUser and the current User
-                      const lastMessage = messages
-                        .filter(
-                          (msg) =>
-                            (msg.from === EmailUser && msg.to === User.email) ||
-                            (msg.to === EmailUser && msg.from === User.email)
-                        )
-                        .sort(
-                          (a, b) =>
-                            new Date(b.createdAt) - new Date(a.createdAt)
-                        )[0];
-
-                      return { User, lastMessage }; // Return both User and lastMessage
-                    })
-                    .sort(
-                      (a, b) =>
-                        new Date(b.lastMessage?.createdAt) -
-                        new Date(a.lastMessage?.createdAt)
-                    ) // Sort by last message date
-                    .map(({ User, lastMessage }, i) =>{
+                {userWithLastMessages.map(({ User, lastMessage }, i) =>{
                       const MessgesLength = Array.from(
                         new Map(
                           messages

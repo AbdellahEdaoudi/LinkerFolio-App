@@ -3,17 +3,15 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../../Context/MyContext";
-import io from "socket.io-client";
 import DOMPurify from 'dompurify';
 import LUserList from "../Loading/LoadChatPage/LUserList";
 
 function UserList({ selectedUser, setSelectedUser }) {
   const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL,
-    messages, setMessages,socket, setSocket
+    messages, setMessages
   }=useContext(MyContext);
   const [searchQuery,setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
-
 
 
   const ReadOrNo = async (fromEmail,toEmail) => {
@@ -26,7 +24,15 @@ function UserList({ selectedUser, setSelectedUser }) {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
-      socket.emit("updateMessage", response.data);
+      const from = response.data.result[0].from
+      const to = response.data.result[0].to
+      setMessages(prevMessages =>
+        prevMessages.map(message =>
+          message.from === from && message.to === to && message.readorno === false
+            ? { ...message, readorno: true }
+            : message
+        )
+      );
       return response.data;
     } catch (error) {
       console.error(
@@ -41,18 +47,9 @@ function UserList({ selectedUser, setSelectedUser }) {
     setSelectedUser(User);
     localStorage.setItem("SelectedUser", JSON.stringify(User));
     if (lastMessage && lastMessage.from && lastMessage.to) {
-      // Check if lastMessage.readorno is false
-      if (lastMessage.readorno === false) {
-          try {
-              const response = await ReadOrNo(lastMessage.from, lastMessage.to);
-              console.log("Read successful");
-              socket.emit("updateMessage", response);
-          } catch (error) {
-              console.error("Error updating readorno:", error);
-          }
-      }
+      await ReadOrNo(lastMessage.from, lastMessage.to);
     } else {
-      console.warn("lastMessage or its properties are undefined");
+      // console.warn("lastMessage or its properties are undefined");
     }
 
     // Scroll messages to the end
@@ -104,6 +101,24 @@ function UserList({ selectedUser, setSelectedUser }) {
         </div>
       )
     }
+    const filteredUserDetails = userDetails.filter(userDetail =>
+      userDetail.email === EmailUser ||
+      messages.some(msg =>
+        (msg.from === EmailUser && msg.to === userDetail.email) ||
+        (msg.to === EmailUser && msg.from === userDetail.email)
+      )
+    );
+    const userWithLastMessages = filteredUserDetails.map(User => {
+      const lastMessage = messages
+        .filter(msg =>
+          (msg.from === EmailUser && msg.to === User.email) ||
+          (msg.to === EmailUser && msg.from === User.email)
+        ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+    
+      return { User, lastMessage };
+    }).sort((a, b) =>
+      new Date(b.lastMessage?.createdAt) - new Date(a.lastMessage?.createdAt)
+    );
 
   return (
     <div>
@@ -123,15 +138,12 @@ function UserList({ selectedUser, setSelectedUser }) {
               {/* Users List */}
         <div className=" overflow-y-auto max-h-[400px] scrollbar-none ">
               <div className="overflow-y-auto max-h-[420px] scrollbar-none">
+                {/* Search User */}
                 {filteredSearchUser.map((User, i) => (
-                    <div
-                      key={i}
+                    <div key={i}
                       onClick={() => {
                         setSelectedUser(User);
-                        localStorage.setItem(
-                          "SelectedUser",
-                          JSON.stringify(User)
-                        );
+                        localStorage.setItem("SelectedUser",JSON.stringify(User));
                         const scrollMessagesToEnd = () => {
                           if (messagesEndRef.current) {
                             messagesEndRef.current.scrollTop =
@@ -174,103 +186,71 @@ function UserList({ selectedUser, setSelectedUser }) {
                       </div>
                     </div>
                   ))}
-                {EmailUser  && userDetails
-                    .filter(
-                      (userDetail) =>
-                        userDetail.email === EmailUser ||
-                        messages.some(
-                          (msg) =>
-                            (msg.from === EmailUser &&
-                              msg.to === userDetail.email) ||
-                            (msg.to === EmailUser &&
-                              msg.from === userDetail.email)
-                        )
-                    )
-                    .map((User) => {
-                      const lastMessage = messages
-                        .filter(
-                          (msg) =>
-                            (msg.from === EmailUser && msg.to === User.email) ||
-                            (msg.to === EmailUser && msg.from === User.email)
-                        )
-                        .sort(
-                          (a, b) =>
-                            new Date(b.createdAt) - new Date(a.createdAt)
-                        )[0];
 
-                      return { User, lastMessage };
-                    }).sort(
-                      (a, b) =>
-                        new Date(b.lastMessage?.createdAt) -
-                        new Date(a.lastMessage?.createdAt)
-                    ) 
-                    .map(({ User, lastMessage }, i) => {
-                      const MessgesLength = Array.from(
-                        new Map(
-                          messages
-                            .filter(
-                              (fl) => fl.to === EmailUser && fl.from === lastMessage?.from  && fl.readorno === false
-                            )
-                            .map((item) => [item.message, item])
-                        ).values()
-                      );
-                      return (
-                        <div
-                        key={i}
-                        onClick={() => {
-                          UserClick(User, lastMessage);
-                        }}
-                        className={`${
-                          searchQuery === "" ? "" : "hidden"
-                        } mt-1 flex relative items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
-                          selectedUser && selectedUser.email === User.email
-                            ? "bg-gray-700"
-                            : ""
-                        }`}
-                      >
-                        <div className="relative flex-shrink-0 w-12 h-12">
-                          <Image
-                            src={User.urlimage}
-                            alt="Profile"
-                            className="rounded-full"
-                            layout="fill"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <p className="text-lg">{User.fullname}</p>
-                          <div className="flex items-center gap-1">
-                            <p className="text-[14px] text-gray-500 line-clamp-1">
-                            {lastMessage
-                              ? lastMessage.from === EmailUser
-                                ? `you: ${lastMessage.message} `
-                                : `${lastMessage.message}`
-                              : "No messages yet"}
-                          </p>
-                          <p className={`${User.email === EmailUser && 'hidden'} text-sm text-gray-500`}>
-                          {MessgesLength.length > 1 ? `(${MessgesLength.length})` : MessgesLength.length === 1 ? "" : ""}
-                          </p>
-                          </div>
-                          
-                        </div>
-                        {lastMessage && (
-                          <p
-                            className={` 
-                         ${
-                           lastMessage.from === EmailUser &&
-                           lastMessage.to === EmailUser &&
-                           "hidden"
-                         }
-                         ${lastMessage.from === EmailUser && "hidden"}
-                         ${
-                           lastMessage.readorno && "hidden"
-                         } absolute right-3 top-1/2 -translate-y-1/2 bg-sky-800 rounded-full px-1  text-[10px]`}
-                          >
-                            new
-                          </p>
-                        )}
-                      </div>
-                      )
-})}
+   {userWithLastMessages.map(({ User, lastMessage }, i) => {
+      const messagesLength = Array.from(
+        new Map(
+          messages
+            .filter(fl =>
+              fl.to === EmailUser &&
+              fl.from === lastMessage?.from &&
+              fl.readorno === false
+            )
+            .map(item => [item.message, item])
+        ).values()
+      );
+
+      return (
+        <div
+          key={i}
+          onClick={() => UserClick(User, lastMessage)}
+          className={`${
+            searchQuery === "" ? "" : "hidden"
+          } mt-1 flex relative items-center gap-4 p-2 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition ${
+            selectedUser && selectedUser.email === User.email ? "bg-gray-700" : ""
+          }`}
+        >
+          <div className="relative flex-shrink-0 w-12 h-12">
+            <Image
+              src={User.urlimage}
+              alt="Profile"
+              className="rounded-full"
+              layout="fill"
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-lg">{User.fullname}</p>
+            <div className="flex items-center gap-1">
+              <p className="text-[14px] text-gray-500 line-clamp-1">
+                {lastMessage
+                  ? lastMessage.from === EmailUser
+                    ? `you: ${lastMessage.message}`
+                    : `${lastMessage.message}`
+                  : "No messages yet"}
+              </p>
+              <p className={`${User.email === EmailUser && 'hidden'} text-sm text-gray-500`}>
+                {messagesLength.length > 1
+                  ? `(${messagesLength.length})`
+                  : messagesLength.length === 1
+                    ? ""
+                    : ""}
+              </p>
+            </div>
+          </div>
+          {lastMessage && (
+            <p
+              className={` 
+                ${lastMessage.from === EmailUser && lastMessage.to === EmailUser && "hidden"}
+                ${lastMessage.from === EmailUser && "hidden"}
+                ${lastMessage.readorno && "hidden"} 
+                absolute right-3 top-1/2 -translate-y-1/2 bg-sky-800 rounded-full px-1 text-[10px]`}
+            >
+              new
+            </p>
+          )}
+        </div>
+      );
+    })}
               </div>
         </div>
       </div>

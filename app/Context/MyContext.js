@@ -19,9 +19,9 @@ export const MyProvider = ({ children }) => {
   
 
 
-  // const CLIENT_URL = "http://local:host:3000";
-  // const SERVER_URL = "http://local:host:9999" ;
-  // const SERVER_URL_V = "http://loc:alhost:9999" ;
+  // const CLIENT_URL = "http://localhost:3000";
+  // const SERVER_URL = "http://localhost:9999" ;
+  // const SERVER_URL_V = "http://localhost:9999" ;
    const CLIENT_URL = "https://linkerfolio.vercel.app";
    const SERVER_URL = "https://server-linkerfolio.onrender.com";
    const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
@@ -71,7 +71,7 @@ export const MyProvider = ({ children }) => {
     };
   }, [SERVER_URL]);
   
-  // Fetch users
+  // Get users
   useEffect(() => {
     axios.get(`${SERVER_URL_V}/users`,{
         headers: {
@@ -95,7 +95,7 @@ export const MyProvider = ({ children }) => {
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
           }
         });
-        setMessages(response.data.reverse());
+        setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
       }

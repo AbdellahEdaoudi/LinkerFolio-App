@@ -33,9 +33,6 @@ function Messages({ selectedUser }) {
     friendRequests, setFriendRequests
   } =
     useContext(MyContext);
-  // const [messages, setMessages] = useState([]);
-  // const [socket, setSocket] = useState(null);
-  // const [friendRequests, setFriendRequests] = useState([]);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const router = useRouter();
 

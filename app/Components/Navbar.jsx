@@ -35,14 +35,8 @@ function Navbar() {
   const [Adminfind, setAdminfind] = useState(false);
   const [FR_FRREQ, setFR_FRREQ] = useState("Friend Requests");
   const navRef = useRef(null);
-  const {
-    userDetails,
-    Notification,
-    EmailUser,
-    Requests,
-    messages,
-    SERVER_URL_V,
-  } = useContext(MyContext);
+  const {userDetails,Notification,EmailUser,Requests,
+    messages,setMessages,SERVER_URL_V} = useContext(MyContext);
   const [search, setSearch] = useState("");
   const [shuffledUserDetails, setShuffledUserDetails] = useState([]);
   useEffect(() => {
@@ -53,19 +47,24 @@ function Navbar() {
   }, [userDetails, EmailUser]);
 
   const filt = userDetails.filter((fl) => fl.email === EmailUser);
-  const ReadOrNo = async (fromEmail, toEmail) => {
+  const ReadOrNo = async (fromEmail,toEmail) => {
     try {
-      const response = await axios.put(
-        `${SERVER_URL_V}/readorno`,
-        {
-          fromEmail,
-          toEmail,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
+      const response = await axios.put(`${SERVER_URL_V}/readorno`, {
+        fromEmail,
+        toEmail,
+      },{
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
+      });
+      const from = response.data.result[0].from
+      const to = response.data.result[0].to
+      setMessages(prevMessages =>
+        prevMessages.map(message =>
+          message.from === from && message.to === to && message.readorno === false
+            ? { ...message, readorno: true }
+            : message
+        )
       );
       return response.data;
     } catch (error) {
