@@ -29,12 +29,7 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const { SERVER_URL, SERVER_URL_V, userDetails, EmailUser,
-    messages, setMessages ,
-    socket, setSocket ,
-    friendRequests, setFriendRequests
-  } =
-    useContext(MyContext);
+  const {SERVER_URL, userDetails, EmailUser,messages,socket,friendRequests}=useContext(MyContext);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const router = useRouter();
 
@@ -394,7 +389,7 @@ function UserProfile({ params }) {
                                   : DateAll
                               }`}</p>
                               <p className=" text-gray-900">
-                                {DateMsg.toLocaleTimeString()}
+                                {DateMsg.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
                               </p>
                             </span>
                           </div>

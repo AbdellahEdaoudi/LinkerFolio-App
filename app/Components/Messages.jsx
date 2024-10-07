@@ -268,42 +268,24 @@ function Messages({ selectedUser }) {
                       );
                       // Date Message
                       const year = DateMsg.getFullYear();
-                      const month = String(DateMsg.getMonth() + 1).padStart(
-                        2,
-                        "0"
-                      );
+                      const month = String(DateMsg.getMonth() + 1).padStart(2,"0");
                       const day = String(DateMsg.getDate()).padStart(2, "0");
                       const DateAll = `${year}/${month}/${day}`;
                       // Date Today
                       const yeart = DateToday.getFullYear();
-                      const montht = String(DateToday.getMonth() + 1).padStart(
-                        2,
-                        "0"
-                      );
+                      const montht = String(DateToday.getMonth() + 1).padStart(2,"0");
                       const dayt = String(DateToday.getDate()).padStart(2, "0");
                       const TodayDate = `${yeart}/${montht}/${dayt}`;
                       // Date Yesterday
                       const yeary = DateToday.getFullYear();
-                      const monthy = String(DateToday.getMonth() + 1).padStart(
-                        2,
-                        "0"
-                      );
-                      const dayy = String(DateToday.getDate() - 1).padStart(
-                        2,
-                        "0"
-                      );
+                      const monthy = String(DateToday.getMonth() + 1).padStart(2,"0");
+                      const dayy = String(DateToday.getDate() - 1).padStart(2,"0");
                       const YesterdayDate = `${yeary}/${monthy}/${dayy}`;
 
                       // UPDATED MESSAGE DATE
                       const yearu = DateUpdMsg.getFullYear();
-                      const monthu = String(DateUpdMsg.getMonth() + 1).padStart(
-                        2,
-                        "0"
-                      );
-                      const dayu = String(DateUpdMsg.getDate()).padStart(
-                        2,
-                        "0"
-                      );
+                      const monthu = String(DateUpdMsg.getMonth() + 1).padStart(2,"0");
+                      const dayu = String(DateUpdMsg.getDate()).padStart(2,"0");
                       const UpdateDate = `${yearu}/${monthu}/${dayu}`;
 
                       return (
@@ -374,7 +356,7 @@ function Messages({ selectedUser }) {
                           </div>
                           {/* DateMsg */}
                           <div
-                            className={` flex gap-2 mb-1  ${
+                            className={` flex gap-1 mb-1  ${
                               (msg.from || msg.to) === EmailUser
                                 ? "justify-end mr-14 "
                                 : " ml-14"
@@ -388,8 +370,7 @@ function Messages({ selectedUser }) {
                                 : DateAll
                             }`}</p>
                             <p className=" text-gray-900">
-                              {DateMsg.toLocaleTimeString()}
-                            </p>
+                            {DateMsg.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}                            </p>
                           </div>
                         </div>
                       );
