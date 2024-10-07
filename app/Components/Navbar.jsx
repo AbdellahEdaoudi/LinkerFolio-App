@@ -157,9 +157,9 @@ function Navbar() {
             {/* SEARCHE */}
             <div className="md:mx-0 mx-2">
               <div className="flex items-center bg-gray-100 border shadow-sm border-gray-300 rounded-lg   md:w-96 max-w-md">
-                <button className=" p-2 text-gray-500 ">
+                <div className=" p-2 text-gray-500 ">
                   <UserRoundSearch />
-                </button>
+                </div>
                 <input
                   type="search"
                   placeholder="Search"

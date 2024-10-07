@@ -178,11 +178,8 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                       }`}
                     >
                       <div
-                        onClick={() => {
-                          router.push(`/${User.username}`);
-                        }}
-                        className="relative w-12 h-12 ml-1"
-                      >
+                        onClick={()=>{router.push(`/${User.username}`);}}
+                        className="relative w-12 h-12 ml-1">
                         <Image
                           src={User.urlimage}
                           alt="Profile"
@@ -203,7 +200,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                           __html: `${safeHighlightText(User.fullname)}`,
                         }}
                       ></p>
-                        <p className="text-[10px] text-gray-500"
+                        <p className="text-[10px] text-gray-400"
                         dangerouslySetInnerHTML={{
                           __html: `${safeHighlightText(User.email)}`,
                         }}>
@@ -248,7 +245,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         <div className="flex flex-col">
                           <p className="text-lg">{User.fullname}</p>
                           <div className="flex items-center gap-1">
-                            <p className="text-[14px] text-gray-500 line-clamp-1">
+                            <p className="text-[14px] text-gray-400 line-clamp-1">
                             {lastMessage
                               ? lastMessage.from === EmailUser
                                 ? `you: ${lastMessage.message} `
