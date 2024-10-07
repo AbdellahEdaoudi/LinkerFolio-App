@@ -29,19 +29,19 @@ function EditUserLinks() {
   const AddLink = async (e) => {
     e.preventDefault();
     setLoadingt(true);
-
+  
     try {
       const response = await axios.post(`${SERVER_URL_V}/links`, {
         useremail: EmailUser,
         namelink,
         link
-      },{
+      }, {
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
       console.log('Link added:', response.data);
-      setUserLinks(Links => [response.data.data, ...Links]);
+      setUserLinks(prevLinks => [response.data.data, ...prevLinks]);
       // toast("Link added successfully!");
       setLink('');
       setNamelink('');
@@ -52,25 +52,23 @@ function EditUserLinks() {
       setLoadingt(false);
     }
   };
-
+  
   const UpdateLink = async (e) => {
     e.preventDefault();
     setLoadingt(true);
-
+  
     try {
       const response = await axios.put(`${SERVER_URL_V}/links/${editLinkId}`, {
         namelink,
         link
-      },{
+      }, {
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
       console.log('Link updated:', response.data);
-      setUserLinks((Links) =>
-        Links.map((item) =>
-          item._id === editLinkId ? response.data.data : item
-        )
+      setUserLinks(prevLinks => 
+        prevLinks.map(item => (item._id === editLinkId ? response.data.data : item))
       );
       // toast("Link updated successfully!");
       setEditLinkId(null);
@@ -83,6 +81,29 @@ function EditUserLinks() {
       setLoadingt(false);
     }
   };
+  
+  const DeleteLink = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this link?");
+    
+    if (confirmDelete) {
+      try {
+        await axios.delete(`${SERVER_URL_V}/links/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+          }
+        });
+        setUserLinks(prevLinks => prevLinks.filter(item => item._id !== id));
+        setEditLinkId(null);
+        setNamelink('');
+        setLink('');
+        // toast("Link deleted successfully!");
+      } catch (error) {
+        console.error('There was an error deleting the link!', error);
+        toast.error('Failed to delete the link.');
+      }
+    }
+  };
+  
 
   if (!userDetails || userDetails.length === 0) {
     return <LoadChatPage />;
@@ -92,27 +113,7 @@ function EditUserLinks() {
     return <CreateProfile />;
   }
 
-  const DeleteLink = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this link?");
-    
-    if (confirmDelete) {
-      try {
-        await axios.delete(`${SERVER_URL_V}/links/${id}`,{
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-          }
-        });
-        setUserLinks((Links) => Links.filter((item) => item._id !== id));
-        setEditLinkId(false)
-            setNamelink("")
-            setLink("")
-        // toast("Link deleted successfully!");
-      } catch (error) {
-        console.error('There was an error deleting the link!', error);
-        toast.error('Failed to delete the link.');
-      }
-    }
-  };
+  
   
 
   const EditLink = (lnk) => {
