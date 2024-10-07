@@ -24,7 +24,7 @@ import {
   TableRow,
 } from "../../../@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../@/components/ui/card"
-import { Loader2, Mail, Phone, Trash2 } from "lucide-react"
+import { Loader2, Mail, MessageSquare, Phone, Trash2 } from "lucide-react"
 
 export default function ContactsPage() {
   const [error, setError] = useState(null)
@@ -52,7 +52,67 @@ export default function ContactsPage() {
   )
 
   return (
-    <Card className="w-full">
+    <section>
+      <Card className=" md:hidden">
+        <div className="grid gap-4 grid-cols-1">
+          {contacts.map((contact) => (
+            <Card key={contact._id} className="p-3">
+              <div className="flex flex-col space-y-1 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">ID: {contact.iduser}</span>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="icon" className="h-6 w-6">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete the contact.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => DeleteMessage(contact._id)}>Delete</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Mail className="h-3 w-3 text-muted-foreground" />
+                  <span>{contact.email}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Phone className="h-3 w-3 text-muted-foreground" />
+                  <span>{contact.phoneNumber}</span>
+                </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="mt-1">
+                      <MessageSquare className="h-3 w-3 mr-1" />
+                      View Message
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Message</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        <div className="max-h-60 overflow-y-auto">{contact.message}</div>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Close</AlertDialogCancel>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </Card>
+          ))}
+        </div>
+    </Card>
+    <Card className="w-full md:block sm:hidden hidden">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Contacts</CardTitle>
       </CardHeader>
@@ -128,5 +188,7 @@ export default function ContactsPage() {
         </Table>
       </CardContent>
     </Card>
+    </section>
+    
   )
 }

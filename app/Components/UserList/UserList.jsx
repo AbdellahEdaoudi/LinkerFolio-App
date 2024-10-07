@@ -7,9 +7,7 @@ import DOMPurify from 'dompurify';
 import LUserList from "../Loading/LoadChatPage/LUserList";
 
 function UserList({ selectedUser, setSelectedUser }) {
-  const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL,
-    messages, setMessages
-  }=useContext(MyContext);
+  const {userDetails,EmailUser,SERVER_URL_V,SERVER_URL,messages, setMessages}=useContext(MyContext);
   const [searchQuery,setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -122,7 +120,7 @@ function UserList({ selectedUser, setSelectedUser }) {
 
   return (
     <div>
-      <div className="bg-gray-800 rounded-b-sm text-white scrollbar-none   p-4 overflow-y-auto max-h-[516px] min-h-[525px]">
+      <div className="bg-gray-800 rounded-b-sm text-white  p-4">
         {/* Search Users input */}
         <input
           type="search"
@@ -136,8 +134,7 @@ function UserList({ selectedUser, setSelectedUser }) {
           {searchQuery === "" ? "Friends" : "Users List"}
         </div>
               {/* Users List */}
-        <div className=" overflow-y-auto max-h-[400px] scrollbar-none ">
-              <div className="overflow-y-auto max-h-[420px] scrollbar-none">
+              <div className="overflow-y-auto h-[65.3vh] max-h-[75vh]  scrollbar-none">
                 {/* Search User */}
                 {filteredSearchUser.map((User, i) => (
                     <div key={i}
@@ -157,9 +154,9 @@ function UserList({ selectedUser, setSelectedUser }) {
                       }}
                       className={`${searchQuery === "" ? "hidden" : ""} 
                         flex items-center gap-4 p-2 duration-500 hover:bg-gray-700
-                         cursor-pointer rounded-lg transition 
-                         ${selectedUser && selectedUser.email === User.email ? 
-                         "bg-gray-700" : ""}`} >
+                        cursor-pointer rounded-lg transition 
+                        ${selectedUser && selectedUser.email === User.email ? 
+                        "bg-gray-700" : ""}`} >
                       <div className="relative w-12 h-12">
                         <div className="">
                           <Image
@@ -252,7 +249,6 @@ function UserList({ selectedUser, setSelectedUser }) {
       );
     })}
               </div>
-        </div>
       </div>
     </div>
   );

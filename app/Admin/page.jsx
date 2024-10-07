@@ -53,7 +53,11 @@ function Page() {
               <span className="md:block hidden ml-2">{ad}</span>
             </div>
           ))}
-          <span onClick={()=>{localStorage.removeItem("accessToken");}} className="text-red-500 cursor-pointer"><LogOut /></span>
+          <span onClick={()=>{localStorage.removeItem("accessToken");
+            router.push("/Admin")
+          }} className=" text-black rounded-lg p-1 cursor-pointer flex items-center justify-center bg-red-500">
+            LogOut <LogOut size={15} />
+          </span>
         </nav>
       </aside>
       <main className="flex-1 p-4">

@@ -180,7 +180,7 @@ function Messages({ selectedUser }) {
   return (
     <div>
       {/* Message window on the right */}
-      <div className={` flex flex-col bg-gray-80 bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 justify-between md:w-auto `}>
+      <div className={` flex flex-col  bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 justify-between md:w-auto `}>
         {/* selectedUser And  Messages */}
         <div className="flex-1 p-2 ">
           {/* selectedUser */}

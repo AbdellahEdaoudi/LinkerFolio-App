@@ -18,7 +18,7 @@ function ChatHome() {
     <div>
       {/* LAPTOP */}
       <div className="md:block sm:block hidden duration-500">
-        <div className="flex flex-row overflow-hidden ">
+        <div className="flex flex-row overflow-hidden  ">
           {/* Users list */}
           <nav className="w-72 min-w-72 flex-shrink-0 z-10">
             <UserList
@@ -27,7 +27,7 @@ function ChatHome() {
             />
           </nav>
           {/* Message window on the right */}
-          <nav className={`${selectedUser ? "" : "hidden"} w-full z-10 `}>
+          <nav className={`${selectedUser ? "" : "hidden"} w-full z-10`}>
             <Messages selectedUser={selectedUser} />
           </nav>
         </div>
