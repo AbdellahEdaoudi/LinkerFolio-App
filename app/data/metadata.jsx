@@ -53,5 +53,24 @@ export const Metadata = {
           name: "twitter:creator",
           content: "@Edaoudi_abde",
       },
+      {
+        name: "fb:app_id",
+        content: "YOUR_FACEBOOK_APP_ID", 
+      },
+      {
+        name: "image_src",
+        content: "https://res.cloudinary.com/dssrnghtr/image/upload/v1726176794/mptxnsr28gdxrdzpgp5i.png",
+      },
   ],
+  schema: {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "LinkerFolio",
+    "url": "https://linkerfolio.vercel.app",
+    "sameAs": [
+      "hhttps://web.facebook.com/profile.php?id=61566514480968&__tn__=<%2Cd",
+      "https://www.instagram.com/LinkerFolio",
+      "https://twitter.com/LinkerFolio",
+    ]
+  },
 };
