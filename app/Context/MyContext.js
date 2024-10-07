@@ -193,6 +193,7 @@ const Requests = friendRequests
         CLIENT_URL,
         SERVER_URL,
         userDetails,
+        setUserDetails,
         userLinks,
         setUserLinks,
         EmailUser,

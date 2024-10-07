@@ -24,9 +24,11 @@ import ParticleComponent from "../../Components/ParticleComponent";
 function NameUser({ params }) {
   const {data,status}=useSession()
   const user = data?.user
-  const [loading, setLoading] = useState(true);
+  const {SERVER_URL_V,EmailUser,userDetails,setUserDetails} = useContext(MyContext);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [fullname, setFullname] = useState("");
+  const User = userDetails.find((user)=>user._id === params.updateprofile);
+  const [fullname, setFullname] = useState(User?.fullname);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -55,7 +57,38 @@ function NameUser({ params }) {
   const [experience, setExperience] = useState("");
   const [id, setid] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
-  const {SERVER_URL_V,EmailUser} = useContext(MyContext);
+  useEffect(() => {
+    if (User) {
+        setFullname(User.fullname);
+        setEmail(User.email);
+        setUsername(User.username);
+        setPhoneNumber(User.phoneNumber);
+        setCountry(User.country);
+        setUrlimage(User.urlimage);
+        setBio(User.bio);
+        setFb(User.fb);
+        setWhatsapp(User.whatsapp);
+        setMessenger(User.messenger);
+        setReddit(User.reddit);
+        setTwitch(User.twitch);
+        setInstagram(User.instagram);
+        setTwitter(User.Twitter);
+        setLinkedin(User.Linkedin);
+        setGithub(User.github);
+        setYoutube(User.Youtube);
+        setTelegram(User.Telegram);
+        setSnapchat(User.snapchat);
+        setbgcolorp(User.bgcolorp);
+        setSkills(User.skills);
+        setServices(User.services);
+        setLanguages(User.languages);
+        setCategory(User.category);
+        setEducation(User.education);
+        setExperience(User.experience);
+        setid(User._id);
+    }
+}, [User]);
+
   
   const datasocial = [
     { iconSrc: "/Icons/wts.svg", alt: "WhatsApp", state: whatsapp, setState: setWhatsapp, placeholder: "WhatsApp Link" },
@@ -71,49 +104,48 @@ function NameUser({ params }) {
     { iconSrc: "/Icons/yt.svg", alt: "YouTube", state: Youtube, setState: setYoutube, placeholder: "YouTube Link" },
     { iconSrc: "/Icons/snap.svg", alt: "Snapchat", state: snapchat, setState: setSnapchat, placeholder: "Snapchat Link" }
   ];
-  // Get Detail User
-  useEffect(() => {
-    axios
-      .get(`${SERVER_URL_V}/users/${params.updateprofile}`,{
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-        }
-      })
-      .then((res) => {
-        const data = res.data;
-        setid(data._id);
-        setFullname(data.fullname);
-        setbgcolorp(data.bgcolorp);
-        setCountry(data.country)
-        setEmail(data.email);
-        setUsername(data.username);
-        setPhoneNumber(data.phoneNumber);
-        setUrlimage(data.urlimage);
-        setBio(data.bio);
-        setCategory(data.category);
-        setFb(data.fb);
-        setWhatsapp(data.whatsapp);
-        setMessenger(data.messenger);
-        setReddit(data.reddit);
-        setTwitch(data.twitch);
-        setInstagram(data.instagram);
-        setTwitter(data.Twitter);
-        setLinkedin(data.Linkedin);
-        setGithub(data.github);
-        setYoutube(data.Youtube);
-        setTelegram(data.Telegram);
-        setSnapchat(data.snapchat);
-        setEducation(data.education);
-        setExperience(data.experience);
-        setSkills(data.skills);
-        setServices(data.services);
-        setLanguages(data.languages)
-      })
-      .catch((error) => console.error("Error fetching user details:", error))
-      .finally(() => setLoading(false));
-  }, [SERVER_URL_V,params.updateprofile]);
+  // // Get Detail User
+  // useEffect(() => {
+  //   axios
+  //     .get(`${SERVER_URL_V}/users/${params.updateprofile}`,{
+  //       headers: {
+  //         'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+  //       }
+  //     })
+  //     .then((res) => {
+  //       const data = res.data;
+  //       setid(data._id);
+  //       setFullname(data.fullname);
+  //       setbgcolorp(data.bgcolorp);
+  //       setCountry(data.country)
+  //       setEmail(data.email);
+  //       setUsername(data.username);
+  //       setPhoneNumber(data.phoneNumber);
+  //       setUrlimage(data.urlimage);
+  //       setBio(data.bio);
+  //       setCategory(data.category);
+  //       setFb(data.fb);
+  //       setWhatsapp(data.whatsapp);
+  //       setMessenger(data.messenger);
+  //       setReddit(data.reddit);
+  //       setTwitch(data.twitch);
+  //       setInstagram(data.instagram);
+  //       setTwitter(data.Twitter);
+  //       setLinkedin(data.Linkedin);
+  //       setGithub(data.github);
+  //       setYoutube(data.Youtube);
+  //       setTelegram(data.Telegram);
+  //       setSnapchat(data.snapchat);
+  //       setEducation(data.education);
+  //       setExperience(data.experience);
+  //       setSkills(data.skills);
+  //       setServices(data.services);
+  //       setLanguages(data.languages)
+  //     })
+  //     .catch((error) => console.error("Error fetching user details:", error))
+  //     .finally(() => setLoading(false));
+  // }, [SERVER_URL_V,params.updateprofile]);
 
-  
   const updateProfile = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -164,7 +196,13 @@ function NameUser({ params }) {
         toast(<p className='flex gap-3 items-center'><CheckCircle /> Updated Successfully</p>, {
           autoClose: 3000,
         });
-        console.log("User details updated successfully", response.data);
+        setUserDetails((prevUsers) => 
+          prevUsers.map((user) => 
+            user._id === params.updateprofile 
+              ? { ...user, ...response.data }
+              : user 
+          )
+        );
         router.push("/Profile");
     } catch (error) {
       console.error("Error updating user details:", error);
@@ -187,7 +225,7 @@ function NameUser({ params }) {
     }
   };
 
-  if (!user || !email || !EmailUser) {
+  if (!userDetails || userDetails.length === 0) {
     return <UpdatePLoading />
   }
   
@@ -210,7 +248,9 @@ function NameUser({ params }) {
   ]
   
   return (
-    <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}>
+    <section>
+      {User && (
+        <div className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}>
       <ParticleComponent bgcolor={bgcolorp} />
   <form onSubmit={updateProfile} className="z-10">
     <div className="mx-4  md:w-[800px] px-4 md:px-8 pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
@@ -289,7 +329,7 @@ function NameUser({ params }) {
       <div>
         <label className="block text-gray-700 font-semibold mb-2">Phone:</label>
         <input
-          type="text"
+          type="number"
           name="phoneNumber"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
@@ -523,6 +563,9 @@ function NameUser({ params }) {
     </div>
   </form>
 </div>
+      )}
+    </section>
+    
 
   );
 }

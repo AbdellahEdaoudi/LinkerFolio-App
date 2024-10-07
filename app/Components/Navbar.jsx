@@ -46,7 +46,7 @@ function Navbar() {
     }
   }, [userDetails, EmailUser]);
 
-  const filt = userDetails.filter((fl) => fl.email === EmailUser);
+  
   const ReadOrNo = async (fromEmail,toEmail) => {
     try {
       const response = await axios.put(`${SERVER_URL_V}/readorno`, {
@@ -130,6 +130,7 @@ function Navbar() {
     document.addEventListener('mousedown', ClickOutside);
     return () => document.removeEventListener('mousedown', ClickOutside);
   }, []);
+  const filt = userDetails.filter((fl) => fl.email === EmailUser);
   return (
     <div ref={navRef}>
       <nav className=" border-b drop-shadow-2xl bg-gray-200  backdrop-blur-lg ">

@@ -17,7 +17,6 @@ import LMessages from "../../../Components/Loading/LoadChatPage/LMessages";
 import InputLoadMessages from "../../../Components/Loading/InputLoadMessages";
 
 function UserProfile({ params }) {
-  const [userDname, setUserDname] = useState("");
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [loadingu, setLoadingu] = useState(false);
@@ -32,6 +31,7 @@ function UserProfile({ params }) {
   const {SERVER_URL, userDetails, EmailUser,messages,socket,friendRequests}=useContext(MyContext);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const router = useRouter();
+  const userDname = userDetails.find((user)=>user.username === params.username);
 
 
 
@@ -60,8 +60,8 @@ function UserProfile({ params }) {
         from: EmailUser,
         fromimg: filtUser.urlimage,
         fromname: filtUser.username,
-        to: userDname.email,
-        toimg: userDname.urlimage,
+        to: userDname?.email,
+        toimg: userDname?.urlimage,
         message: messageInput,
         readorno: false,
       };
@@ -141,27 +141,29 @@ function UserProfile({ params }) {
     }
   };
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await axios.get(
-          `${SERVER_URL}/user/${params.username}`
-          ,{
-            headers: {
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-            }
-          });
-        if (!response.data) {
-          throw new Error("User not found");
-        }
-        setUserDname(response.data);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-    fetchUserDetails();
-  }, [SERVER_URL, params.id, params.username]);
-  const emailuser = userDname.email;
+  // useEffect(() => {
+  //   const fetchUserDetails = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${SERVER_URL}/user/${params.username}`
+  //         ,{
+  //           headers: {
+  //             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+  //           }
+  //         });
+  //       if (!response.data) {
+  //         throw new Error("User not found");
+  //       }
+  //       setUserDname(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching user details:", error);
+  //     }
+  //   };
+  //   fetchUserDetails();
+  // }, [SERVER_URL,params.username]);
+  
+
+  const emailuser = userDname?.email;
   const CheckFrirnd = friendRequests.find(
     (f) =>
       (f.from === EmailUser && f.to === emailuser) ||
@@ -175,8 +177,8 @@ function UserProfile({ params }) {
   const FilterMessages = messages.filter((fl) => {
     return (
       (fl.from === EmailUser &&
-        fl.to === userDname.email) ||
-      (fl.from === userDname.email && fl.to === EmailUser)
+        fl.to === userDname?.email) ||
+      (fl.from === userDname?.email && fl.to === EmailUser)
     );
   }).filter((msg, index, self) =>
     index === self.findIndex((m) => m._id === msg._id)

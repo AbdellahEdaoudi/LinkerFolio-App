@@ -231,7 +231,7 @@ function UserListMobile({ selectedUser, setSelectedUser }) {
                         }}
                         className={`${
                           searchQuery === "" ? "" : "hidden"
-                        } flex relative items-center gap-4 p-2 mb-1 duration-500 hover:bg-gray-700 cursor-pointer rounded-lg transition 
+                        } flex relative items-center gap-4 p-2 mb-1 duration-500 hover:bg-gray-700 focus:bg-gray-400 cursor-pointer rounded-lg transition 
                          `}
                       >
                         <Link
