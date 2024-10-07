@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import NextAuthProvider from "./providers/NextAuthProvider";
 import {Metadata} from "./data/metadata"
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         </NextAuthProvider>
           <Toaster />
           <ToastContainer />
+        <Analytics />
         </body>
       </html>
   );
