@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import CreateProfile from '../Components/CreateProfile';
 import LoadChatPage from '../Components/Loading/LoadChatPage/LoadChatPage';
 import ParticleComponent  from "../Components/ParticleComponent"
+import DOMPurify from 'dompurify';
 
 function EditUserLinks() {
   const {SERVER_URL_V, EmailUser,userDetails,userLinks, setUserLinks} = useContext(MyContext);
@@ -16,6 +17,7 @@ function EditUserLinks() {
   const [link, setLink] = useState('');
   const [Add, setAdd] = useState(true);
   const [editLinkId, setEditLinkId] = useState(null);
+  const sanitizedLink = DOMPurify.sanitize(link);
 
 
 
@@ -31,10 +33,11 @@ function EditUserLinks() {
     setLoadingt(true);
   
     try {
+      const sanitizedLink = DOMPurify.sanitize(link);
       const response = await axios.post(`${SERVER_URL_V}/links`, {
         useremail: EmailUser,
         namelink,
-        link
+        link:sanitizedLink
       }, {
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
@@ -58,9 +61,10 @@ function EditUserLinks() {
     setLoadingt(true);
   
     try {
+      const sanitizedLink = DOMPurify.sanitize(link);
       const response = await axios.put(`${SERVER_URL_V}/links/${editLinkId}`, {
         namelink,
-        link
+        link: sanitizedLink
       }, {
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
