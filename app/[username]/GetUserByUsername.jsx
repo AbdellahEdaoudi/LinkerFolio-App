@@ -109,14 +109,20 @@ function GetUserByUsername({ params }) {
       };
       fetchUserDetails();
     }, [SERVER_URL_V, language]);
+
+    if (!userDetails || userDetails.length === 0) {
+      return <Loadingpage />
+
+    }
   
-  if (!userDetailsG ) {
-    return (
-      <div>
-        <Loadingpage />
-      </div>
-    );
-  }
+    const FindName = userDetails.find((fl) => fl.username === params.username);
+      if (!userDetailsG || !FindName) {
+      return (
+        <div>
+          <AccountNotFound />
+        </div>
+      );
+    }
   if (error) {
     return (
       <AccountNotFound />
@@ -125,7 +131,7 @@ function GetUserByUsername({ params }) {
   if (loading) {
     return (
       <div>
-        <LoadingPagetranslate language={language} bgcolorp={userDetailsG.bgcolorp} />
+        <LoadingPagetranslate language={language} bgcolorp={userDetailsG?.bgcolorp} />
       </div>
     );
   }

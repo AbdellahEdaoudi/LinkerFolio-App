@@ -8,6 +8,7 @@ import CreateProfile from '../Components/CreateProfile';
 import LoadChatPage from '../Components/Loading/LoadChatPage/LoadChatPage';
 import ParticleComponent  from "../Components/ParticleComponent"
 import DOMPurify from 'dompurify';
+import WarningModal from "./Pages/WarningModal"
 
 function EditUserLinks() {
   const {SERVER_URL_V, EmailUser,userDetails,userLinks, setUserLinks} = useContext(MyContext);
@@ -17,7 +18,8 @@ function EditUserLinks() {
   const [link, setLink] = useState('');
   const [Add, setAdd] = useState(true);
   const [editLinkId, setEditLinkId] = useState(null);
-  const sanitizedLink = DOMPurify.sanitize(link);
+
+
 
 
 
@@ -31,8 +33,15 @@ function EditUserLinks() {
   const AddLink = async (e) => {
     e.preventDefault();
     setLoadingt(true);
-  
-    try {
+    const regex = /<script.*?>.*?<\/script>|<iframe.*?>.*?<\/iframe>|javascript:|eval\(|alert\(|document\.cookie|window\.location|<a\s+href=["']?javascript:.*?["']?/i;
+
+    if (regex.test(link) || regex.test(namelink)) {
+      setLoadingt(false);
+        document.getElementById('my_modal_2').showModal();
+        return;
+    }
+    
+     try {
       const sanitizedLink = DOMPurify.sanitize(link);
       const response = await axios.post(`${SERVER_URL_V}/links`, {
         useremail: EmailUser,
@@ -43,7 +52,7 @@ function EditUserLinks() {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
-      console.log('Link added:', response.data);
+      // console.log('Link added:', response.data);
       setUserLinks(prevLinks => [response.data.data, ...prevLinks]);
       // toast("Link added successfully!");
       setLink('');
@@ -59,6 +68,13 @@ function EditUserLinks() {
   const UpdateLink = async (e) => {
     e.preventDefault();
     setLoadingt(true);
+    const regex = /<script.*?>.*?<\/script>|<iframe.*?>.*?<\/iframe>|javascript:|eval\(|alert\(|document\.cookie|window\.location|<a\s+href=["']?javascript:.*?["']?/i;
+
+    if (regex.test(link) || regex.test(namelink)) {
+      setLoadingt(false);
+        document.getElementById('my_modal_2').showModal();
+        return;
+    }
   
     try {
       const sanitizedLink = DOMPurify.sanitize(link);
@@ -126,7 +142,7 @@ function EditUserLinks() {
     setLink(lnk.link);
     setAdd(false);
   };
-
+  
   return (
     <div className={` pt-4 pb-12 flex justify-center`}>
 <ParticleComponent bgcolor={"bg-gradient-to-r from-gray-950 via-teal-950 to-gray-900"} />
@@ -151,7 +167,7 @@ function EditUserLinks() {
                 onChange={(e) => setNamelink(e.target.value)}
                 required
                 maxLength={50}
-                placeholder='URL Name'
+                placeholder='Name'
                 className="mt-1 w-full px-3 py-2 border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               />
             </div>
@@ -173,6 +189,7 @@ function EditUserLinks() {
               {loadingt ? <><i className="fa fa-spinner fa-spin"></i></> : editLinkId ? "Update" : "Add Link"}
             </button>
           </form>
+          <WarningModal />
         </div>
         {/* Links */}
         <div className='p-2 space-y-3 grid grid-cols-1'>
@@ -208,12 +225,6 @@ function EditUserLinks() {
                    </button>
                    </div>
                    </div>
-                // <div key={i} >
-                //   <div className='flex border border-gray-300 shadow-md duration-300 hover:bg-gray-50 pl-4 items-center gap-4 rounded-lg p-2'>
-                //   
-                //   </div>
-                //   
-                // </div>
               ))
           }
         </div>

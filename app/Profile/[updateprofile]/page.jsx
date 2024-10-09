@@ -285,21 +285,21 @@ function NameUser({ params }) {
       <div>
         <label className="block text-gray-700 font-semibold mb-2">Fullname:</label>
         <input
-  type="text"
-  name="fullname"
-  required
-  value={fullname}
-  onChange={(e) => {
-    const capitalizeWords = (str) => {
-      return str
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase())
-        .replace(/\s+/g, ' '); 
-    };
-    setFullname(capitalizeWords(e.target.value));
-  }}
-  className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-/>
+          type="text"
+          name="fullname"
+          required
+          value={fullname}
+          onChange={(e) => {
+            const capitalizeWords = (str) => {
+              return str
+                .toLowerCase()
+                .replace(/\b\w/g, (char) => char.toUpperCase())
+                .replace(/\s+/g, ' '); 
+            };
+            setFullname(capitalizeWords(e.target.value));
+          }}
+          className="bg-gray-100 border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
 
 
       </div>
