@@ -116,7 +116,7 @@ function GetUserByUsername({ params }) {
     }
   
     const FindName = userDetails.find((fl) => fl.username === params.username);
-      if (!userDetailsG || !FindName) {
+      if (!userDetailsG && !FindName) {
       return (
         <div>
           <AccountNotFound />
