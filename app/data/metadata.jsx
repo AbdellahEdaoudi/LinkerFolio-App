@@ -1,7 +1,7 @@
 export const Metadata = {
   title: "LinkerFolio - Your Ultimate Global Digital Portfolio & Social Hub",
   description: "Discover LinkerFolio, your go-to platform for managing a professional digital portfolio and social media links. Showcase your personal brand globally with our customizable profiles, automatic translation, and unique QR codes.",
-  keywords: "LinkerFolio, digital portfolio, online presence, personal branding, social media integration, customizable profiles, QR code generator, global networking, career opportunities, job search, resume showcase",
+  keywords: "LinkerFolio, LinkFolio, FolioLink, LinkFusion, FolioConnect, LinkStream, FolioBridge, LinkVault, FolioChain, LinkSphere, FolioHub, LinkNest, FolioSync, Linktree, Carrd, About.me, Linkin.bio, Taplink, Lnk.bio, Shorby, Bio.fm,digital portfolio, online presence, personal branding, social media integration, customizable profiles, QR code generator, global networking, career opportunities, job search, resume showcase",
   author: "Abdellah Edaoudi",
   robots: "index, follow",
   viewport: "width=device-width, initial-scale=1.0",
