@@ -28,7 +28,7 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {SERVER_URL,SERVER_URL_V,userDetails, EmailUser,messages,socket,friendRequests}=useContext(MyContext);
+  const {SERVER_URL,SERVER_URL_V,userDetails, EmailUser,messages,setMessages,socket,friendRequests}=useContext(MyContext);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const router = useRouter();
   const userDname = userDetails.find((user)=>user.username === params.username);
