@@ -71,11 +71,12 @@ function Messages({ selectedUser }) {
         message: messageInput,
         readorno: false,
       };
-      const response = await axios.post(`${SERVER_URL}/messages`, data, {
+      const response = await axios.post(`${SERVER_URL_V}/messages`, data, {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
         },
       });
+      setMessages((prevMessages) => [...prevMessages, response.data]);
       socket.emit("sendMessage", response.data);
       toast({ description: "Your message has been sent." });
       setMessageInput("");
@@ -92,11 +93,14 @@ function Messages({ selectedUser }) {
       if (!window.confirm("Are you sure you want to delete this message?")) {
         return;
       }
-      await axios.delete(`${SERVER_URL}/messages/${idMsg}`, {
+      await axios.delete(`${SERVER_URL_V}/messages/${idMsg}`, {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
         },
       });
+      setMessages((prevMessages) =>
+        prevMessages.filter((message) => message._id !== idMsg)
+      );
       socket.emit("deleteMessage", idMsg);
       setputdelete(true);
       setEmoji(true);
@@ -124,13 +128,18 @@ function Messages({ selectedUser }) {
         readorno: false,
       };
       const response = await axios.put(
-        `${SERVER_URL}/messages/${idMsg}`,
+        `${SERVER_URL_V}/messages/${idMsg}`,
         updatedMessage,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
           },
         }
+      );
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message._id === idMsg ? response.data : message
+        )
       );
       socket.emit("updateMessage", response.data);
       setputdelete(true);

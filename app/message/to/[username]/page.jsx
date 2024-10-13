@@ -28,7 +28,7 @@ function UserProfile({ params }) {
   const [idMsg, setIdMsg] = useState("");
   const messagesEndRef = useRef(null);
   const lod = Array.from({ length: 10 }, (_, index) => index + 1);
-  const {SERVER_URL, userDetails, EmailUser,messages,socket,friendRequests}=useContext(MyContext);
+  const {SERVER_URL,SERVER_URL_V,userDetails, EmailUser,messages,socket,friendRequests}=useContext(MyContext);
   const filtUser = userDetails.find((fl) => fl.email === EmailUser);
   const router = useRouter();
   const userDname = userDetails.find((user)=>user.username === params.username);
@@ -65,11 +65,12 @@ function UserProfile({ params }) {
         message: messageInput,
         readorno: false,
       };
-      const response = await axios.post(`${SERVER_URL}/messages`, data,{
+      const response = await axios.post(`${SERVER_URL_V}/messages`, data,{
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
+      setMessages((prevMessages) => [...prevMessages, response.data]);
       socket.emit("sendMessage", response.data);
       toast({ description: "Your message has been sent." });
       setMessageInput("");
@@ -87,11 +88,14 @@ function UserProfile({ params }) {
       if (!window.confirm("Are you sure you want to delete this message?")) {
         return;
       }
-      await axios.delete(`${SERVER_URL}/messages/${idMsg}`,{
+      await axios.delete(`${SERVER_URL_V}/messages/${idMsg}`,{
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
         }
       });
+      setMessages((prevMessages) =>
+        prevMessages.filter((message) => message._id !== idMsg)
+      );
       socket.emit("deleteMessage", idMsg);
       setputdelete(true);
       setEmoji(true);
@@ -120,12 +124,17 @@ function UserProfile({ params }) {
         readorno: false,
       };
       const response = await axios.put(
-        `${SERVER_URL}/messages/${idMsg}`,
+        `${SERVER_URL_V}/messages/${idMsg}`,
         updatedMessage,{
           headers: {
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
           }
         }
+      );
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message._id === idMsg ? response.data : message
+        )
       );
       socket.emit("updateMessage", response.data);
       setputdelete(true);
