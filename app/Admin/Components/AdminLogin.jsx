@@ -1,9 +1,12 @@
-  "use client";
-  import React, { useContext, useEffect, useState } from "react";
-  import axios from "axios";
-  import { MyContext } from "../../Context/MyContext";
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { MyContext } from "../../Context/MyContext";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
   function AdminLogin() {
+    const router = useRouter()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -24,17 +27,19 @@
         const response = await axios.post(`${SERVER_URL_V}/login`, {
           email,
           password,
-        },{
+        }, { withCredentials: true },{
           headers: {
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
           }
         });
-
+        Cookies.set("token", response.data.accessToken, {
+          expires: 7, 
+          secure: false, // true for https
+          sameSite: "Strict",
+        });
         setSuccess("Login successful");
-        window.location.reload();
+        router.push("/Admin")
         setError("");
-        const { accessToken } = response.data;
-        localStorage.setItem("accessToken", accessToken);
         setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || "Login failed");

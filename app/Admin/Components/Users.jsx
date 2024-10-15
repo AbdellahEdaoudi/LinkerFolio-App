@@ -4,12 +4,13 @@ import { MyContext } from "../../Context/MyContext";
 import { CircleUser } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { apiRequest } from "./apiRequest";
 
 function Users() {
   const { userDetails, SERVER_URL_V } = useContext(MyContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredUsers, setFilteredUsers] = useState(userDetails);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,15 +29,22 @@ function Users() {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
 
     if (confirmDelete) {
+      setLoading(true);
       try {
-        await axios.delete(`${SERVER_URL_V}/users/${id}`,{
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-          }
+        await apiRequest({
+          method: 'DELETE',
+          url: `${SERVER_URL_V}/users/${id}`,
         });
         setFilteredUsers(filteredUsers.filter(user => user._id !== id));
       } catch (error) {
-        console.error("Error deleting user:", error);
+        if (error.response && error.response.status === 403) {
+          alert("Your session has expired. Please log in again.");
+          router.push("/Login");
+        } else {
+          alert("Error deleting user");
+        }
+      } finally {
+        setLoading(false); 
       }
     }
   };
@@ -48,7 +56,13 @@ function Users() {
   };
 
   return (
-    <div className="bg-gray-100">
+    <div className="relative bg-gray-100">
+      {loading && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="spinner border-t-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-3">
           <CircleUser className="text-blue-600 w-8 h-8" />

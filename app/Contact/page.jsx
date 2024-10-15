@@ -17,17 +17,17 @@ export default function ContactForm() {
   const [iduser, setIduser] = useState('')
   const [loading, setLoading] = useState(false)
   const { userDetails, EmailUser, SERVER_URL_V, contacts, setContacts } = useContext(MyContext)
-
+  
   useEffect(() => {
     const user = userDetails.find(user => user.email === EmailUser)
     if (user) {
-      setEmail(user.email)
-      setPhoneNumber(user.phoneNumber)
-      setIduser(user._id)
+      setEmail(user.email || "")
+      setPhoneNumber(user.phoneNumber || "")
+      setIduser(user._id || "")
     }
-  }, [userDetails, EmailUser])
+  }, [userDetails, EmailUser])  
 
-  const sendContact = async () => {
+  const sendContact = async (e) => {
     e.preventDefault()
     setLoading(true)
     try {

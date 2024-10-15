@@ -25,24 +25,52 @@ import {
 } from "../../../@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../@/components/ui/card"
 import { Loader2, Mail, MessageSquare, Phone, Trash2 } from "lucide-react"
+import { apiRequest } from './apiRequest'
 
 export default function ContactsPage() {
   const [error, setError] = useState(null)
-  const { SERVER_URL_V,contacts,setContacts} = useContext(MyContext)
+  const { SERVER_URL_V} = useContext(MyContext)
+  const [contacts, setContacts] = useState([])
+  useEffect(() => {
+    const fetchContacts = async () => {
+        try {
+            const response = await apiRequest({
+                method: 'GET',
+                url: `${SERVER_URL_V}/contacts`,
+            });
+            setContacts(response.data);
+        } catch (error) {
+          if (error.response && error.response.status === 403) {
+            alert("Your session has expired. Please log in again.");
+            router.push("/Login");
+          } else {
+            console.log(error);
+          }
+        }
+    };
+    fetchContacts();
+}, [SERVER_URL_V]);
 
 
   const DeleteMessage = async (id) => {
     try {
-      await axios.delete(`${SERVER_URL_V}/contacts/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+        // Call the apiRequest function to delete the contact
+        await apiRequest({
+            method: 'DELETE',
+            url: `${SERVER_URL_V}/contacts/${id}`,
+        });
+
+        // Update the contacts state by filtering out the deleted contact
+        setContacts(contacts.filter(contact => contact._id !== id));
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+          setError("Your session has expired. Please log in again.");
+          router.push("/Login");
+        } else {
+          setError("Error fetching Users");
         }
-      })
-      setContacts(contacts.filter(contact => contact._id !== id))
-    } catch (err) {
-      setError(err)
     }
-  }
+};
 
 
   if (error) return (

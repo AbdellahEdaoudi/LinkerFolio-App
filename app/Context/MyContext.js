@@ -2,16 +2,18 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { createContext, useEffect, useRef, useState } from 'react';
+import { apiRequest } from '../Admin/Components/apiRequest'
 import io from 'socket.io-client';
+import { useRouter } from 'next/navigation';
 
 export const MyContext = createContext();
 
 export const MyProvider = ({ children }) => {
+  const router = useRouter()
   const [userDetails, setUserDetails] = useState([]);
   const [userLinks, setUserLinks] = useState([]);
   const [messages, setMessages] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
-  const [contacts, setContacts] = useState([])
   const [socket, setSocket] = useState(null);
   const {data,status} = useSession()
   const EmailUser = data?.user?.email
@@ -135,21 +137,7 @@ export const MyProvider = ({ children }) => {
     };
     GetFriendRequest();
   }, []);
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL_V}/contacts`, {
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          }
-        })
-        setContacts(response.data)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchContacts()
-  }, [SERVER_URL_V])
+
 
   const latestNotifications = messages
   .filter((fl) => fl.to === EmailUser && fl.from !== EmailUser && fl.readorno === false)
@@ -203,7 +191,7 @@ const Requests = friendRequests
         setMessages,
         socket,
         friendRequests, setFriendRequests,
-        Requests,contacts,setContacts
+        Requests
       }}
     >
       <audio ref={audioRef} src="/notification3.mp3" preload="auto" />

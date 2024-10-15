@@ -196,7 +196,7 @@ function ProfilePage() {
               <div className="absolute top-8 space-y-2 right-7 md:top-10  md:right-12">
                 {/* Link to Update */}
                 <Link
-                  href={`/Profile/${UserF._id}`}
+                  href={`/Profile/Update`}
                   className="flex items-center justify-center bg-gradient-to-r from-teal-400 to-green-500 hover:scale-105 duration-500 p-2 rounded-full shadow-lg border border-teal-600 text-white transform transition-transform"
                 >
                   <PenOff className="w-6 h-6" />
