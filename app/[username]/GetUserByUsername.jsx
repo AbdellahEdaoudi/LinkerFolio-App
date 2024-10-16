@@ -382,7 +382,7 @@ function GetUserByUsername({ params }) {
                 <AlertDialog>
                   <AlertDialogTrigger
                     className={`p-2 ${
-                      !dt.data && "hidde"
+                      !dt.data && "hidden"
                     } bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
                   >
                     {
