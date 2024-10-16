@@ -375,17 +375,22 @@ function GetUserByUsername({ params }) {
         {`${translatedDetails ? translatedDetails.category : userDetailsG.category}`}
         </p>
         {/* Modul */}
-        <div className={` ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} flex flex-wrap gap-2 mb-2 justify-center`}>
+        <div className={` ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} flex flex-wrap justify-center  gap-2 mb-2`}>
           {datamodul.map((dt, i) => {
             return (
               <div key={i}>
                 <AlertDialog>
                   <AlertDialogTrigger
                     className={`p-2 ${
-                      !dt.data && "hidden"
+                      !dt.data && "hidde"
                     } bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
                   >
-                    {dt.name}
+                    {
+                      <div className="flex gap-1">
+                        <div>{dt.name.split(" ")[0]}</div>
+                        <div>{dt.name.split(" ")[1]}</div>
+                      </div>
+                    }
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
