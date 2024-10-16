@@ -16,7 +16,7 @@ function UpdatePLoading() {
         { iconSrc: "/Icons/snap.svg", alt: "Snapchat",placeholder: "Snapchat Link" }
       ];
       const datamodul = [
-        {name : "🔷 Profile"},
+        {name : "🔷 Summary"},
         {name : "💼 Services"},
         {name : "🎓 Education"},
         {name : "⭐ Experience"},

@@ -61,7 +61,7 @@ function ProfilePage() {
 
   const datamodul = filtUser
     ? [
-        { name: "🔷 Profile", data: filtUser.bio },
+        { name: "🔷 Summary", data: filtUser.bio },
         { name: "💼 Services", data: filtUser.services },
         { name: "🎓 Education", data: filtUser.education },
         { name: "⭐ Experience", data: filtUser.experience },
@@ -308,11 +308,11 @@ function ProfilePage() {
                 })}
               </div>
 
-              {/* Profile */}
+              {/* Summary */}
               {UserF.bio && (
                 <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
                   <h3 className="text-xl font-semibold text-indigo-500 mb-2">
-                    🔷 Profile
+                    🔷 Summary
                   </h3>
                   <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
                     {ListDisk(UserF.bio)}

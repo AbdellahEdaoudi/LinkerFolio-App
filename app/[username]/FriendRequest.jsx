@@ -228,7 +228,7 @@ function FriendRequest({ emailuser, path, userDetailsG }) {
                   className="rounded-md"
                   src={userDetailsG.urlimage}
                   width={150}
-                  alt="Image Profile"
+                  alt="Profile"
                   height={100}
                 />
                 <div className="text-white text-3xl mt-4">

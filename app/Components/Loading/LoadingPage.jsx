@@ -3,7 +3,7 @@ import React from 'react'
 
 function Loadingpage() {
     const datamodul = [
-        {name : "🔷 Profile" , data:"" },
+        {name : "🔷 Summary" , data:"" },
         {name : "💼 Services" , data:"" },
         {name : "🎓 Education" , data:"" },
         {name : "⭐ Experience" , data:"" },

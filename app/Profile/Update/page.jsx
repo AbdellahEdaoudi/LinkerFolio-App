@@ -326,7 +326,7 @@ function NameUser() {
     );
   }
   const datamodul = [
-    { name: "🔷 Profile", state: bio, setState: setBio },
+    { name: "🔷 Summary", state: bio, setState: setBio },
     { name: "💼 Services", state: services, setState: setServices },
     { name: "🎓 Education", state: education, setState: setEducation },
     { name: "⭐ Experience", state: experience, setState: setExperience },
@@ -584,16 +584,16 @@ function NameUser() {
               </div>
               <div className="border-b border-gray-300 my-4"></div>
 
-              {/* Profile Section */}
+              {/* Summary Section */}
               <div className="mb-8">
                 <h3 className="text-2xl font-semibold text-indigo-500 mb-2">
-                  🔷 Profile
+                  🔷 Summary
                 </h3>
                 <textarea
-                  name="Profile"
+                  name="Summary"
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="Enter Profile"
+                  placeholder="Enter Summary"
                   className="bg-gray-100 border border-gray-300 rounded-lg w-full h-32 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>

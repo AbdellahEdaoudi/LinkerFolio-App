@@ -84,7 +84,7 @@ function GetUserByUsername({ params }) {
           setUserDetailsG(response.data);
           if (language !== "") {
             await translateContent({
-              Profile: "Profile",
+              Summary: "Summary",
               Services: "Services",
               Education: "Education",
               Experience: "Experience",
@@ -138,11 +138,11 @@ function GetUserByUsername({ params }) {
   const datamodul = [
     {
       name: translatedDetails 
-        ? `🔷 ${translatedDetails.Profile}` 
-        : "🔷 Profile",
+        ? `🔷 ${translatedDetails.Summary}` 
+        : "🔷 Summary",
         namedata: translatedDetails 
-        ? `${language === "ar" ? `${translatedDetails.Profile} 🔷` : `🔷 ${translatedDetails.Profile}`}` 
-        : "🔷 Profile",
+        ? `${language === "ar" ? `${translatedDetails.Summary} 🔷` : `🔷 ${translatedDetails.Summary}`}` 
+        : "🔷 Summary",
       data: translatedDetails && translatedDetails.bio ? translatedDetails.bio : userDetailsG.bio
     },
     {
@@ -209,7 +209,7 @@ function GetUserByUsername({ params }) {
 
   const CV = [
     {
-      title: `${translatedDetails ? `🔷 ${translatedDetails.Profile}` : "🔷 Profile"}`,
+      title: `${translatedDetails ? `🔷 ${translatedDetails.Summary}` : "🔷 Summary"}`,
       content: translatedDetails && translatedDetails.bio ? translatedDetails.bio : userDetailsG.bio,
       key: translatedDetails ? translatedDetails.bioKey || 'bio' : 'bio'
     },
