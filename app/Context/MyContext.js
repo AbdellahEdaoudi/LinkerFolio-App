@@ -77,7 +77,7 @@ export const MyProvider = ({ children }) => {
     if (email) {
       socket.emit('userConnected',email);
     } else {
-      console.error('User email is not available.');
+      // console.error('User email is not available.');
     }
   }, [EmailUser, socket]);
   

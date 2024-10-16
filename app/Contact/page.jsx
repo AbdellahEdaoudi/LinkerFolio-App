@@ -9,6 +9,7 @@ import { Button } from "../../components/ui/button"
 import { Input } from "../../@/components/ui/input"
 import { Textarea } from "../../@/components/ui/textarea"
 import ParticleComponent from '../Components/ParticleComponent';
+import WarningModal from "./Pages/WarningModal"
 
 export default function ContactForm() {
   const [email, setEmail] = useState('')
@@ -30,6 +31,13 @@ export default function ContactForm() {
   const sendContact = async (e) => {
     e.preventDefault()
     setLoading(true)
+    const regex = /<script.*?>.*?<\/script>|<iframe.*?>.*?<\/iframe>|javascript:|eval\(|alert\(|document\.cookie|window\.location|<a\s+href=["']?javascript:.*?["']?/i;
+
+    if (regex.test(phoneNumber) || regex.test(message)) {
+      setLoading(false)
+        document.getElementById('my_modal_2').showModal();
+        return;
+    }
     try {
       await axios.post(`${SERVER_URL_V}/contacts`, { iduser, email, phoneNumber, message }, {
         headers: {
@@ -109,7 +117,6 @@ export default function ContactForm() {
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       className="pl-10 border-teal-300 focus:border-teal-500 focus:ring-teal-500 w-full"
                       placeholder="Enter your phone number"
-                      required
                     />
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-800 h-5 w-5" />
                   </div>
@@ -144,6 +151,7 @@ export default function ContactForm() {
                   )}
                 </Button>
               </form>
+              <WarningModal />
             </div>
           </div>
         </div>
