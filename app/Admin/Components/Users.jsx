@@ -89,14 +89,17 @@ function Users() {
             {filteredUsers.map(user => (
               <li key={user._id} className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex items-center p-3">
+                  <div className="relative">
                   <Image
                     width={80}
                     height={80}
                     onClick={() => router.push(`/${user.username}`)}
                     src={user.urlimage}
                     alt={user.fullname}
-                    className="w-14 cursor-pointer hover:scale-105 duration-300 h-14 rounded-full object-cover mr-3"
+                    className={`${user.isOnline ? "border-green-500" : "border-gray-600"} border-4 w-14 cursor-pointer hover:scale-105 duration-300 h-14 rounded-full object-cover mr-3`}
                   />
+                  <div className={`w-4 h-4 absolute bottom-1 right-4 ${user.isOnline ? "bg-green-500" : "bg-gray-600"} rounded-full`}></div>
+                  </div>
                   <div>
                     <h3 className="text-md font-semibold text-gray-900">
                       <span dangerouslySetInnerHTML={{ __html: highlightText(user.fullname) }} />
