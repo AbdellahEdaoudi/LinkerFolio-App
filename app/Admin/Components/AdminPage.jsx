@@ -5,6 +5,7 @@ import { LayoutDashboard, User, Mail, LogOut } from "lucide-react";
 import Cookies from 'js-cookie';
 import ContactsPage from "./Contacts";
 import Users from "./Users";
+import OnlineUser from "./OnlineUser";
 import { MyContext } from "../../Context/MyContext";
 import axios from "axios";
 
@@ -18,6 +19,8 @@ function AdminPage() {
     switch (selectedSection) {
       case "Users":
         return <Users />;
+      case "OnlineUser":
+        return <OnlineUser />;
       case "Contacts":
         return <ContactsPage />;
       default:
@@ -44,7 +47,7 @@ function AdminPage() {
           <p className="text-lg font-semibold md:block hidden">Dashboard</p>
         </div>
         <nav>
-          {["Users", "Contacts"].map((ad) => (
+          {["Users", "Contacts","OnlineUser"].map((ad) => (
             <div
               key={ad}
               className={`flex items-center p-3 mb-2 rounded-lg cursor-pointer hover:bg-gray-700 ${
@@ -52,8 +55,16 @@ function AdminPage() {
               }`}
               onClick={() => setSelectedSection(ad)}
             >
-              <span>{ad === "Users" ? <User size={20} /> : <Mail size={20} />}</span>
-              <span className="md:block hidden ml-2">{ad}</span>
+              <span>
+                {ad === "Users" ? (
+                  <User size={20} />
+                ) : ad === "Contacts" ? (
+                  <Mail size={20} />
+                ) : (
+                  <User size={20} />
+                )}
+              </span>
+            <span className="md:block hidden ml-2">{ad}</span>
             </div>
           ))}
           <span onClick={()=>{
