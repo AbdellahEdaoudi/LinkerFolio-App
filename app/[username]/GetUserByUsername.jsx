@@ -38,7 +38,6 @@ import ParticleComponent from "../Components/ParticleComponent";
 function GetUserByUsername({ params }) {
   const { data, status } = useSession();
   const path = usePathname();
-  const router = useRouter();
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
