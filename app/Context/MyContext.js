@@ -28,9 +28,6 @@ export const MyProvider = ({ children }) => {
    const CLIENT_URL = "https://linkerfolio.vercel.app";
    const SERVER_URL = "https://server-linkerfolio.onrender.com";
    const SERVER_URL_V = "https://server-linkerfolio.vercel.app";
-   console.log('====================================');
-   console.log(EmailUser);
-   console.log('====================================');
    const audioRef = useRef(null);
   // socket.io
   useEffect(() => {
