@@ -88,7 +88,7 @@ function Users() {
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredUsers.map(user => (
               <li key={user._id} className="bg-white shadow-md rounded-lg overflow-hidden">
-                <div className="flex items-center p-3">
+                <div className="flex items- p-3">
                   <div className="relative">
                   <Image
                     width={80}
@@ -98,7 +98,7 @@ function Users() {
                     alt={user.fullname}
                     className={`${user.isOnline ? "border-green-500" : "border-gray-600"} border-4 w-14 cursor-pointer hover:scale-105 duration-300 h-14 rounded-full object-cover mr-3`}
                   />
-                  <div className={`w-4 h-4 absolute bottom-1 right-4 ${user.isOnline ? "bg-green-500" : "bg-gray-600"} rounded-full`}></div>
+                  <div className={`w-4 h-4 absolute hidden bottom-7 right-4 ${user.isOnline ? "bg-green-500" : "bg-gray-600"} rounded-full`}></div>
                   </div>
                   <div>
                     <h3 className="text-md font-semibold text-gray-900">
@@ -112,6 +112,16 @@ function Users() {
                     </p>
                     <p className="text-sm text-gray-500">
                       <span dangerouslySetInnerHTML={{ __html: highlightText(user.phoneNumber) }} />
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {new Intl.DateTimeFormat("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      }).format(new Date(user.createdAt))}
                     </p>
                   </div>
                 </div>
