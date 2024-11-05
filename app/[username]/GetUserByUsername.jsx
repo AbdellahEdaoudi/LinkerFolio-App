@@ -399,7 +399,7 @@ function GetUserByUsername({ params }) {
                         <div className={`${language === "ar" && "text-right pr-1 "}`}>{dt.namedata}</div>
                       </AlertDialogTitle>
                       <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
-                        {ListDisk(dt.data)}
+                        {dt.data}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -420,7 +420,7 @@ function GetUserByUsername({ params }) {
             content && (
               <div key={key} className="border p-4 text-right!? bg-white rounded-lg shadow-md mb-4 hover:scale-100 duration-500">
                 <h3 className={` ${language === "ar" ? 'list-disc-rtl' : 'list-disc-ltr'} text-xl font-semibold text-indigo-600 mb-2`}>{title}</h3>
-                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{ListDisk(content)}</p>
+                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{content}</p>
               </div>
             )
           )}
