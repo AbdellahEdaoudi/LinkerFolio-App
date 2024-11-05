@@ -7,5 +7,5 @@ export const languagess = [
   { value: "zh-CN", label: "Chinese" },
   { value: "ja", label: "Japanese" },
   { value: "ru", label: "Russian" },
-  { value: "pt", label: "Portuguese" },
+  // { value: "pt", label: "Portuguese" },
 ];

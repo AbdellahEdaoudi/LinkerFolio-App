@@ -37,6 +37,7 @@ import ParticleComponent from "../Components/ParticleComponent";
 
 function GetUserByUsername({ params }) {
   const { data, status } = useSession();
+  const router = useRouter()
   const path = usePathname();
   const [userDetailsG, setUserDetailsG] = useState(null);
   const [error, setError] = useState(null);
@@ -356,19 +357,19 @@ function GetUserByUsername({ params }) {
             <SignInComponents_CP userDetailsG={userDetailsG} />
           )}
           {/* translate */}
-          <div className="absolute sm:top-[116px] md:top-[113px] top-[220px] md:-right-1  w-full ">
-          <select
-             className='bg-white  border  cursor-pointer border-gray-300 rounded-md  mb-6 w-full'
-             value={language}
-             onChange={(e)=>{setLanguage(e.target.value);}}
-           >
-             {languagess.map((lang) => (
-             <option className="text-center"  key={lang.value} value={lang.value}>
-               {lang.label}
-             </option>
-           ))}
-           </select>
+          <div className="absolute sm:top-[116px] md:top-[113px] top-[220px] md:-right-1 w-full">
+            <select
+              className="bg-white border cursor-pointer border-gray-300 rounded-md mb-6 w-full"
+              onChange={(e) => router.push(`/${params.username}/${e.target.value}`)}
+            >
+              {languagess.map((lang) => (
+                <option className="text-center" key={lang.value} value={lang.value}>
+                  {lang.label}
+                </option>
+              ))}
+            </select>
           </div>
+
         </nav>
         {/* Category */}
         <p className="text-base font-semibold text-center text-gray-800 bg-gray-100 p-2 my-2 rounded border border-gray-300">

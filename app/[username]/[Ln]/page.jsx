@@ -69,6 +69,7 @@ function Page({ params }) {
       });
       setTranslatedDetails(response.data.translations);
     } catch (error) {
+      toast.error("Translation failed. Please try again later.");
       console.error('Error translating content:', error);
     }
   };
@@ -83,22 +84,22 @@ function Page({ params }) {
           }
         });
         setUserDetailsG(response.data);
-        await translateContent({
-          Summary : "Summary",
-          Services : "Services",
-          Education : "Education",
-          Experience : "Experience",
-          Skills : "Skills",
-          Languages : "Languages",
-          bio: response.data.bio,
-          services: response.data.services,
-          education: response.data.education,
-          skills: response.data.skills,
-          languages: response.data.languages,
-          experience: response.data.experience,
-          country: response.data.country,
-          category: response.data.category
-        }, language);
+          await translateContent({
+            Summary : "Summary",
+            Services : "Services",
+            Education : "Education",
+            Experience : "Experience",
+            Skills : "Skills",
+            Languages : "Languages",
+            bio: response.data.bio,
+            services: response.data.services,
+            education: response.data.education,
+            skills: response.data.skills,
+            languages: response.data.languages,
+            experience: response.data.experience,
+            country: response.data.country,
+            category: response.data.category
+          }, language);
       } catch (error) {
         console.error('Error fetching user details:', error);
       } finally {
@@ -356,18 +357,18 @@ function Page({ params }) {
             <SignInComponents_CP userDetailsG={userDetailsG} />
           )}
           {/* translate */}
-          <div className="absolute sm:top-[116px] md:top-[113px] top-[220px] md:-right-1  w-full ">
-          <select
-             className='bg-white  border  cursor-pointer border-gray-300 rounded-md  mb-6 w-full'
-             value={language}
-             onChange={(e)=>{setLanguage(e.target.value);}}
-           >
-             {languagess.map((lang) => (
-             <option className="text-center"  key={lang.value} value={lang.value}>
-               {lang.label}
-             </option>
-           ))}
-           </select>
+          <div className="absolute sm:top-[116px] md:top-[113px] top-[220px] md:-right-1 w-full">
+            <select
+              className="bg-white border cursor-pointer border-gray-300 rounded-md mb-6 w-full"
+              onChange={(e) => router.push(`/${params.username}/${e.target.value}`)}
+            >
+              <option></option>
+              {languagess.map((lang) => (
+                <option className="text-center" key={lang.value} value={lang.value}>
+                  {lang.label}
+                </option>
+              ))}
+            </select>
           </div>
         </nav>
         {/* Category */}
