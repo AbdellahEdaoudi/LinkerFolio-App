@@ -39,10 +39,11 @@ function GetUserByUsername({ params }) {
   const { data, status } = useSession();
   const router = useRouter()
   const path = usePathname();
-  const [userDetailsG, setUserDetailsG] = useState(null);
+  const {CLIENT_URL,SERVER_URL_V,userDetails,EmailUser}=useContext(MyContext);
+  // const [userDetailsG, setUserDetailsG] = useState(null);
+  const userDetailsG = userDetails.find((user)=>user.username === params.username)
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const {CLIENT_URL,SERVER_URL_V,userDetails,EmailUser}=useContext(MyContext);
   const [translatedDetails, setTranslatedDetails] = useState(null);
   const [loading, setLoading] = useState(true); 
   const [language, setLanguage] = useState('');
@@ -56,59 +57,59 @@ function GetUserByUsername({ params }) {
     });
   };
 
-    // Translate content
-    const translateContent = async (content, lang) => {
-      try {
-        const response = await axios.post(`${SERVER_URL_V}/translate`, {
-          textObject: content,
-          to: lang
-        }, {
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
-          }
-        });
-        setTranslatedDetails(response.data.translations);
-      } catch (error) {
-        console.error('Error translating content:', error);
-      }
-    };
-    useEffect(() => {
-      const fetchUserDetails = async () => {
-        setLoading(true);
-        try {
-          const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`, {
-            headers: {
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
-            }
-          });
-          setUserDetailsG(response.data);
-          if (language !== "") {
-            await translateContent({
-              Summary: "Summary",
-              Services: "Services",
-              Education: "Education",
-              Experience: "Experience",
-              Skills: "Skills",
-              Languages: "Languages",
-              bio: response.data.bio,
-              services: response.data.services,
-              education: response.data.education,
-              skills: response.data.skills,
-              languages: response.data.languages,
-              experience: response.data.experience,
-              country: response.data.country,
-              category: response.data.category
-            }, language);
-          }
-        } catch (error) {
-          console.error('Error fetching user details:', error);
-          setError('error')
-        } finally {
-          setLoading(false); // Set loading false after fetching
-        }
-      };
-      fetchUserDetails();
-    }, [SERVER_URL_V, language]);
+    // // Translate content
+    // const translateContent = async (content, lang) => {
+    //   try {
+    //     const response = await axios.post(`${SERVER_URL_V}/translate`, {
+    //       textObject: content,
+    //       to: lang
+    //     }, {
+    //       headers: {
+    //         'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` // Include the token in the Authorization header
+    //       }
+    //     });
+    //     setTranslatedDetails(response.data.translations);
+    //   } catch (error) {
+    //     console.error('Error translating content:', error);
+    //   }
+    // };
+    // useEffect(() => {
+    //   const fetchUserDetails = async () => {
+    //     setLoading(true);
+    //     try {
+    //       const response = await axios.get(`${SERVER_URL_V}/user/${params.username}`, {
+    //         headers: {
+    //           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN}` 
+    //         }
+    //       });
+    //       setUserDetailsG(response.data);
+    //       if (language !== "") {
+    //         await translateContent({
+    //           Summary: "Summary",
+    //           Services: "Services",
+    //           Education: "Education",
+    //           Experience: "Experience",
+    //           Skills: "Skills",
+    //           Languages: "Languages",
+    //           bio: response.data.bio,
+    //           services: response.data.services,
+    //           education: response.data.education,
+    //           skills: response.data.skills,
+    //           languages: response.data.languages,
+    //           experience: response.data.experience,
+    //           country: response.data.country,
+    //           category: response.data.category
+    //         }, language);
+    //       }
+    //     } catch (error) {
+    //       console.error('Error fetching user details:', error);
+    //       setError('error')
+    //     } finally {
+    //       setLoading(false); // Set loading false after fetching
+    //     }
+    //   };
+    //   fetchUserDetails();
+    // }, [SERVER_URL_V, language]);
 
     if (!userDetails || userDetails.length === 0) {
       return <Loadingpage />
@@ -123,18 +124,18 @@ function GetUserByUsername({ params }) {
         </div>
       );
     }
-  if (error) {
+  if (error || !userDetailsG) {
     return (
       <AccountNotFound />
     );
   }
-  if (loading) {
-    return (
-      <div>
-        <LoadingPagetranslate language={language} bgcolorp={userDetailsG?.bgcolorp} />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       <LoadingPagetranslate language={language} bgcolorp={userDetailsG?.bgcolorp} />
+  //     </div>
+  //   );
+  // }
   const datamodul = [
     {
       name: translatedDetails 
@@ -205,7 +206,7 @@ function GetUserByUsername({ params }) {
       </ul>
     );
   };
-  const emailuser = userDetailsG.email;
+  const emailuser = userDetailsG?.email;
 
   const CV = [
     {
@@ -240,7 +241,7 @@ function GetUserByUsername({ params }) {
     }
   ];
   if (status === 'unauthenticated') {
-    signIn("google", {redirect:true, callbackUrl:`/${userDetailsG.username}`})
+    signIn("google", {redirect:true, callbackUrl:`/${userDetailsG?.username}`})
   }
   return (
     <div
@@ -384,7 +385,7 @@ function GetUserByUsername({ params }) {
                   <AlertDialogTrigger
                     className={`p-2 ${
                       !dt.data && "hidden"
-                    } bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
+                    } bg-slate-100 md:text-[2.7vh] sm:text-[2.6vh] hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
                   >
                     {
                       <div className="flex gap-1">

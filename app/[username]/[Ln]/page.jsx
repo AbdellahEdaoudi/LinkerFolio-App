@@ -384,9 +384,14 @@ function Page({ params }) {
                   <AlertDialogTrigger
                     className={`p-2 ${
                       !dt.data && "hidden"
-                    } bg-slate-100  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
+                    } bg-slate-100 md:text-[2.7vh] sm:text-[2.6vh]  hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
                   >
-                    {dt.name}
+                    {
+                      <div className="flex gap-1">
+                        <div>{dt.name.split(" ")[0]}</div>
+                        <div>{dt.name.split(" ")[1]}</div>
+                      </div>
+                    }
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
