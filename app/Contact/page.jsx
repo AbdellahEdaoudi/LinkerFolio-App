@@ -78,15 +78,15 @@ export default function ContactForm() {
               <div className="space-y-4">
                 <div className="flex items-center text-teal-100">
                   <Mail className="h-6 w-6 mr-3" />
-                  <span>contact@linkerfolio.com</span>
+                  <span>linkerfolio@gmail.com</span>
                 </div>
                 <div className="flex items-center text-teal-100">
                   <Phone className="h-6 w-6 mr-3" />
-                  <span>+1 (555) 123-4567</span>
+                  <span>+212 609085357</span>
                 </div>
                 <div className="flex items-center text-teal-100">
                   <MessageSquare className="h-6 w-6 mr-3" />
-                  <span>123 Main St, City, Country</span>
+                  <span>El-Aaiun,Morocco</span>
                 </div>
               </div>
             </div>
