@@ -86,7 +86,33 @@ function ProfilePage() {
   if (!filt) {
     return <CreateProfile />;
   }
-
+  const CV = [
+    {
+      title: "🔷 Summary",
+      content:filt?.bio
+    },
+    {
+      title: "💼 Services",
+      content:filt?.services
+    },
+    {
+      title: "🎓 Education",
+      content:filt?.education
+    },
+    {
+      title: "⭐ Experience",
+      content:filt?.experience
+    },
+    {
+      title: "💡 Skills",
+      content: filt?.skills
+    },
+    {
+      title: "🌍 Languages",
+      content: filt?.languages
+    }
+  ];
+  
   return (
     <div>
       {userDetails.filter((fl) => fl.email === EmailUser)
@@ -95,9 +121,7 @@ function ProfilePage() {
             <div key={i} className="relative">
           <ParticleComponent bgcolor={UserF.bgcolorp}/> 
            <div className={`flex items-start  justify-center   pt-4 pb-20  ${UserF.bgcolorp}  `}>
-            <div
-              className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`}
-            >
+            <div className={`w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-6 pb-8 rounded-lg border-2 shadow-lg`} >
               {/* Image Profile and info user */}
               <div className=" border flex flex-col md:flex-row md:items-start items-center mb-4 p-4 bg-white rounded-lg shadow-md">
                 <div>
@@ -274,125 +298,55 @@ function ProfilePage() {
                 {UserF.category}
               </p>
               {/* Modul */}
-              <div className="flex flex-wrap gap-2 mb-2 justify-center">
-                {datamodul.map((dt, i) => {
-                  return (
-                    <div key={i}>
-                      <AlertDialog>
-                        <AlertDialogTrigger
-                          className={`p-2 ${
-                            !dt.data && "hidden"
-                          } bg-slate-100  hover:bg-slate-200  duration-300 rounded-lg border-2`}
-                        >
-                          {dt.name}
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className=" bg-gray-200 p-2 border rounded-md">
-                              {dt.name}
-                            </AlertDialogTitle>
-                            <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4  rounded-sm border text-black whitespace-break-spaces text-start">
-                              {ListDisk(dt.data)}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel className="bg-gray-100 hover:bg-gray-200 duration-300">
-                              Cancel
-                            </AlertDialogCancel>
-                            {/* <AlertDialogAction>Continue</AlertDialogAction> */}
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+        <div className={` flex flex-wrap justify-center  gap-2 mb-2`}>
+          {datamodul.map((dt, i) => {
+            return (
+              <div key={i}>
+                <AlertDialog>
+                  <AlertDialogTrigger
+                    className={`p-2 ${
+                      !dt.data && "hidden"
+                    } bg-slate-100 md:text-[2.7vh] sm:text-[2.6vh] hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
+                  >
+                    {
+                      <div className="flex gap-1">
+                        <div>{dt.name.split(" ")[0]}</div>
+                        <div>{dt.name.split(" ")[1]}</div>
+                      </div>
+                    }
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className={` bg-gray-200  p-2 border rounded-md`}>
+                        <div >{dt.namedata}</div>
+                      </AlertDialogTitle>
+                      <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
+                        {dt.data}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="bg-gray-100 hover:bg-gray-200 duration-300">
+                        Cancel
+                      </AlertDialogCancel>
+                      {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            );
+          })}
+        </div>
+
+              {/* CV */}
+              <div className="mt-3">
+              {CV.map(({ title, content, i }) =>
+                  content && (
+                    <div key={i} className="border p-4 text-right!? bg-white rounded-lg shadow-md mb-4 hover:scale-100 duration-500">
+                      <h3 className={` text-xl font-semibold text-indigo-600 mb-2`}>{title}</h3>
+                      <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{content}</p>
                     </div>
-                  );
-                })}
-              </div>
-
-              {/* Summary */}
-              {UserF.bio && (
-                <div className=" border p-4 mt-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
-                  <h3 className="text-xl font-semibold text-indigo-500 mb-2">
-                    🔷 Summary
-                  </h3>
-                  <p className="text-gray-800 whitespace-pre-wrap leading-normal tracking-normal text-base">
-                    {ListDisk(UserF.bio)}
-                  </p>
-                </div>
-              )}
-              {/* Services */}
-              {UserF.services && (
-                <div className=" border mt-3 p-4 bg-white rounded-lg shadow-md duration-500 hover:scale-100">
-                  {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-                  <h3 className="text-xl font-semibold text-indigo-500 mb-2">
-                    💼 Services
-                  </h3>
-                  <p className="text-gray-800 overflow-y-auto md:max-h-max  max-h-[120px] whitespace-pre-wrap leading-normal tracking-normal text-base">
-                    {ListDisk(UserF.services)}
-                  </p>
-                </div>
-              )}
-
-              {/* Education */}
-              <div
-                className={`${
-                  !UserF.education && "hidden"
-                } mt-3 border p-4 bg-white rounded-lg shadow-md mb-6 
-          hover:scale-100 duration-500`}
-              >
-                {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-                <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-                  🎓 Education
-                </h3>
-                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-                  {ListDisk(UserF.education)}
-                </p>
-              </div>
-              {/* Experience */}
-              <div
-                className={`${
-                  !UserF.experience && "hidden"
-                } border p-4 bg-white rounded-lg shadow-md 
-              mb-6 hover:scale-100 duration-500`}
-              >
-                {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-                <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-                  ⭐ Experience
-                </h3>
-                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-                  {ListDisk(UserF.experience)}
-                </p>
-              </div>
-
-              {/* Skills */}
-              <div
-                className={`${
-                  !UserF.skills && "hidden"
-                } border p-4 bg-white rounded-lg shadow-md mb-6
-           hover:scale-100 duration-500`}
-              >
-                {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-                <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-                  💡 Skills
-                </h3>
-                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-                  {ListDisk(UserF.skills)}
-                </p>
-              </div>
-
-              {/* Languages */}
-              <div
-                className={`${
-                  !UserF.languages && "hidden"
-                } border p-4 bg-white rounded-lg shadow-md 
-          hover:scale-100 duration-500`}
-              >
-                {/* <div className="border-b-2 border-indigo-500 mb-3"></div> */}
-                <h3 className="text-xl font-semibold text-indigo-600 mb-2">
-                  🌍 Languages
-                </h3>
-                <p className="text-gray-800 overflow-y-auto max-h-[120px] whitespace-pre-wrap leading-relaxed">
-                  {ListDisk(UserF.languages)}
-                </p>
+                  )
+                )}
               </div>
             </div>
           </div>

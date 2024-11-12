@@ -244,9 +244,7 @@ function GetUserByUsername({ params }) {
     signIn("google", {redirect:true, callbackUrl:`/${userDetailsG?.username}`})
   }
   return (
-    <div
-      className={`flex items-start justify-center   pt-4  pb-20 relative ${userDetailsG.bgcolorp}`}
-    >
+    <div className={`flex items-start justify-center   pt-4  pb-20 relative ${userDetailsG.bgcolorp}`}>
       <ParticleComponent  bgcolor={userDetailsG.bgcolorp} /> 
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
         {/* Image Profile and info user */}
@@ -287,30 +285,28 @@ function GetUserByUsername({ params }) {
             <div className={`font-bold text-2xl text-gray-800 ${language === "ar" && "text-start"}`}>
               {userDetailsG.fullname}
             </div>
-            <div className="text-gray-600 text-[1rem] flex items-center justify-center sm:justify-start md:justify-start gap-2 mt-1">
+            <div className="text-gray-600  flex items-center justify-center sm:justify-start md:justify-start gap-2 mt-1">
                     <span className="text-green-500">
                       <MailCheck width={18} />
                     </span>
                     {userDetailsG.email}
             </div>
-            <div className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex md:flex-row sm:flex-row flex-col items-center sm:gap-2 md:gap-2 md:justify-start justify-center `}>
-              <div className={`flex gap-1 ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} text-green-900`}>
-                <span>@</span>
-                <span>{userDetailsG.username}</span>
-              </div>
+            <div className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex md:flex-row sm:flex-row flex-row items-center gap-1 sm:gap-2 md:gap-2 md:justify-start justify-center `}>
+              
               {userDetailsG.country && (
                 <span className={`flex ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} flex-row justify-center gap-1`}>
                   <MapPin width={18} style={{ color: "red" }} />
                   {`${translatedDetails ? translatedDetails.country : userDetailsG.country}`}
                 </span>
               )}
-            </div>
-            {userDetailsG.phoneNumber && (
-              <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} items-center justify-center sm:justify-start md:justify-start gap-2 mt-1`}>
+              {userDetailsG.phoneNumber && (
+              <p className={`${language === "ar" && "list-disc-ltr"} text-gray-600 flex ${language === "ar" ? 'flex-row-reverse' : 'flex-row'} items-center justify-center sm:justify-start md:justify-start gap-1 mt-1`}>
                 <Phone width={18} style={{ color: "green" }} />
                 {userDetailsG.phoneNumber}
               </p>
             )}
+            </div>
+            
 
             {/* Business Links */}
             <div className={`${language === "ar" && "text-right"} `}>
