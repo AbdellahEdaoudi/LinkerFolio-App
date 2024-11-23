@@ -13,8 +13,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../../../@/components/ui/alert-dialog"
-import { Button } from "../../../@/components/ui/button"
+} from "../../../components/ui/alert-dialog"
+import { Button } from "../../../components/ui/button"
 import {
   Table,
   TableBody,
@@ -22,8 +22,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "../../../@/components/ui/card"
+} from "../../../components/ui/table"
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Loader2, Mail, MessageSquare, Phone, Trash2 } from "lucide-react"
 import { apiRequest } from './apiRequest'
 

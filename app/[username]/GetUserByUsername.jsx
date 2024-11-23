@@ -29,7 +29,6 @@ import SignInComponents from "../Components/SignIn/SignInComponents";
 import SignInComponents_CP from "../Components/SignIn/SignInComponents_CP";
 import QrcodeProfile from "./QrcodeProfile";
 import { languagess } from "../data/language";
-import LoadingPagetranslate from "../Components/Loading/LoadingPagetranslate";
 import { signIn, useSession } from "next-auth/react";
 import SocialMedia from "./SocialMedia"
 import AccountNotFound from '../Components/AccountNotFound'

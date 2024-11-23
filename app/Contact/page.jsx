@@ -6,8 +6,8 @@ import { MyContext } from '../Context/MyContext';
 import { toast } from 'react-toastify';
 import { CheckCheck, Mail, Phone, MessageSquare, Loader2 } from 'lucide-react';
 import { Button } from "../../components/ui/button"
-import { Input } from "../../@/components/ui/input"
-import { Textarea } from "../../@/components/ui/textarea"
+import { Input } from "../../components/ui/input"
+import { Textarea } from "../../components/ui/textarea"
 import ParticleComponent from '../Components/ParticleComponent';
 import WarningModal from "./Pages/WarningModal"
 

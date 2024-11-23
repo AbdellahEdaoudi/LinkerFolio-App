@@ -1,13 +1,13 @@
 "use client"
 import Link from "next/link";
-import { Button } from "../../../@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../@/components/ui/card";
+} from "../../../components/ui/card";
 import {
   ArrowRight,
   CheckCircle,
@@ -34,21 +34,21 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <main className="flex-1">
-        <section className="w-full pt-7 pb-12 md:py-20 relative">
+        <section className="w-full pt-7 pb-12 md:py-14 relative">
           <div className="absolute inset-0 bg-[url('/')] bg-cover bg-center opacity-10"></div>
           <div className="container px-4 md:px-6 mx-auto relative z-10">
             <div className="flex flex-col lg:flex-row items-center md:mx-20 gap-6 lg:gap-12">
               <div className="space-y-4 text-center lg:text-left lg:w-1/2">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                  Unleash{" "}
+                 Showcase{" "}
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
-                    Your Professional Potential
+                    Your Digital Presence
                   </span>
                 </h1>
                 <p className="mx-auto lg:mx-0 max-w-[600px] text-slate-300 md:text-xl">
-                  With LinkerFolio, gather your resume and social links in one
-                  sleek place. Step forward towards limitless career
-                  opportunities.
+                With LinkerFolio, combine your professional portfolio and social connections
+                 in one dynamic digital hub.
+                 Connect, share, and step into limitless opportunities in the digital world.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 md:mx-8 justify-center lg:justify-start">
                   <Button
@@ -95,7 +95,7 @@ export default function LandingPage() {
               {[
                    {
                      icon: Share2,
-                     title: "Premium Resume",
+                     title: "Professional Portfolio",
                      description:
                        "A stylish design that highlights your experience, skills, and education attractively.",
                    },
@@ -289,12 +289,11 @@ export default function LandingPage() {
               LinkerFolio's Goal
             </h2>
             <p className="text-slate-300 text-lg md:text-xl text-center max-w-3xl mx-auto">
-              LinkerFolio aims to simplify the process of displaying your resume
-              and social media links in one place, making it easier for you to
-              manage your digital identity. Our goal is to enhance your career
-              opportunities and enable you to build a strong and influential
-              digital presence that attracts opportunities and attention from
-              around you.
+            LinkerFolio is designed to streamline the process of showcasing your professional 
+            portfolio and social media profiles in one place, helping you manage your digital 
+            identity effortlessly. Our mission is to expand your career opportunities 
+            and empower you to build a compelling digital presence that draws attention
+             and creates connections around you.
             </p>
           </div>
         </section>

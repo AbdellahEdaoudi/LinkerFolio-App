@@ -13,14 +13,20 @@ const inter = Inter({ subsets: ['latin'] });
 const prompt = Prompt({ subsets: ['latin'], weight: '400' });
 
 export const metadata = Metadata ;
+export const viewport = {
+  width: 'device-width',
+  initialScale: 0.9,
+  // maximumScale: 1,
+  // userScalable: false,
+};
+
 export default function RootLayout({ children }) {
   return (
       <html className="scroll-smooth" lang="en">
       <head>
-      <meta name="google-adsense-account" content="ca-pub-2614061557764113" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2614061557764113"
-     crossorigin="anonymous"></script>
+     crossOrigin="anonymous"></script>
       </head>
         <body className={`${prompt.className} min-h-screen scrollbar-none bg-gray-800 g-gradient-to-r from-blue-500 to-purple-500`}>
         <NextAuthProvider>
