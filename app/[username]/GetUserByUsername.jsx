@@ -380,7 +380,7 @@ function GetUserByUsername({ params }) {
                   <AlertDialogTrigger
                     className={`p-2 ${
                       !dt.data && "hidden"
-                    } bg-slate-100 md:text-[2.7vh] sm:text-[2.6vh] hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
+                    } bg-slate-100 md:text-[2.7vh]  sm:text-[2.6vh] hover:bg-slate-200 hover:scale-105 duration-300 rounded-lg border-2`}
                   >
                     {
                       <div className="flex gap-1">
@@ -392,7 +392,7 @@ function GetUserByUsername({ params }) {
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle className={` bg-gray-200  p-2 border rounded-md`}>
-                        <div className={`${language === "ar" && "text-right pr-1 "}`}>{dt.namedata}</div>
+                        <div className={`${language === "ar" && "text-right pr-1 "} text-start`}>{dt.namedata}</div>
                       </AlertDialogTitle>
                       <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                         {dt.data}

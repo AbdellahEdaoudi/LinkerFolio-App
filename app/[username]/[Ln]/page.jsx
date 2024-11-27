@@ -245,7 +245,7 @@ function Page({ params }) {
   
   return (
     <div
-      className={`  flex items-start justify-center   pt-4 min-h-screen pb-20 ${userDetailsG.bgcolorp}`}
+      className={`  text-sm md:text-base flex items-start justify-center   pt-4 min-h-screen pb-20 ${userDetailsG.bgcolorp}`}
     >
       <div className="w-[800px] mx-4 relative  bg-slate-50 px-4 md:px-8 pt-4 pb-8 rounded-lg border-2 shadow-lg">
         {/* Image Profile and info user */}
@@ -396,7 +396,7 @@ function Page({ params }) {
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle className={` bg-gray-200  p-2 border rounded-md`}>
-                        <div className={`${language === "ar" && "text-right pr-1 "}`}>{dt.namedata}</div>
+                        <div className={`${language === "ar" && "text-right pr-1 "} text-start`}>{dt.namedata}</div>
                       </AlertDialogTitle>
                       <AlertDialogDescription className="overflow-y-auto max-h-96 bg-sky-50  p-4 duration-300 rounded-sm border text-black whitespace-break-spaces text-start">
                         {dt.data}
