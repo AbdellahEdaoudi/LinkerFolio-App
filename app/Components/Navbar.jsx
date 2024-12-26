@@ -400,11 +400,12 @@ function Navbar() {
             } else {
               displayDate = DateAll;
             }
-
+            const user = userDetails.find((user) => user.email === nt.from);
             return (
               <div
                 onClick={() => {
-                  router.push(`/message/to/${nt.fromname}`);
+                  localStorage.setItem('SelectedUser',JSON.stringify(user))
+                  router.push(`/Home`);
                   if (
                     Notification.length > 0 &&
                     Notification[0].readorno === false
