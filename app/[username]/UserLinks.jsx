@@ -43,7 +43,7 @@ function UserLinks({ emailuser, language, setLanguage }) {
         const response = await axios.post(`${SERVER_URL_V}/translate`, {
           textObject: {
             businessLinks: "Business Links",
-            links: "Links",
+            links: "Business Links",
             noLinks: "No business links available.",
           },
           to: language,
@@ -57,14 +57,14 @@ function UserLinks({ emailuser, language, setLanguage }) {
         console.error("Error translating static texts:", error);
         setTranslations({
           businessLinks: "Business Links",
-          links: "Links",
+          links: "Business Links",
           noLinks: "No business links available.",
         });
       }
     } else {
       setTranslations({
         businessLinks: "Business Links",
-        links: "Links",
+        links: "Business Links",
         noLinks: "No business links available.",
       });
     }
@@ -108,7 +108,7 @@ function UserLinks({ emailuser, language, setLanguage }) {
           <AlertDialogDescription>
             <section className="rounded-lg text-black">
               <h1 className="text-3xl font-semibold text-center text-gray-800 mb-4">
-                {translations.links || "Links"}
+                {translations.links || "Business Links"}
               </h1>
               <div className="p-2 space-y-3 overflow-y-auto scrollbar-non max-h-96">
                 <div className="p-2 space-y-3">

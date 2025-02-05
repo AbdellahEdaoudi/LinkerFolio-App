@@ -337,10 +337,10 @@ function NameUser() {
   return (
     <section>
       {User && (
-        <div
-          className={`${bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}
+        <div style={{ backgroundColor:bgcolorp }}
+          className={`{bgcolorp} flex items-center justify-center pt-4 pb-6 duration-300`}
         >
-          <ParticleComponent bgcolor={bgcolorp} />
+          <ParticleComponent style={{ backgroundColor:bgcolorp }} bgcolor={bgcolorp} />
           <form onSubmit={updateProfile} className="z-10">
             <div className="mx-4  md:w-[800px] px-4 md:px-8 pb-14 bg-white p-6 rounded-lg border-2 shadow-lg">
               <div className="flex flex-col md:flex-row items-start justify-between mb-8 space-y-8 md:space-y-0 md:space-x-8">
@@ -564,26 +564,19 @@ function NameUser() {
               </div>
               <div className="border-b border-gray-300 mb-6"></div>
               {/* Background Color Selection */}
-              <div>
-                <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
-                  <h3 className="text-xl font-semibold  mb-2">
-                    🏷️ Select Background Color:{" "}
-                  </h3>
-                </label>
-                <div className="grid grid-cols-8 gap-2 pb-2">
-                  {bgcolorOptions.map((bg, index) => (
-                    <div
-                      key={index}
-                      className={`p-4 rounded-md shadow-md cursor-pointer ${bg} ${
-                        bg === bgcolorp ? "border-2 border-blue-500" : ""
-                      }`}
-                      onClick={() => setbgcolorp(bg)}
-                    ></div>
-                  ))}
+                <div>
+                  <label htmlFor="bgcolorSelect" className="block mb-2 font-bold">
+                    <h3 className="text-xl font-semibold mb-2">🏷️ Select Background Color :</h3>
+                  </label>
+                  <input
+                    type="color"
+                    id="bgcolorSelect"
+                    className="w-full h-16  rounded-md cursor-pointer"
+                    value={bgcolorp}
+                    onChange={(e) => setbgcolorp(e.target.value)}
+                  />
                 </div>
-              </div>
               <div className="border-b border-gray-300 my-4"></div>
-
               {/* Summary Section */}
               <div className="mb-8">
                 <h3 className="text-2xl font-semibold text-indigo-500 mb-2">

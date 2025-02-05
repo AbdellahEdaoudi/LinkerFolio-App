@@ -51,7 +51,7 @@ const ParticleComponent = ({bgcolor}) => {
   }, []);
 
   return (
-    <div className={`${bgcolor && bgcolor}  fixed inset-0 overflow-hidden z-0`}>
+    <div style={{ backgroundColor:bgcolor }} className={`{bgcolor && bgcolor}  fixed inset-0 overflow-hidden z-0`}>
       {particles.map((particle, index) => (
         <div
           key={index}
